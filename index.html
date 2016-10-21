@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <title>Photo Booth</title>
     <link rel="stylesheet" href="css/roboto.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
     <div id="countdown"></div>
+    <div class="Collage">
+    </div>
     <div id="wrapper">
 
       <div id="top">
-        <h1>Hochzeit</h1>
-        <h1>Doro & Jonas</h1>
       </div>
       <div id="middle">
         <div id="imageWrapper"></div>
       </div>
       <div id="bottom">
-        <button onclick="takePhoto()">Und los!</button>
+        <button onclick="takePhoto()">Let's take a picture!</button>
       </div>
 
     </div>
@@ -26,43 +27,50 @@
 
   <script>
     function takePhoto() {
-
       countdown(5);
-      
     }
 
     function countdown(duration) {
       var count = document.getElementById("countdown");
+      count.style.backogrundImage = "none";
       count.style.visibility = "visible";
       count.innerHTML = '<p>'+duration+'</p>';
 
       var counter = setInterval(function () {
           duration--;
-          if (duration < 1) {
-            count.style.visibility = "hidden";
-            count.innerHTML="";
-            clearInterval(counter);
+
+           if (duration > 0) {
+            count.innerHTML = '<p>'+duration+'</p>';
           }
 
           if (duration == 1) {
             shoot();
           }
-          count.innerHTML = '<p>'+duration+'</p>';
+
+          if (duration == 0) {
+            count.innerHTML="<i class='fa fa-circle-o-notch fa-spin fa-3x fa-fw'></i>";
+          }
+
+          if (duration < -8) {
+            count.style.visibility = "hidden";
+            clearInterval(counter);
+          }
+
+
         }, 1000);
     }
 
     function shoot() {
+
       var PythonShell = require('python-shell');
       var pyshell = new PythonShell('./python/capture.py');
+      var count = document.getElementById("countdown");
 
       pyshell.on('message', function (message) {
         // received a message sent from the Python script (a simple "print" statement)
-        console.log(message);
-
-        var img = document.createElement("img");
-        img.src = message;
-
-        document.getElementById("imageWrapper").appendChild(img);
+        count.innerHTML = "";
+        console.log("Image url: "+message);
+        count.style.backgroundImage = "url('"+message+"')";
 
       });
 
@@ -75,4 +83,5 @@
 
 
   </script>
+
 </html>

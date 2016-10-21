@@ -3,7 +3,6 @@ html, body {
 	width: 100vw;
 	height: 100vh;
 	margin: 0;
-	background: black;
 	color: white;
 	font-family: Roboto;
 }
@@ -26,7 +25,7 @@ button {
 	font-weight: 700;
 	text-align: center;
 	color: white;
-	background-color: black;
+	background-color: transparent;
     border: 3px solid white;
     padding: 10px 30px;
     text-decoration: none;
@@ -44,6 +43,7 @@ button {
 	flex-direction: column;
 	justify-content: space-between;
 	align-content: space-between;
+
 }
 
 #wrapper > div {
@@ -58,7 +58,7 @@ button {
 
 
 #middle {
-	flex-basis: 69.999	%;
+	flex-basis: 69.999%;
 	text-align: center;
 	display: block;
 }
@@ -70,8 +70,6 @@ button {
 	align-items: center;
 	justify-content: center;
 }
-
-
 
 #countdown {	
 	font-size: 300px;
@@ -92,11 +90,44 @@ button {
     background: black;
 	
     z-index: 1000;
+
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 #countdown p {
 	animation: fadeout 1s;
 	animation-timing-function: ease-out;
+}
+
+.Collage {
+	position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: black;
+	
+    z-index: -10000;
+}
+
+.Collage img {
+	padding: 0px;
+	animation: fadein 2s
+	filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+    -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+
+     vertical-align:bottom;
+}
+
+.fa {
+	font-size: 5vw;
+	animation: fadein 1s;
 }
 
 @keyframes fadein {

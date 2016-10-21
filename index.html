@@ -2,18 +2,77 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Photo Booth</title>
+    <link rel="stylesheet" href="css/roboto.css">
+    <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <div id="countdown"></div>
+    <div id="wrapper">
+
+      <div id="top">
+        <h1>Hochzeit</h1>
+        <h1>Doro & Jonas</h1>
+      </div>
+      <div id="middle">
+        <div id="imageWrapper"></div>
+      </div>
+      <div id="bottom">
+        <button onclick="takePhoto()">Und los!</button>
+      </div>
+
+    </div>
   </body>
 
   <script>
-    // You can also require other files to run in this process
-    require('./renderer.js')
+    function takePhoto() {
+
+      countdown(5);
+      
+    }
+
+    function countdown(duration) {
+      var count = document.getElementById("countdown");
+      count.style.visibility = "visible";
+      count.innerHTML = '<p>'+duration+'</p>';
+
+      var counter = setInterval(function () {
+          duration--;
+          if (duration < 1) {
+            count.style.visibility = "hidden";
+            count.innerHTML="";
+            clearInterval(counter);
+          }
+
+          if (duration == 1) {
+            shoot();
+          }
+          count.innerHTML = '<p>'+duration+'</p>';
+        }, 1000);
+    }
+
+    function shoot() {
+      var PythonShell = require('python-shell');
+      var pyshell = new PythonShell('./python/capture.py');
+
+      pyshell.on('message', function (message) {
+        // received a message sent from the Python script (a simple "print" statement)
+        console.log(message);
+
+        var img = document.createElement("img");
+        img.src = message;
+
+        document.getElementById("imageWrapper").appendChild(img);
+
+      });
+
+      // end the input stream and allow the process to exit
+      pyshell.end(function (err) {
+        if (err) throw err;
+        console.log('finished');
+      });
+    }
+
+
   </script>
 </html>

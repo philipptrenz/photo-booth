@@ -1,6 +1,6 @@
 {
   "name": "photo-booth",
-  "version": "0.1",
+  "version": "0.0.1",
   "description": "A Photo Booth Software using Electron, gPhoto2, Python and your Camera",
   "main": "main.js",
   "scripts": {
@@ -17,5 +17,8 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.4.1"
+  },
+  "dependencies": {
+    "python-shell": "^0.4.0"
   }
 }

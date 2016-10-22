@@ -34,10 +34,8 @@
 
     function takePhoto() {
       // prevent two tasks at the same time!
-      if (isTakingPhoto) {
-        console.log('already processing ...');
-         return;
-      }
+      if (isTakingPhoto) return;
+      
       isTakingPhoto = true;
       var duration = 5;
       var errorMessage = '<span class="fadein">Sorry, please try again ...</span>';
@@ -126,6 +124,12 @@
       var imgPerRow = Math.round(collageWidth/300);              
       $("#collage > img").outerWidth(collageWidth/imgPerRow);
     }
+
+    var gpio = require('rpi-gpio');
+    gpio.on('change', function(channel, value) {
+        console.log('Channel ' + channel + ' value is now ' + value);
+    });
+    gpio.setup(3, gpio.DIR_IN, gpio.EDGE_BOTH);
 
   </script>
 

@@ -26,6 +26,7 @@
     "babel-register": "6.3.13",
     "freewall": "^1.0.8",
     "jquery": "^3.1.1",
-    "python-shell": "^0.4.0"
+    "python-shell": "^0.4.0",
+    "rpi-gpio": "^0.7.0"
   }
 }

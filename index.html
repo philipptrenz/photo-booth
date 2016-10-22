@@ -30,7 +30,15 @@
 
     $("#countdown").hide();
 
+    var isTakingPhoto = false;
+
     function takePhoto() {
+      // prevent two tasks at the same time!
+      if (isTakingPhoto) {
+        console.log('already processing ...');
+         return;
+      }
+      isTakingPhoto = true;
       var duration = 5;
       var errorMessage = '<span class="fadein">Sorry, please try again ...</span>';
       var countdown = $("#countdown");
@@ -102,6 +110,7 @@
           $("#countdown").hide();
           $("#countdown").removeClass("fadeout");
           $("#countdown").html('');
+          isTakingPhoto = false;
           clearInterval(wait);
         }, 500);
         clearInterval(waiter);

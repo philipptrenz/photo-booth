@@ -12,9 +12,11 @@ from PIL import Image
 
 def main():
 
+     # open camera connection
     context = gp.gp_context_new()
     camera = gp.check_result(gp.gp_camera_new())
     gp.check_result(gp.gp_camera_init(camera, context))
+
     file_path = gp.check_result(gp.gp_camera_capture(
         camera, gp.GP_CAPTURE_IMAGE, context))
     now = time.localtime()

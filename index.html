@@ -9,7 +9,7 @@
   </head>
   <body onclick="takePhoto()">
     <div id="countdown"></div>
-    <div id="collage"><div id="collage-inner"></div></div>
+    <div id="collage"></div>
     <div id="wrapper">
 
       <div id="top">
@@ -27,26 +27,8 @@
   <script>
     import $ from 'jquery';
     import PythonShell from 'python-shell';
-    import Freewall from 'freewall';
 
     $("#countdown").hide();
-
-    var wall;
-    $(function() {
-      wall = new Freewall.Freewall("#collage-inner");
-      wall.reset({
-        selector: 'img',
-        fixSize: 0,
-        animate: true,
-        cellW: 300,
-        cellH: 200,
-        delay: 0,
-        onResize: function() {
-          wall.fitZone();
-        }
-      });
-      wall.fitZone();
-    });
 
     function takePhoto() {
       var duration = 5;
@@ -74,16 +56,15 @@
               //countdown.css('background-image', 'url(' + message + ')');
               var preview = '<div id=\'preview\' style=\'background-image: url(\"'+message+'\");\'></div>';
 
-              // add image to collage
-              $(function() {
-                var img = $('<img>');
-                img.attr('src', message);
-                img.attr('width', 200);
-                img.attr('height', 300);
-                wall.prepend(img);
-            });
-
               countdown.html(preview);
+
+              // add image to collage
+              var img = $('<img>');
+              img.attr('src', message);
+              $("#collage").prepend(img);
+
+              scaleCollageImages();
+
             });
 
             // end the input stream and allow the process to exit
@@ -107,7 +88,7 @@
 
           if (duration == -2) {
             if (!countdown.html().includes(errorMessage)) {
-              countdown.html('<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>');
+              countdown.html('<div class="loading"><i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i></div>');
             }
             clearInterval(counter);
           }
@@ -121,13 +102,20 @@
           $("#countdown").hide();
           $("#countdown").removeClass("fadeout");
           $("#countdown").html('');
-          $(function() {
-            wall.refresh();
-          });
           clearInterval(wait);
         }, 500);
         clearInterval(waiter);
       }, delay*1000);
+    }
+
+    $( window ).resize(function() {
+      scaleCollageImages();
+    });
+
+    function scaleCollageImages() {
+      var collageWidth = $("#collage").width();
+      var imgPerRow = Math.round(collageWidth/300);              
+      $("#collage > img").outerWidth(collageWidth/imgPerRow);
     }
 
   </script>

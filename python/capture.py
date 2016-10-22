@@ -42,7 +42,7 @@ def main():
     img = Image.open(target+'.jpg')
     wpercent = (basewidth / float(img.size[0]))
     hsize = int((float(img.size[1]) * float(wpercent)))
-    img = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+    img = img.resize((basewidth, hsize), Image.ANTIALIAS)
     img.save(target+'_small.jpg')
 
     print(target+'_small.jpg')

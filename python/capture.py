@@ -8,7 +8,6 @@ import time
 from os.path import expanduser
 
 import gphoto2 as gp
-import PIL
 from PIL import Image
 
 def main():

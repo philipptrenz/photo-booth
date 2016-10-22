@@ -10,10 +10,10 @@ To clone and run this repository you'll need [Git](https://git-scm.com) and [Nod
 
 ```bash
 # Install needed dependencies
-sudo apt-get install libgphoto2-6 libgphoto2-dev libgphoto2-port10 python-dev python-pip
+sudo apt-get install libgphoto2-6 libgphoto2-dev libgphoto2-port10 python-dev python-pip libjpeg-dev
 
 # Install Python gPhoto2 Interface
-sudo pip install gphoto2
+sudo pip install gphoto2 Pillow
 
 # Clone this repository
 git clone https://github.com/philipptrenz/photo-booth

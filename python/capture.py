@@ -36,6 +36,7 @@ def main():
     gp.check_result(gp.gp_file_save(camera_file, target+'.jpg'))
     gp.check_result(gp.gp_camera_exit(camera, context))
 
+
     # scale image
     basewidth = 1500 #px
     img = Image.open(target+'.jpg')
@@ -43,7 +44,6 @@ def main():
     hsize = int((float(img.size[1]) * float(wpercent)))
     img = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
     img.save(target+'_small.jpg')
-
 
     print(target+'_small.jpg')
     

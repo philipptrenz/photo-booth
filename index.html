@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
-  <body>
+  <body onclick="takePhoto()">
     <div id="countdown"></div>
-    <div class="Collage">
-    </div>
+    <div id="collage"><div id="collage-inner"></div></div>
     <div id="wrapper">
 
       <div id="top">
@@ -19,69 +18,120 @@
         <div id="imageWrapper"></div>
       </div>
       <div id="bottom">
-        <button onclick="takePhoto()">Let's take a picture!</button>
+        <button>Tap to start</button>
       </div>
 
     </div>
   </body>
 
   <script>
-    function takePhoto() {
-      countdown(5);
-    }
+    import $ from 'jquery';
+    import PythonShell from 'python-shell';
+    import Freewall from 'freewall';
 
-    function countdown(duration) {
-      var count = document.getElementById("countdown");
-      count.style.backogrundImage = "none";
-      count.style.visibility = "visible";
-      count.innerHTML = '<p>'+duration+'</p>';
+    $("#countdown").hide();
+
+    var wall;
+    $(function() {
+      wall = new Freewall.Freewall("#collage-inner");
+      wall.reset({
+        selector: 'img',
+        fixSize: 0,
+        animate: true,
+        cellW: 300,
+        cellH: 200,
+        delay: 0,
+        onResize: function() {
+          wall.fitZone();
+        }
+      });
+      wall.fitZone();
+    });
+
+    function takePhoto() {
+      var duration = 5;
+      var errorMessage = '<span class="fadein">Sorry, please try again ...</span>';
+      var countdown = $("#countdown");
+      countdown.fadeIn(250);
+      countdown.html('<span class="fadeout">'+duration+'</span>');
 
       var counter = setInterval(function () {
           duration--;
 
-           if (duration > 0) {
-            count.innerHTML = '<p>'+duration+'</p>';
+          if (duration > 0) {
+            countdown.html('<span class="fadeout">'+duration+'</span>');
           }
 
           if (duration == 1) {
-            shoot();
+            // make photo and display it!
+           
+            var pyshell = new PythonShell('./python/capture.py');
+
+            pyshell.on('message', function (message) {
+              // received a message sent from the Python script (a simple "print" statement)
+              console.log("Image url: "+message);
+              //countdown.html('');
+              //countdown.css('background-image', 'url(' + message + ')');
+              var preview = '<div id=\'preview\' style=\'background-image: url(\"'+message+'\");\'></div>';
+
+              // add image to collage
+              $(function() {
+                var img = $('<img>');
+                img.attr('src', message);
+                img.attr('width', 200);
+                img.attr('height', 300);
+                wall.prepend(img);
+            });
+
+              countdown.html(preview);
+            });
+
+            // end the input stream and allow the process to exit
+            pyshell.end(function (err) {
+
+              if (!err) {
+                // show picture for 5 seconds then hide
+                hideCountdown(5);
+              } else {
+                // show error message for 5 seconds then hide
+                countdown.html(errorMessage);
+                hideCountdown(3);
+                throw err;
+              }
+            });
           }
 
-          if (duration == 0) {
-            count.innerHTML="<i class='fa fa-circle-o-notch fa-spin fa-3x fa-fw'></i>";
+          if (duration == 0 && !countdown.html().includes(errorMessage)) {
+            countdown.html('');
           }
 
-          if (duration < -8) {
-            count.style.visibility = "hidden";
+          if (duration == -2) {
+            if (!countdown.html().includes(errorMessage)) {
+              countdown.html('<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>');
+            }
             clearInterval(counter);
           }
-
-
         }, 1000);
     }
 
-    function shoot() {
-
-      var PythonShell = require('python-shell');
-      var pyshell = new PythonShell('./python/capture.py');
-      var count = document.getElementById("countdown");
-
-      pyshell.on('message', function (message) {
-        // received a message sent from the Python script (a simple "print" statement)
-        count.innerHTML = "";
-        console.log("Image url: "+message);
-        count.style.backgroundImage = "url('"+message+"')";
-
-      });
-
-      // end the input stream and allow the process to exit
-      pyshell.end(function (err) {
-        if (err) throw err;
-        console.log('finished');
-      });
+    function hideCountdown(delay) {
+      var waiter = setInterval(function() {
+        $("#countdown").addClass("fadeout");
+        var wait = setInterval(function() {
+          $("#countdown").hide();
+          $("#countdown").removeClass("fadeout");
+          $("#countdown").html('');
+          $(function() {
+            wall.refresh();
+          });
+          clearInterval(wait);
+        }, 500);
+        clearInterval(waiter);
+      }, delay*1000);
     }
-
 
   </script>
 
 </html>
+
+

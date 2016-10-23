@@ -1,14 +1,12 @@
 # Photo Booth
 
-**A Photo Booth Software using Electron, gPhoto2, Python and your Camera**
-
-NOTE: Still under development, this is not yet working!
+**A Photo Booth Software using Electron, gphoto2 and your camera**
 
 ## How it works
 
 Simply connect your camera (e.g. I have a Nikon D5300) via USB to the computer running this application. The app shows a countdown by clicking at the screen (or tapping at a touchscreen), triggers your camera to take a photo, downloads it from your camera and displays it at the screen. First in fullscreen, then it adds it to a gallery of previous taken photos.
 
-Because of the use of gphoto2 it works with nearly any cameras like plug and play. A list of supported devices you can find [here](http://gphoto.org/proj/libgphoto2/support.php).
+Because of the use of gphoto2 it works with nearly any cameras plug and play. A list of supported devices you find [here](http://gphoto.org/proj/libgphoto2/support.php).
 
 ## To Use
 
@@ -16,7 +14,7 @@ To clone and run this repository you'll need [Git](https://git-scm.com) and [Nod
 
 ```bash
 # Install needed dependencies
-sudo apt-get install imagemagick gphoto2 libgl1-mesa-dri
+sudo apt-get install imagemagick gphoto2
 
 # If you want to use a Raspberry Pi > 1 
 sudo apt-get install libgl1-mesa-dri
@@ -32,5 +30,3 @@ npm install && ./node_modules/.bin/electron-rebuild
 ```
 **NOTE: For using GPIO Pins the application has to run as root!**
 
-
-Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/latest).

@@ -207,6 +207,10 @@
       var collageWidth = $("#collage").width();
       var imgPerRow = Math.round(collageWidth/300);              
       $("#collage > img").outerWidth(collageWidth/imgPerRow);
+
+      while( $("#collage").children().length > 4*Math.pow(imgPerRow, 2)) {
+         $("#collage").children().last().remove();
+      }
     }
 
     // ---------------------------------------------------- //

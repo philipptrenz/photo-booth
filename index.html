@@ -31,6 +31,9 @@
 
     /* Listen for pushbutton on GPIO 3 (PIN 5)
      *
+     * NOTE: To use GPIO's this application has to
+     * run as root (sudo npm start)!
+     *
      * For Raspberry Pi (B Rev2 / B+ / 2 / 3):
      * Connect the first port of the switchbutton to ground,
      * second to GPIO 3 (PIN 5) and to an resistor of about 10k-100kΩ,
@@ -53,7 +56,10 @@
     gpio.setMode(gpio.MODE_BCM);
     gpio.setup(3, gpio.DIR_IN, gpio.EDGE_BOTH);
     gpio.on('change', function(channel, value) {
-        console.log('Channel ' + channel + ' value is now ' + value);
+      if (channel == 3 && !value) takePhoto();
+      // NOTE: takePhoto() is secure to don't run twice 
+      // at the same time, make sure this is also so for
+      // your code.
     });
 
     $("#countdown").hide();
@@ -62,6 +68,8 @@
     function takePhoto() {
       // prevent two tasks at the same time!
       if (isTakingPhoto) return;
+
+      console.log('Let\'s take a photo!');
 
       isTakingPhoto = true;
       var duration = 5;

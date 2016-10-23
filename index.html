@@ -25,9 +25,18 @@
   </body>
 
   <script>
+    import 'util';
+    import fs from 'fs';
     import $ from 'jquery';
-    import PythonShell from 'python-shell';
     import gpio from 'rpi-gpio';
+
+
+    const errorMessage = '<span class="fadein">Sorry, please try again ...</span>';
+    const maxImageSize = 1500; // Size of saved images on the computer
+
+    var isTakingPhoto = false;
+
+    // ---------------------------------------------------- //
 
     /* Listen for pushbutton on GPIO 3 (PIN 5)
      *
@@ -62,18 +71,15 @@
       // your code.
     });
 
-    $("#countdown").hide();
+    // ---------------------------------------------------- //
 
-    var isTakingPhoto = false;
     function takePhoto() {
       // prevent two tasks at the same time!
       if (isTakingPhoto) return;
 
-      console.log('Let\'s take a photo!');
-
       isTakingPhoto = true;
       var duration = 5;
-      var errorMessage = '<span class="fadein">Sorry, please try again ...</span>';
+      
       var countdown = $("#countdown");
       countdown.fadeIn(250);
       countdown.html('<span class="fadeout">'+duration+'</span>');
@@ -86,41 +92,7 @@
           }
 
           if (duration == 1) {
-            // make photo and display it!
-           
-            var pyshell = new PythonShell('./python/capture.py');
-
-            pyshell.on('message', function (message) {
-              // received a message sent from the Python script (a simple "print" statement)
-              console.log("Image url: "+message);
-              //countdown.html('');
-              //countdown.css('background-image', 'url(' + message + ')');
-              var preview = '<div id=\'preview\' style=\'background-image: url(\"'+message+'\");\'></div>';
-
-              countdown.html(preview);
-
-              // add image to collage
-              var img = $('<img>');
-              img.attr('src', message);
-              $("#collage").prepend(img);
-
-              scaleCollageImages();
-
-            });
-
-            // end the input stream and allow the process to exit
-            pyshell.end(function (err) {
-
-              if (!err) {
-                // show picture for 5 seconds then hide
-                hideCountdown(5);
-              } else {
-                // show error message for 5 seconds then hide
-                countdown.html(errorMessage);
-                hideCountdown(3);
-                throw err;
-              }
-            });
+            takePhotoSaveShowAndHide(countdown);
           }
 
           if (duration == 0 && !countdown.html().includes(errorMessage)) {
@@ -136,6 +108,54 @@
         }, 1000);
     }
 
+    // ---------------------------------------------------- //
+
+    function takePhotoSaveShowAndHide(countdown){
+      var exec = require('child_process').exec;
+
+      var tmpimage= 'tmp/tmp.jpg';
+      if (!fs.existsSync('./tmp')) fs.mkdirSync('./tmp');
+
+      const cmd = "gphoto2 --capture-image-and-download --keep --stdout | convert - -resize "+Math.round(maxImageSize)+" -quality 95 "+tmpimage;
+      
+      var child = exec(cmd, function (error, stdout, stderr) {
+        
+         // if error occured
+        if (error !== null || error === undefined) {
+          countdown.html(errorMessage);
+          console.log('exec error: ' + error);
+
+          // show error message for 3 seconds then hide
+          hideCountdown(3);
+
+        } else {
+
+          var dir = process.env.HOME+'/booth-images';
+          if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+
+          // move tmp.jpg in main folder
+          var filepath = dir+'/'+'img_'+getTimestamp(new Date())+'.jpg';
+          fs.rename(tmpimage, filepath);
+
+          var preview = '<div id=\'preview\' style=\'background-image: url(\"'+filepath+'\");\'></div>';
+
+          countdown.html(preview);
+
+          // add image to collage
+          var img = $('<img>');
+          img.attr('src', filepath);
+          $("#collage").prepend(img);
+
+          scaleCollageImages();
+
+          // show picture for 5 seconds then hide
+          hideCountdown(5);
+        }
+      });
+    }
+
+    // ---------------------------------------------------- //
+
     function hideCountdown(delay) {
       var waiter = setInterval(function() {
         $("#countdown").addClass("fadeout");
@@ -150,9 +170,13 @@
       }, delay*1000);
     }
 
+    // ---------------------------------------------------- //
+
     $( window ).resize(function() {
       scaleCollageImages();
     });
+
+    // ---------------------------------------------------- //
 
     function scaleCollageImages() {
       var collageWidth = $("#collage").width();
@@ -160,6 +184,11 @@
       $("#collage > img").outerWidth(collageWidth/imgPerRow);
     }
 
+    // ---------------------------------------------------- //
+
+    function getTimestamp(now) {
+      return now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'-'+now.getSeconds();
+    }
 
   </script>
 

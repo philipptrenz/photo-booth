@@ -92,6 +92,8 @@ button {
 	
     z-index: 1000;
 
+    display: none;
+
     background-size: cover;
     background-repeat: no-repeat;
 

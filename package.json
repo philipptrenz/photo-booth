@@ -26,7 +26,6 @@
     "babel-preset-react": "6.3.13",
     "babel-register": "6.3.13",
     "jquery": "^3.1.1",
-    "python-shell": "^0.4.0",
     "rpi-gpio": "^0.7.0"
   }
 }

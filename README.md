@@ -16,10 +16,11 @@ To clone and run this repository you'll need [Git](https://git-scm.com) and [Nod
 
 ```bash
 # Install needed dependencies
-sudo apt-get install libgphoto2-6 libgphoto2-dev libgphoto2-port10 python-dev python-pip libjpeg-dev libgl1-mesa-dri
+sudo apt-get install imagemagick gphoto2 libgl1-mesa-dri
 
-# Install Python gPhoto2 Interface
-sudo pip install gphoto2 Pillow
+# If you want to use a Raspberry Pi > 1 
+sudo apt-get install libgl1-mesa-dri
+sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
 # Clone this repository
 git clone https://github.com/philipptrenz/photo-booth
@@ -30,8 +31,6 @@ npm install && ./node_modules/.bin/electron-rebuild
 [sudo] npm start
 ```
 **NOTE: For using GPIO Pins the application has to run as root!**
-
-If you're using a Raspberry Pi, activate hardware acceleration by adding `dtoverlay=vc4-kms-v3d` to /boot/config.txt
 
 
 Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/latest).

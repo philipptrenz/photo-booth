@@ -4,7 +4,7 @@
 
 ## How it works
 
-Simply connect your camera (e.g. I have a Nikon D5300) via USB to the computer running this application. The app shows a countdown by clicking at the screen (or tapping at a touchscreen), triggers your camera to take a photo, downloads it from your camera and displays it at the screen. First in fullscreen, then it adds it to a gallery of previous taken photos.
+Simply connect your camera (e.g. I have a Nikon D5300) via USB to the computer running this application. The app shows a countdown by clicking at the screen (or tapping at a touchscreen), triggers your camera to take a photo, downloads it from your camera, reduces and displays it on the screen. First in fullscreen, then added to a gallery of previous taken photos.
 
 Because of the use of gphoto2 it works with nearly any cameras plug and play. A list of supported devices you find [here](http://gphoto.org/proj/libgphoto2/support.php).
 

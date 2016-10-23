@@ -30,10 +30,31 @@
     import $ from 'jquery';
     import gpio from 'rpi-gpio';
 
+    /*
+     * Max Image Width/Height
+     *
+     * Every downloaded image from your camera gets resized and stored,
+     * so the files aren't giant and can be displayed properly.
+     *
+     * Define the maximum width or height of the images here.
+     */
+    const maxImageSize = 1500;  // px, Size of saved images on the computer
+
+    /*
+     * Set the capture target on your camera
+     *
+     * You need to say gphoto2 where to save the photos on the camera. If you want
+     * to let them in full quality at your camera's sd card, you have to choose the
+     * right value here. Because it depends on your camera, I can't give you here
+     * the right choice for your setup.
+     *
+     * To look for the right options, run the following command in your terminal:
+     * gphoto2 --get-config=capturetarget
+     */
+    const captureTarget = 1;    // default: 1
+
 
     const errorMessage = '<span class="fadein">Sorry, please try again ...</span>';
-    const maxImageSize = 1500; // Size of saved images on the computer
-
     var isTakingPhoto = false;
 
     // ---------------------------------------------------- //
@@ -120,7 +141,7 @@
       var tmpimage= 'tmp/tmp.jpg';
       if (!fs.existsSync('./tmp')) fs.mkdirSync('./tmp');
 
-      const cmd = "gphoto2 --capture-image-and-download --keep --stdout | convert - -resize "+Math.round(maxImageSize)+" -quality 95 "+tmpimage;
+      const cmd = "gphoto2 --set-config capturetarget="+captureTarget+" --capture-image-and-download --keep --stdout | convert - -resize "+Math.round(maxImageSize)+" -quality 95 "+tmpimage;
       
       var child = exec(cmd, function (error, stdout, stderr) {
         
@@ -192,6 +213,10 @@
 
     function getTimestamp(now) {
       return now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'-'+now.getSeconds();
+    }
+
+    function getDate(now) {
+      return now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
     }
 
   </script>

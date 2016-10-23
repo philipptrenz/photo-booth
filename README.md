@@ -20,7 +20,8 @@ git clone https://github.com/philipptrenz/photo-booth
 # Go into the repository
 cd photo-booth
 # Install dependencies and run the app
-npm install && npm start
+npm install && ./node_modules/.bin/electron-rebuild
+npm start
 ```
 
 If you're using a Raspberry Pi, activate hardware acceleration by adding `dtoverlay=vc4-kms-v3d` to /boot/config.txt

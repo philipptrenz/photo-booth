@@ -18,13 +18,13 @@
   "devDependencies": {
     "babel-preset-stage-0": "6.16.0",
     "electron": "1.4.1",
-    "electron-prebuilt-compile": "1.4.3"
+    "electron-prebuilt-compile": "1.4.3",
+    "electron-rebuild": "1.3.0"
   },
   "dependencies": {
     "babel-preset-es2015": "6.3.13",
     "babel-preset-react": "6.3.13",
     "babel-register": "6.3.13",
-    "freewall": "^1.0.8",
     "jquery": "^3.1.1",
     "python-shell": "^0.4.0",
     "rpi-gpio": "^0.7.0"

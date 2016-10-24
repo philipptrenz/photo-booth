@@ -14,9 +14,9 @@ To clone and run this repository you'll need [Git](https://git-scm.com) and [Nod
 
 ```bash
 # Install needed dependencies
-sudo apt-get install imagemagick gphoto2
+sudo apt-get install git npm gphoto2 imagemagick 
 
-# If you want to use a Raspberry Pi > 1 
+# If you want to use a Raspberry Pi > 1: Activate hardware acceleration
 sudo apt-get install libgl1-mesa-dri
 sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
@@ -30,3 +30,6 @@ npm install && ./node_modules/.bin/electron-rebuild
 ```
 **NOTE: For using GPIO Pins the application has to run as root!**
 
+## Configure it
+
+The project includes an config.json file. There you can set several parameters, e.g. to start in fullscreen or not or if you want to keep your taken photos on your camera.

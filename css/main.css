@@ -33,26 +33,26 @@ button {
     display: block;
 }
 
-#wrapper {
-	width: 100vw;
-	height: 100vh;
-
-	text-align: center;
-
+#collage {
 	position:fixed;
-    padding:0;
-    margin:0;
+    padding: 0.5vw;
+    margin: 0;
 
     top:0;
     left:0;
 
-    display: flex;
-  	align-items: center;
-  	justify-content: center;
+    width: 100%;
+    height: 100%;
 
-	display: block;
+    background: black;
+    z-index: -10000;
+    box-sizing: border-box;
+}
 
-	z-index: 1;
+#collage img {
+	padding: 0.5vw;
+	-webkit-filter: brightness(40%);
+	-webkit-filter: grayscale(100%);
 }
 
 #countdown {	
@@ -136,28 +136,6 @@ button {
 #countdown .loading i {
 	text-align: center;
 	display: inline-block;
-}
-
-#collage {
-	position:fixed;
-    padding: 0.5vw;
-    margin: 0;
-
-    top:0;
-    left:0;
-
-    width: 100%;
-    height: 100%;
-
-    background: black;
-    z-index: -10000;
-    box-sizing: border-box;
-}
-
-#collage img {
-	padding: 0.5vw;
-	-webkit-filter: brightness(40%);
-	-webkit-filter: grayscale(100%);
 }
 
 .fa {

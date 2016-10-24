@@ -38,17 +38,17 @@ It looks like this:
 
 ```json
 {
-	"fullscreen": 		false,								// true, false
-	"showDevTools": 	true,								// true, false
-	"maxImageSize": 	1500,								// int, in pixels
-	"useGPIO": 			true,								// true, false
+	"fullscreen": 		false,
+	"showDevTools": 	true,
+	"maxImageSize": 	1500,
+	"useGPIO": 			true,
 	"gphoto2": {
-		"keepImagesOnCamera": 	true,						// true, false
-		"captureTarget": 		1,							// 0 (1,2, ...), depends on camera
-		"port":					"ptpip:192.168.1.1",		// usb, serial, ptpip, ptpip:<IP-Address>, ...
-		"optionalParameter": 	null						// null, "any gphoto2 parameter"
+		"keepImagesOnCamera": 	true,
+		"captureTarget": 		1,
+		"port":					"ptpip:192.168.1.1",
+		"optionalParameter": 	null
 		"	},
-	"errorMessage": 	"Bitte versuch es nochmal ..."		// any string
+	"errorMessage": 	"Bitte versuch es nochmal ..."
 }
 ```
 

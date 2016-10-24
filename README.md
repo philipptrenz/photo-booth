@@ -28,8 +28,9 @@ cd photo-booth
 npm install && ./node_modules/.bin/electron-rebuild
 [sudo] npm start
 ```
-**NOTE: For using GPIO Pins the application has to run as root!**
-
+**NOTE:** For using GPIO Pins the application has to run as root!
+**HINT:** The little tool `unclutter` hides the cursor.
+ 
 ## Configure it
 
 The project includes an config.json file. There you can set several parameters, e.g. to start in fullscreen or not or if you want to keep your taken photos on your camera.
@@ -65,14 +66,8 @@ Some notes to this:
 Maybe you want to connect your camera via builtin WiFi to an Raspberry Pi running this app, then follow these steps:
 
 1. Figure out the SSID broadcasted by your camera, e.g. by command `sudo iwlist wlan0 scan`
-2. Run `sudo nano /etc/wpa_supplicant/wpa_supplicant.conf` and add at the bottom:
-```
-network={
-    ssid="<Your cameras SSID>"
-    key_mgmt=NONE
-}
-```
-If Your camera is secured, use `psk="<Your WiFi password>"`
+2. Run `sudo iwconfig wlan0 essid name_of_my_cameras_wifi`
+If you need more complex preferences, like wpa-key, use the `/etc/wpa_supplicant/wpa_supplicant.conf`
 3. Restart WiFi with `sudo ifdown wlan0 && sudo ifup wlan0`
 4. Make shure your cameras WiFi is enabled
 5. Run `ifconfig` and look up your IP address on wlan0, e.g. 192.168.1.X

@@ -40,8 +40,8 @@ It looks like this:
 {
 	"fullscreen": 		false,
 	"showDevTools": 	true,
-	"maxImageSize": 	1500,
 	"useGPIO": 			true,
+	"maxImageSize": 	1500,
 	"gphoto2": {
 		"keepImagesOnCamera": 	true,
 		"captureTarget": 		1,
@@ -51,8 +51,18 @@ It looks like this:
 	"errorMessage": 	"Bitte versuch es nochmal ..."
 }
 ```
+Some notes to this:
 
-Maybe you want to connect your camera via builtin WiFi to an Raspberry Pi running this app (this is my cenario), then follow these steps:
+* Booleans are always `true` or `false`
+* Images get shrinked after got downloaded from the camera, set the size with maxImageWidth
+* You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned of. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so.
+* The gphoto2 port definition can be null, then gphoto2 searches for your camera via USB, this works mostly. Also `serial` and `ptpip` for connection over WiFi is available. When using WiFi you'll need to define the IP address of your camera, this could look like this: `ptpip:192.168.1.1`
+* Optional parameters for gphoto2 can be applied as string
+* The errorMessage is pure HTML, just type in what you want. It gets displayed, if anything went wrong
+
+## Connect your camera via WiFi
+
+Maybe you want to connect your camera via builtin WiFi to an Raspberry Pi running this app, then follow these steps:
 
 1. Figure out the SSID broadcasted by your camera, e.g. by command `sudo iwlist wlan0 scan`
 2. Run `sudo nano /etc/wpa_supplicant/wpa_supplicant.conf` and add at the bottom:
@@ -62,11 +72,11 @@ network={
     key_mgmt=NONE
 }
 ```
-If your camera is secured, use `psk="<Your WiFi password>"`
+If Your camera is secured, use `psk="<Your WiFi password>"`
 3. Restart WiFi with `sudo ifdown wlan0 && sudo ifup wlan0`
 4. Make shure your cameras WiFi is enabled
 5. Run `ifconfig` and look up your IP address on wlan0, e.g. 192.168.1.X
 6. Try to run `gphoto2 --port ptpip:192.168.1.1 --capture-image` - the last digit of the IP address has to be 1, that's your camera ;)
 7. Edit to your config.json `..."port": "ptpip:192.168.1.1", ...` and restart photo-booth
 
-**NOTE:** My Nikon first didn't want to work via WiFi, then I figured out that the  gphoto2 and libgphoto2 version from the package manager is far to old. If you want to install the latest version, just use this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater)
+**NOTE:** My Nikon first didn't want to work via WiFi, then I figured out that the  gphoto2 and libgphoto2 version from the package manager is far to old. If you want to install the latest version, just use this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater).

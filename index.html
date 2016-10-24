@@ -58,7 +58,7 @@
       const maxImageSize = config.maxImageSize !== undefined ? config.maxImageSize : 1500;
       const captureTarget = config.gphoto2.captureTarget !== undefined ? config.gphoto2.captureTarget: 0;
       const confKeep = config.gphoto2.keepImagesOnCamera;
-      const keepImages = (confKeep !== undefined ? confKeep : true) ? '--keep ': '';
+      const keepImages = (confKeep !== undefined ? confKeep : true) ? '--keep ': '--no-keep';
       const confPort = config.gphoto2.port;
       const port = '--port '+((confPort !== null && confPort !== undefined && 0 !== confPort.length) ? confPort.trim() : "usb")+' ';
       const confOptParam = config.gphoto2.optionalParameter;

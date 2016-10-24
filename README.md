@@ -47,7 +47,7 @@ It looks like this:
 		"captureTarget": 		1,
 		"port":					"ptpip:192.168.1.1",
 		"optionalParameter": 	null
-		"	},
+	},
 	"errorMessage": 	"Bitte versuch es nochmal ..."
 }
 ```

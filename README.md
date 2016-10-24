@@ -14,7 +14,7 @@ To clone and run this repository you'll need [Git](https://git-scm.com), [Node.j
 
 ```bash
 # Install needed dependencies
-sudo apt-get install git npm gphoto2 imagemagick
+sudo apt-get install git npm gphoto2 imagemagick libxss-dev libgconf-2-4
 
 # If you want to use a Raspberry Pi > 1: Activate hardware acceleration
 sudo apt-get install libgl1-mesa-dri
@@ -29,6 +29,7 @@ npm install && ./node_modules/.bin/electron-rebuild
 [sudo] npm start
 ```
 **NOTE:** For using GPIO Pins the application has to run as root!
+
 **HINT:** The little tool `unclutter` hides the cursor.
  
 ## Configure it
@@ -49,7 +50,8 @@ It looks like this:
 		"port":					"usb",
 		"optionalParameter": 	null
 	},
-	"errorMessage": 	"ooops, shit happend 💩"
+	"errorMessage": 	"ooops, shit happend 💩",
+	"frontCover":		"<p>This is HTML</p>"
 }
 ```
 Some notes to this:

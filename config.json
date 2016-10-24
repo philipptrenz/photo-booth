@@ -9,5 +9,6 @@
 		"port":					null,
 		"optionalParameter": 	null
 	},
-	"errorMessage": 	"Oh shit ... 💩"
+	"errorMessage": 	"Oh shit ... 💩",
+	"frontCover":		"<img src='coverimage.png' style='width: 50%;'>"
 }

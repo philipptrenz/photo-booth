@@ -2,3 +2,4 @@ node_modules
 tmp
 compileCache*/
 npm-debug.log
+coverimage.png

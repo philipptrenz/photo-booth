@@ -8,14 +8,18 @@ const BrowserWindow = electron.BrowserWindow
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+const config = require('./config.json');
+
 function createWindow () {
 
   var windowSettings = {
-    fullscreen: false,
+    fullscreen: config.fullscreen !== undefined ? config.fullscreen : true,
     width: 1440, 
     height: 900, 
     backgroundColor: '#000000'
   };
+  console.log((!config.fullscreen ? 'not ':'')+'starting in fullscreen');
+
 
   // Create the browser window.
   mainWindow = new BrowserWindow(windowSettings)
@@ -25,7 +29,10 @@ function createWindow () {
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
+  const showDevTools = config.showDevTools !== undefined ? config.showDevTools: false;
+  if (showDevTools) mainWindow.webContents.openDevTools();
+  console.log((!config.showDevTools ? 'not ':'')+'opening developer tools');
+
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

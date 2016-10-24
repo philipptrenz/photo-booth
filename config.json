@@ -1,9 +1,13 @@
 {
-	"fullscreen": 	false,
-	"showDevTools": true,
-	"maxImageSize": 1500,
-	"gphoto2_keepImagesOnCamera": true,
-	"gphoto2_captureTarget": 1,
-	"useGPIO": true,
-	"errorMessage": "Bitte versuch es nochmal ..."
+	"fullscreen": 		false,
+	"showDevTools": 	true,
+	"maxImageSize": 	1500,
+	"useGPIO": 			true,
+	"gphoto2": {
+		"keepImagesOnCamera": 	true,
+		"captureTarget": 		1,
+		"port":					null,
+		"optionalParameter": 	null
+	},
+	"errorMessage": 	"Oh shit ... 💩"
 }

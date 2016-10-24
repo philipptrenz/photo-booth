@@ -44,10 +44,10 @@
      * ----
      *
      * If you want to store all images in full size also on sd card of your camera,
-     * set "gphoto2_keepImagesOnCamera" in config.json to true. 
+     * set "keepImagesOnCamera" under gphoto2 in config.json to true. 
      *
      * Also it is important to choose the right storage on your camera, which is done
-     * via the "gphoto2_captureTarget" property. E.g. if internal RAM is chosen, the image
+     * via the "captureTarget" property of gphoto2. E.g. if internal RAM is chosen, the image
      * will get deleted when you turn off your camera. Because it depends on your camera, I 
      * can't give you here the right choice for your setup.
      *
@@ -56,10 +56,17 @@
      */
     function getCmd() {
       const maxImageSize = config.maxImageSize !== undefined ? config.maxImageSize : 1500;
-      const captureTarget = config.gphoto2_captureTarget !== undefined ? config.gphoto2_captureTarget: 0;
-      var confKeep = config.gphoto2_keepImagesOnCamera;
+      const captureTarget = config.gphoto2.captureTarget !== undefined ? config.gphoto2.captureTarget: 0;
+      const confKeep = config.gphoto2.keepImagesOnCamera;
       const keepImages = (confKeep !== undefined ? confKeep : true) ? '--keep ': '';
-      return "gphoto2 --set-config capturetarget="+captureTarget+" --capture-image-and-download "+keepImages+"--stdout | convert - -resize "+Math.round(maxImageSize)+" -quality 95 tmp/tmp.jpg";
+      const confPort = config.gphoto2.port;
+      const port = '--port '+((confPort !== null && confPort !== undefined && 0 !== confPort.length) ? confPort.trim() : "usb")+' ';
+      const confOptParam = config.gphoto2.optionalParameter;
+      const optParam = (confOptParam !== null && confOptParam !== undefined && 0 !== confOptParam.length) ? confOptParam.trim()+' ' : '';
+      const cmd = "gphoto2 --set-config capturetarget="+captureTarget+" --capture-image-and-download "+keepImages+port+optParam+"--stdout "+
+                  "| convert - -resize "+Math.round(maxImageSize)+" -quality 95 tmp/tmp.jpg";
+      console.log('running shell command:\n'+cmd);
+      return cmd;
     }
 
     /* Listen for pushbutton on GPIO 3 (PIN 5)

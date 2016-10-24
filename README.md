@@ -10,7 +10,7 @@ Because of the use of gphoto2 it works with nearly any cameras plug and play. A 
 
 ## To Use
 
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)), [gphoto2](http://gphoto.sourceforge.net/) and [ImageMagick](https://www.imagemagick.org/) installed on your computer. From your command line:
 
 ```bash
 # Install needed dependencies
@@ -45,17 +45,17 @@ It looks like this:
 	"gphoto2": {
 		"keepImagesOnCamera": 	true,
 		"captureTarget": 		1,
-		"port":					"ptpip:192.168.1.1",
+		"port":					"usb",
 		"optionalParameter": 	null
 	},
-	"errorMessage": 	"Bitte versuch es nochmal ..."
+	"errorMessage": 	"ooops, shit happend 💩"
 }
 ```
 Some notes to this:
 
 * Booleans are always `true` or `false`
 * Images get shrinked after got downloaded from the camera, set the size with maxImageWidth
-* You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned of. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so.
+* You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned off. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so.
 * The gphoto2 port definition can be null, then gphoto2 searches for your camera via USB, this works mostly. Also `serial` and `ptpip` for connection over WiFi is available. When using WiFi you'll need to define the IP address of your camera, this could look like this: `ptpip:192.168.1.1`
 * Optional parameters for gphoto2 can be applied as string
 * The errorMessage is pure HTML, just type in what you want. It gets displayed, if anything went wrong
@@ -79,4 +79,4 @@ If Your camera is secured, use `psk="<Your WiFi password>"`
 6. Try to run `gphoto2 --port ptpip:192.168.1.1 --capture-image` - the last digit of the IP address has to be 1, that's your camera ;)
 7. Edit to your config.json `..."port": "ptpip:192.168.1.1", ...` and restart photo-booth
 
-**NOTE:** My Nikon first didn't want to work via WiFi, then I figured out that the  gphoto2 and libgphoto2 version from the package manager is far to old. If you want to install the latest version, just use this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater).
+**NOTE:** My Nikon first didn't want to work via WiFi, then I figured out that the  gphoto2 and libgphoto2 version from the package manager were far to old. Install latest version of gphoto2 with this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater) and star it, he deserves it!

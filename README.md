@@ -14,7 +14,7 @@ To clone and run this repository you'll need [Git](https://git-scm.com), [Node.j
 
 ```bash
 # Install needed dependencies
-sudo apt-get install git npm gphoto2 imagemagick libxss-dev libgconf-2-4
+sudo apt-get install git npm gphoto2 libxss-dev libgconf-2-4
 
 # If you want to use a Raspberry Pi > 1: Activate hardware acceleration
 sudo apt-get install libgl1-mesa-dri

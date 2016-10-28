@@ -18,6 +18,7 @@
     import 'util';
     import fs from 'fs';
     import $ from 'jquery';
+    import sharp from 'sharp';
     import config from './config.json';
 
     // ---------------------------------------------------- //
@@ -45,18 +46,16 @@
      * To look for the right options, run the following command in your terminal with your camera connected:
      *    gphoto2 --get-config=capturetarget
      */
-    function getCmd() {
+    function getCmd(filepath) {
       const gphoto2 = config.gphoto2;
-
-      const maxImageSize = config.maxImageSize ? config.maxImageSize : 1500;
 
       const captureTarget = gphoto2.captureTarget ? gphoto2.captureTarget: 0;
       const keepImages = (gphoto2.keepImagesOnCamera ? gphoto2.keepImagesOnCamera : true) ? '--keep ': '--no-keep';
       const port = '--port '+(gphoto2.port ? gphoto2.port.trim() : "usb")+' ';
       const optParam = (gphoto2.optionalParameter) ? gphoto2.optionalParameter.trim()+' ' : '';
+      const path = filepath ? filepath : "tmp.jpg";
 
-      const cmd = "gphoto2 --set-config capturetarget="+captureTarget+" --capture-image-and-download "+keepImages+port+optParam+"--stdout "+
-                  "| convert - -resize "+Math.round(maxImageSize)+" -quality 95 tmp/tmp.jpg";
+      const cmd = "gphoto2 --set-config capturetarget="+captureTarget+" --capture-image-and-download "+keepImages+port+optParam+"--filename "+path;
       console.log('running shell command:\n'+cmd);
       return cmd;
     }
@@ -151,40 +150,57 @@
     function takePhotoSaveShowAndHide(countdown){
       var exec = require('child_process').exec;
 
-      if (!fs.existsSync('./tmp')) fs.mkdirSync('./tmp');
+      const dir = process.env.HOME+'/booth-images';
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+
+      const maxImageSize = config.maxImageSize ? config.maxImageSize : 1500;
+      var filename = 'img_'+getTimestamp(new Date());
+      var fileextension = '.jpg';
+      var inputFilepath = dir+'/'+filename+'_large'+fileextension;
+      var filepath = dir+'/'+filename+fileextension;
       
-      var child = exec(getCmd(), function (error, stdout, stderr) {
+      exec(getCmd(inputFilepath), function (error, stdout, stderr) {
         
-         // if error occured
-        if (error !== null || error === undefined) {
+        if (error) {
+
           countdown.html(getErrorMessage());
           console.log('exec error: ' + error);
-
-          // show error message for 3 seconds then hide
           hideCountdown(3);
 
-        } else {
+        } else { // resize image to maxImageSize and save with timecode
 
-          var dir = process.env.HOME+'/booth-images';
-          if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+          // resize tmp.jpg image
+          sharp(inputFilepath)
+            .resize(maxImageSize) // scale width to 1500
+            .toFile(filepath, function(err) {
 
-          // move tmp.jpg in main folder
-          var filepath = dir+'/'+'img_'+getTimestamp(new Date())+'.jpg';
-          fs.rename('tmp/tmp.jpg', filepath);
+              fs.unlink(inputFilepath,function(err){
+                if(err) return console.log(err);
+              });  
 
-          var preview = '<div id=\'preview\' style=\'background-image: url(\"'+filepath+'\");\'></div>';
+              if (err) {
 
-          countdown.html(preview);
+                countdown.html(getErrorMessage());
+                console.log('resize error: ' + err);
+                hideCountdown(3);
+              
+              } else {
 
-          // add image to collage
-          var img = $('<img>');
-          img.attr('src', filepath);
-          $("#collage").prepend(img);
+                var preview = '<div id=\'preview\' style=\'background-image: url(\"'+filepath+'\");\'></div>';
 
-          scaleCollageImages();
+                countdown.html(preview);
 
-          // show picture for 5 seconds then hide
-          hideCountdown(5);
+                // add image to collage
+                var img = $('<img>');
+                img.attr('src', filepath);
+                $("#collage").prepend(img);
+
+                scaleCollageImages();
+
+                // show picture for 5 seconds then hide
+                hideCountdown(5);
+              }
+          });
         }
       });
     }
@@ -230,7 +246,14 @@
     // ---------------------------------------------------- //
 
     function getTimestamp(now) {
-      return now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate()+'_'+now.getHours()+'-'+now.getMinutes()+'-'+now.getSeconds();
+      var secs = now.getSeconds() < 10 ? '0'+now.getSeconds() : now.getSeconds();
+      var mins = now.getMinutes() < 10 ? '0'+now.getMinutes() : now.getMinutes();
+      var hours = now.getHours() < 10 ? '0'+now.getHours() : now.getHours();
+      var date = now.getDate() < 10 ? '0'+String(now.getDate()) : String(now.getDate());
+      var month = (now.getMonth()+1) < 10 ? '0'+String(now.getMonth()+1) : String(now.getMonth()+1);
+      var year = String(now.getFullYear());
+
+      return year+month+date+'_'+hours+'-'+mins+'-'+secs;
     }
 
     function getDate(now) {

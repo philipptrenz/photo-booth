@@ -20,6 +20,7 @@
     import $ from 'jquery';
     import sharp from 'sharp';
     import config from './config.json';
+    import webApp from './webapp_server.js';
 
     // ---------------------------------------------------- //
     
@@ -148,9 +149,10 @@
     // ---------------------------------------------------- //
 
     function takePhotoSaveShowAndHide(countdown){
+      var countdown = $("#countdown");
       var exec = require('child_process').exec;
 
-      const dir = process.env.HOME+'/booth-images';
+      const dir = './webapp/photos';
       if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
       const maxImageSize = config.maxImageSize ? config.maxImageSize : 1500;
@@ -158,37 +160,43 @@
       var fileextension = '.jpg';
       var inputFilepath = dir+'/'+filename+'_large'+fileextension;
       var filepath = dir+'/'+filename+fileextension;
+      var webFilepath = 'photos/'+filename+fileextension;
       
+      console.time('photo taken, downloaded and converted');
+
+      // execute gphoto2 command line program
       exec(getCmd(inputFilepath), function (error, stdout, stderr) {
+        if (error) throwError(error);
+      });
+
+      // create file watcher to wait for image to be downloaded
+      var watcher = fs.watch(dir, (eventType, filename) => {
         
-        if (error) {
-
-          countdown.html(getErrorMessage());
-          console.log('exec error: ' + error);
-          hideCountdown(3);
-
-        } else { // resize image to maxImageSize and save with timecode
-
-          // resize tmp.jpg image
+        // as soon as the image is there
+        if (filename){
+          // resize image to given maxSize
           sharp(inputFilepath)
             .resize(maxImageSize) // scale width to 1500
             .toFile(filepath, function(err) {
 
               fs.unlink(inputFilepath,function(err){
-                if(err) return console.log(err);
+                if(err) {
+                  throwError(err);
+                  return console.log(err);
+                }
               });  
 
               if (err) {
-
-                countdown.html(getErrorMessage());
-                console.log('resize error: ' + err);
-                hideCountdown(3);
-              
+                throwError(err);
               } else {
+                console.timeEnd('photo taken, downloaded and converted');
 
                 var preview = '<div id=\'preview\' style=\'background-image: url(\"'+filepath+'\");\'></div>';
 
                 countdown.html(preview);
+
+                // send to every webapp
+                webApp.sendNewPhoto([webFilepath]);  // TESTING
 
                 // add image to collage
                 var img = $('<img>');
@@ -202,10 +210,23 @@
               }
           });
         }
+        watcher.close();
+
       });
     }
 
     // ---------------------------------------------------- //
+
+    var errorThrown = false;
+    function throwError(error) {
+      if (!errorThrown) {
+        errorThrown = true;
+        var countdown = $("#countdown");
+        countdown.html(getErrorMessage());
+        console.log('exec error: ' + error);
+        hideCountdown(3);
+      }
+    }
 
     function hideCountdown(delay) {
       var waiter = setInterval(function() {
@@ -215,10 +236,25 @@
           $("#countdown").removeClass("fadeout");
           $("#countdown").html('');
           isTakingPhoto = false;
+          errorThrown = false;
           clearInterval(wait);
         }, 500);
         clearInterval(waiter);
       }, delay*1000);
+    }
+
+    function loadRecentImagesAfterStart() {
+
+      fs.readdir('./webapp/photos', function(err, files){
+        files.sort();
+        for (var i = 0; i < files.length; i++) {
+          // add image to collage
+          var img = $('<img>');
+          img.attr('src', 'webapp/photos/'+files[i]);
+          $("#collage").prepend(img);
+        }
+      });
+      scaleCollageImages();
     }
 
     // ---------------------------------------------------- //
@@ -228,6 +264,7 @@
     });
 
     $( document ).ready(function() {
+      loadRecentImagesAfterStart();
       if (config.frontCover) $('#front').html(config.frontCover);
     });
 
@@ -238,7 +275,7 @@
       var imgPerRow = Math.round(collageWidth/300);              
       $("#collage > img").outerWidth(collageWidth/imgPerRow);
 
-      while( $("#collage").children().length > 4*Math.pow(imgPerRow, 2)) {
+      while( $("#collage").children().length > 6*Math.pow(imgPerRow, 2)) {
          $("#collage").children().last().remove();
       }
     }

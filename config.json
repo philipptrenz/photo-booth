@@ -2,7 +2,7 @@
 	"fullscreen": 		false,
 	"showDevTools": 	true,
 	"maxImageSize": 	1500,
-	"useGPIO": 			true,
+	"useGPIO": 			false,
 	"gphoto2": {
 		"keepImagesOnCamera": 	true,
 		"captureTarget": 		1,
@@ -10,5 +10,5 @@
 		"optionalParameter": 	null
 	},
 	"errorMessage": 	"Oh shit ... 💩",
-	"frontCover":		"<img src='coverimage.png' style='width: 50%;'>"
+	"frontCover":		"<div style='font-size: 50px;'><h1>Eigenprojekt</h1><h3>Philipp Trenz</h3></div>"
 }

@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>photo booth</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			
+			<a class="navbar-brand" href="#"><b>photo</b> booth </a>
+
+		</div>
+	</div>
+</nav>
+
+
+	<div class="wrapper">
+		<div class="container">
+
+			<div class="row windows" id="mail-window">
+				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+
+					<h3>Online-Gallerie</h3>
+					<p>Wenn Sie uns Ihre Mailadresse da lassen, schicken wir Ihnen die Zugangsdaten zur Online-Gallerie, sobald diese online ist. Dann können Sie ganz bequem von zuhause aus noch mal durch die Fotos blättern und Ihre Lieblingsfotos herunterladen.</p>
+
+					<form action="" class="form-group" id="mail-form">
+						<div class="input-group">
+							<input id="mail" type="email" class="form-control" placeholder="Ihre Mailadresse"/>
+							<span class="input-group-btn">
+								<button class="btn btn-default" style="background-color: #2b3e50;">Okay</button>
+							</span>
+							
+						</div>
+				    </form>
+
+				    <div class="close-button">
+				    	<a href="#" onclick="closeWindow('#mail-window')" ><i class="fa fa-times" aria-hidden="true"></i></a>
+				    </div>
+				</div>
+			</div>
+
+			<div class="row">
+			    <ul id="photos"></ul>
+			 </div>
+
+		</div>
+	</div>
+
+
+	<style>
+
+		a, a:hover, a:active, a:focus {
+			color: #ebebeb;
+		}
+
+		html {
+			overflow-x: hidden;
+		}
+
+		.wrapper {
+			display: relative;
+			transition: transform 1s ease-in-out;
+		}
+
+		.wrapper.show-settings {
+			transform: translate3d(-100vw,0,0);
+			
+		}
+
+		ul#photos {
+			list-style-type: none;
+			padding-left: 0;
+		}
+
+		ul#photos img {
+			max-width: 100%;
+		}
+
+		ul#photos li {
+			padding: 10px;
+		}
+
+		.windows {
+			margin-left: 25px;
+			margin-right: 25px;
+		}
+
+		.image {
+			width: 100%;
+			height: 100%;
+			position: relative;
+
+			-webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+		}
+
+		.image .overlay {
+			position: absolute;
+		    bottom: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 12%;
+		    display: inline-block;
+    		background: rgba(0, 0, 0, .4);
+
+            font-size: 20px;
+
+            text-align: right;
+		}
+
+		.image .overlay a {
+			padding: 5px 10px;
+		}
+
+		.close-button {
+			position: absolute;
+			top:5px; right: 10px;
+			font-size: 20px;
+		}
+
+		.off-canvas {
+			position: absolute;
+			width: 100vw;
+			right: -100vw;
+			top: 0;
+			bottom: 0;
+		}
+
+		.navbar-right-own {
+			float: right;
+		}
+
+
+
+	</style>
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<script>
+
+		var socket = io();
+
+		// request latest image from the server
+		socket.emit('get latest photos');
+
+		if (document.cookie.includes('showMailWindow')) {
+			$('#mail-window').hide();
+		} else {
+			$('#mail').focus();
+		}
+
+		// send mailaddress
+		$('#mail-form').submit(function(){
+
+			// send to server
+			socket.emit('mail address', $('#mail').val());
+
+			$('#mail-window').slideUp('slow');
+			$('#mail').val('');
+			setCookie('showMailWindow','false', 3);
+			return false;
+  		});
+
+  		// ------------------------------------------------- //
+
+
+  		function closeWindow(string) {
+  			$(string).slideUp('slow');
+  			if (string == '#mail-window') {
+  				setCookie('showMailWindow','false', 3);
+  			}
+  		}
+
+  		function setCookie(cname, cvalue, exdays) {
+		    var d = new Date();
+		    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		    var expires = "expires="+d.toUTCString();
+		    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
+
+		function getCookie(cname) {
+		    var name = cname + "=";
+		    var ca = document.cookie.split(';');
+		    for(var i = 0; i < ca.length; i++) {
+		        var c = ca[i];
+		        while (c.charAt(0) == ' ') {
+		            c = c.substring(1);
+		        }
+		        if (c.indexOf(name) == 0) {
+		            return c.substring(name.length, c.length);
+		        }
+		    }
+		    return "";
+		}
+
+		// ------------------------------------------------- //
+
+		socket.on('new photos', function(imgUrlArray){
+			for (i = 0; i < imgUrlArray.length; i++) {
+				var url = imgUrlArray[i];
+				var html = '<li class="col-xs-12 col-sm-6 col-sm-6 col-lg-4">'+
+			    		'<div class="image">'+
+			    			'<img src="'+url+'">'+
+			    			'<div class="overlay">'+
+			    				'<a href="'+url+'" download><i class="fa fa-download" aria-hidden="true"></i></a>'+
+			    				//'<a href=""><i class="fa fa-share" aria-hidden="true"></i></a>'+
+			    			'</div>'+
+			    		'</div>'+
+			    	'</li>';
+				$('#photos').prepend(html);
+			}
+		});
+
+	
+	</script>
+</body>
+</html>

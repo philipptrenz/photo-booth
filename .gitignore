@@ -3,3 +3,10 @@ tmp
 compileCache*/
 npm-debug.log
 coverimage.png
+*.jpg
+*.jpeg
+*.JPG
+*.JPEG
+*.png
+*.PNG
+email-addresses.txt

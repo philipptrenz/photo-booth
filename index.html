@@ -110,6 +110,11 @@
 
     // ---------------------------------------------------- //
 
+
+    // TODO: Adjust dynamically, depends on hardware!
+    // Idea: avg of time used for shoot and converting +5 seconds
+    const timeoutAfterSeconds = 10; 
+
     var isTakingPhoto = false;
     function takePhoto() {
       // prevent two tasks at the same time!
@@ -118,38 +123,44 @@
       isTakingPhoto = true;
       var duration = 5;
       
-      var countdown = $("#countdown");
-      countdown.fadeIn(250);
-      countdown.html('<span class="fadeout">'+duration+'</span>');
+      $("#countdown").fadeIn(250);
+      $("#countdown").html('<span class="fadeout">'+duration+'</span>');
 
       var counter = setInterval(function () {
           duration--;
+          console.log(duration);
 
           if (duration > 0) {
-            countdown.html('<span class="fadeout">'+duration+'</span>');
+            $("#countdown").html('<span class="fadeout">'+duration+'</span>');
           }
 
           if (duration == 1) {
-            takePhotoSaveShowAndHide(countdown);
+            takePhotoSaveShowAndHide();
           }
 
-          if (duration == 0 && !countdown.html().includes(getErrorMessage())) {
-            countdown.html('');
+          if (duration == 0 && !$("#countdown").html().includes(getErrorMessage())) {
+            $("#countdown").html('');
           }
 
           if (duration == -2) {
-            if (!countdown.html().includes(getErrorMessage())) {
-              countdown.html('<div class="loading"><i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i></div>');
+            if (!$("#countdown").html().includes(getErrorMessage())) {
+              $("#countdown").html('<div class="loading"><i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i></div>');
+            }
+          }
+
+          // out of time error
+          if (duration == -timeoutAfterSeconds) {
+            if (isTakingPhoto && (!$("#countdown").has("#preview") || !$("#countdown").html().includes(getErrorMessage()))) {
+              throwError('No response in time, something went wrong');
             }
             clearInterval(counter);
           }
         }, 1000);
     }
-
+    
     // ---------------------------------------------------- //
 
-    function takePhotoSaveShowAndHide(countdown){
-      var countdown = $("#countdown");
+    function takePhotoSaveShowAndHide(){
       var exec = require('child_process').exec;
 
       const dir = './webapp/photos';
@@ -193,7 +204,7 @@
 
                 var preview = '<div id=\'preview\' style=\'background-image: url(\"'+filepath+'\");\'></div>';
 
-                countdown.html(preview);
+                $("#countdown").html(preview);
 
                 // send to every webapp
                 webApp.sendNewPhoto([webFilepath]);  // TESTING
@@ -221,9 +232,8 @@
     function throwError(error) {
       if (!errorThrown) {
         errorThrown = true;
-        var countdown = $("#countdown");
-        countdown.html(getErrorMessage());
-        console.log('exec error: ' + error);
+        $("#countdown").html(getErrorMessage());
+        console.log('shooting error: ' + error);
         hideCountdown(3);
       }
     }

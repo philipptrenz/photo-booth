@@ -10,15 +10,14 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			
-			<a class="navbar-brand" href="#"><b>photo</b> booth </a>
-
+	<nav>
+		<div class="my-navbar">
+			<a class="my-brand" href="#"><b>photo</b> booth </a>
+			<a class="my-back-button" href="#" onclick="showSettings()">
+				<i class="fa fa-cog" aria-hidden="true" id="settings-button"></i>
+			</a>
 		</div>
-	</div>
-</nav>
+	</nav>
 
 
 	<div class="wrapper">
@@ -46,101 +45,34 @@
 				</div>
 			</div>
 
+			<div class="row windows" id="settings-auth" style="display: none;">
+				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+
+					<h3>Einstellungen</h3>
+					<p>Bitte gebe dein Passwort ein:</p>
+
+					<form action="" class="form-group" id="auth-form">
+						<div class="input-group">
+							<input id="passwd" type="password" class="form-control" placeholder="Passwort"/>
+							<span class="input-group-btn">
+								<button class="btn btn-default" style="background-color: #2b3e50;">Senden</button>
+							</span>
+							
+						</div>
+				    </form>
+
+				    <div class="close-button">
+				    	<a href="#" onclick="closeWindow('#settings-auth')" ><i class="fa fa-times" aria-hidden="true"></i></a>
+				    </div>
+				</div>
+			</div>
+
 			<div class="row">
 			    <ul id="photos"></ul>
 			 </div>
 
 		</div>
 	</div>
-
-
-	<style>
-
-		a, a:hover, a:active, a:focus {
-			color: #ebebeb;
-		}
-
-		html {
-			overflow-x: hidden;
-		}
-
-		.wrapper {
-			display: relative;
-			transition: transform 1s ease-in-out;
-		}
-
-		.wrapper.show-settings {
-			transform: translate3d(-100vw,0,0);
-			
-		}
-
-		ul#photos {
-			list-style-type: none;
-			padding-left: 0;
-		}
-
-		ul#photos img {
-			max-width: 100%;
-		}
-
-		ul#photos li {
-			padding: 10px;
-		}
-
-		.windows {
-			margin-left: 25px;
-			margin-right: 25px;
-		}
-
-		.image {
-			width: 100%;
-			height: 100%;
-			position: relative;
-
-			-webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-		}
-
-		.image .overlay {
-			position: absolute;
-		    bottom: 0;
-		    left: 0;
-		    width: 100%;
-		    height: 12%;
-		    display: inline-block;
-    		background: rgba(0, 0, 0, .4);
-
-            font-size: 20px;
-
-            text-align: right;
-		}
-
-		.image .overlay a {
-			padding: 5px 10px;
-		}
-
-		.close-button {
-			position: absolute;
-			top:5px; right: 10px;
-			font-size: 20px;
-		}
-
-		.off-canvas {
-			position: absolute;
-			width: 100vw;
-			right: -100vw;
-			top: 0;
-			bottom: 0;
-		}
-
-		.navbar-right-own {
-			float: right;
-		}
-
-
-
-	</style>
 
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/jquery-3.1.1.min.js"></script>
@@ -188,20 +120,60 @@
 		    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 		}
 
-		function getCookie(cname) {
-		    var name = cname + "=";
-		    var ca = document.cookie.split(';');
-		    for(var i = 0; i < ca.length; i++) {
-		        var c = ca[i];
-		        while (c.charAt(0) == ' ') {
-		            c = c.substring(1);
-		        }
-		        if (c.indexOf(name) == 0) {
-		            return c.substring(name.length, c.length);
-		        }
-		    }
-		    return "";
+		function getCookie(name) {
+			try {
+				var value = "; " + document.cookie;
+				var parts = value.split("; " + name + "=");
+				if (parts.length == 2) return parts.pop().split(";").shift();
+			} catch(err) {
+				return false;
+			}
 		}
+
+		// ------------------------------------------------- //
+
+		
+  		function showSettings() {
+			
+			if (getCookie('password')) {
+
+				window.location.href = "config.html";
+
+			} else {
+				if ($('.wrapper').hasClass('show-settings')) {
+	  				$('.wrapper').removeClass('show-settings');
+	  				$('#settings-button').removeClass('fa-arrow-left'); //
+	  				$('#settings-button').addClass('fa-cog');
+	  			} else {
+	  				$('#settings-auth').slideDown('slow');
+	  				$('#passwd').focus();
+	  			}
+			}
+  		}
+
+
+  		$('#auth-form').submit(function(){
+  			console.log('send password to server for validation');
+			// send to server
+			socket.emit('authenticate', $('#passwd').val());
+			setCookie('password',$('#passwd').val(), 3);
+			$('#passwd').val('');
+  		});
+  		
+  		socket.on('authenticated', function(bool){
+
+  			console.log('authentification is '+(bool? 'correct':'wrong'));
+
+			if (bool) {
+				if (!$('.wrapper').hasClass('show-settings')) {
+	  				window.location.href = "config.html";
+	  			}
+			} else {
+				// delete cookie
+				setCookie('password','', 3);
+			}
+			closeWindow('#settings-auth');
+		});
 
 		// ------------------------------------------------- //
 

@@ -8,7 +8,7 @@ const BrowserWindow = electron.BrowserWindow
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-const config = require('./config.json');
+var config = require('./config.json');
 
 function createWindow () {
 
@@ -26,7 +26,7 @@ function createWindow () {
   mainWindow.setMenu(null);
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/booth.html`);
 
   // Open the DevTools.
   const showDevTools = config.showDevTools !== undefined ? config.showDevTools: false;
@@ -64,6 +64,3 @@ app.on('activate', function () {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

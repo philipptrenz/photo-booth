@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>photo booth config</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+	<nav>
+		<div class="my-navbar">
+			<a class="my-brand" href="#"><b>photo</b> booth </a>
+			<a class="my-back-button" href="index.html" onclick="">
+				<i class="fa fa-chevron-left" aria-hidden="true" id="settings-button"></i>
+			</a>
+		</div>
+	</nav>
+
+	<div class="container">		
+		<div class="table">
+
+			<div class="row">
+				<div class="cell">
+					<h3>Camera Setup</h3>
+				</div>
+			</div>
+			 
+			  <div class="row">
+			    <div class="cell">Image width</div>
+			    <div class="cell">
+			    	<form action="#">
+						<p class="range-field">
+							<input type="range" min="500" max="2000" step="100" id="maxImageSize"/>
+						</p>
+					</form>
+			    </div>
+			  </div>
+
+			  <div class="row">
+			    <div class="cell">Keep images on Camera</div>
+			    <div class="cell">
+				    <div class="switch">
+						<label>
+							<input type="checkbox" id="keepImagesOnCamera">
+							<span class="lever"></span>
+						</label>
+					</div>
+			    </div>
+			  </div>
+
+
+			<div class="row">
+				<div class="cell">
+					<h3>Developer</h3>
+				</div>
+			</div>
+
+
+			 
+			<div class="row">
+				<div class="cell">Show Developer Tools</div>
+				<div class="cell">
+					<div class="switch">
+						<label>
+							<input type="checkbox" id="showDevTools">
+							<span class="lever"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">Use GPIO pins</div>
+				<div class="cell">
+				    <div class="switch">
+						<label>
+							<input type="checkbox" id="useGPIO">
+							<span class="lever"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">Open in fullscreen</div>
+				<div class="cell">
+				    <div class="switch">
+						<label>
+							<input type="checkbox" id="fullscreen">
+							<span class="lever"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+		<div class="buttons">
+			<button class="btn waves-effect waves-light" type="submit" onclick="save(false)">Save
+			</button>
+			<button class="btn waves-effect waves-light" type="submit" onclick="save(true)">Save and Reload
+			</button>
+		</div>
+	</div>
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+
+	<script>
+
+		var socket = io();
+		var config = null
+
+  		// ------------------------------------------------- //
+
+  		socket.emit('get_config', getCookie('password'));
+
+  		// set ui to config values
+  		socket.on('get_config', function(configObject){
+  			if (configObject == false) {
+  				console.log('wrong password');
+  			} else if (configObject) {
+	  			config = configObject;
+
+				$('#keepImagesOnCamera').prop('checked', config.gphoto2.keepImagesOnCamera);
+
+				$('#showDevTools').prop('checked', config.showDevTools);
+				$('#useGPIO').prop('checked', config.useGPIO);
+				$('#fullscreen').prop('checked', config.fullscreen);
+
+				$('#maxImageSize').val(config.maxImageSize);
+			} else {
+				console.log('Server returned undefined config file');
+			}
+		});
+
+  		function save(restart) {
+  			if (config) {
+				config.gphoto2.keepImagesOnCamera = $('#keepImagesOnCamera').prop('checked');
+
+				config.showDevTools = $('#showDevTools').prop('checked');
+				config.useGPIO = $('#useGPIO').prop('checked');
+				config.fullscreen = $('#fullscreen').prop('checked');
+
+				config.maxImageSize = $('#maxImageSize').val();
+
+				if (restart) {
+					socket.emit('set_config', {password: getCookie('password'), config: config, restart: true});
+				} else {
+						socket.emit('set_config', {password: getCookie('password'), config: config, restart: false});
+				}
+			}
+  		}
+
+  		// ------------------------------------------------- //
+
+
+		function getCookie(name) {
+			try {
+				var value = "; " + document.cookie;
+				var parts = value.split("; " + name + "=");
+				if (parts.length == 2) return parts.pop().split(";").shift();
+			} catch(err) {
+				return false;
+			}
+		}
+	
+	</script>
+</body>
+</html>

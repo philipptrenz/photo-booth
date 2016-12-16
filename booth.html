@@ -11,19 +11,17 @@
     <div id="front"></div>
     <div id="countdown" style="display: none;"></div>
     <div id="collage"></div>
-
   </body>
 
-  <script>
+ <script>
     import 'util';
     import fs from 'fs';
     import $ from 'jquery';
     import sharp from 'sharp';
-    import config from './config.json';
     import webApp from './webapp_server.js';
 
     // ---------------------------------------------------- //
-    
+    var config = require('./config.json');
 
      /*
      * Every downloaded image from your camera gets resized and stored,
@@ -120,6 +118,8 @@
       // prevent two tasks at the same time!
       if (isTakingPhoto) return;
 
+      config = require('./config.json');
+
       isTakingPhoto = true;
       var duration = 5;
       
@@ -157,7 +157,7 @@
           }
         }, 1000);
     }
-    
+
     // ---------------------------------------------------- //
 
     function takePhotoSaveShowAndHide(){
@@ -187,7 +187,7 @@
         if (filename){
           // resize image to given maxSize
           sharp(inputFilepath)
-            .resize(maxImageSize) // scale width to 1500
+            .resize(Number(maxImageSize)) // scale width to 1500
             .toFile(filepath, function(err) {
 
               fs.unlink(inputFilepath,function(err){
@@ -258,10 +258,12 @@
       fs.readdir('./webapp/photos', function(err, files){
         files.sort();
         for (var i = 0; i < files.length; i++) {
-          // add image to collage
-          var img = $('<img>');
-          img.attr('src', 'webapp/photos/'+files[i]);
-          $("#collage").prepend(img);
+          if (!files[i].includes('large')){  // filter unconverted photos
+            // add image to collage
+            var img = $('<img>');
+            img.attr('src', 'webapp/photos/'+files[i]);
+            $("#collage").prepend(img);
+          }
         }
       });
       scaleCollageImages();

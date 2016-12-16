@@ -1,14 +1,14 @@
 {
-	"fullscreen": 		false,
-	"showDevTools": 	true,
-	"maxImageSize": 	1500,
-	"useGPIO": 			false,
+	"fullscreen": false,
+	"showDevTools": false,
+	"maxImageSize": "1500",
+	"useGPIO": false,
 	"gphoto2": {
-		"keepImagesOnCamera": 	true,
-		"captureTarget": 		1,
-		"port":					null,
-		"optionalParameter": 	null
+		"keepImagesOnCamera": true,
+		"captureTarget": 1,
+		"port": null,
+		"optionalParameter": null
 	},
-	"errorMessage": 	"Oh shit ... 💩",
-	"frontCover":		"<div style='font-size: 50px;'><h1>Eigenprojekt</h1><h3>Philipp Trenz</h3></div>"
+	"errorMessage": "Oh shit ... 💩",
+	"frontCover": "<div style='font-size: 50px;'><h1>Eigenprojekt</h1><h3>Philipp Trenz</h3></div>"
 }

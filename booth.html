@@ -256,13 +256,15 @@
     function loadRecentImagesAfterStart() {
 
       fs.readdir('./webapp/photos', function(err, files){
-        files.sort();
-        for (var i = 0; i < files.length; i++) {
-          if (!files[i].includes('large')){  // filter unconverted photos
-            // add image to collage
-            var img = $('<img>');
-            img.attr('src', 'webapp/photos/'+files[i]);
-            $("#collage").prepend(img);
+        if (files) {
+          files.sort();
+          for (var i = 0; i < files.length; i++) {
+            if (!files[i].includes('large')){  // filter unconverted photos
+              // add image to collage
+              var img = $('<img>');
+              img.attr('src', 'webapp/photos/'+files[i]);
+              $("#collage").prepend(img);
+            }
           }
         }
       });

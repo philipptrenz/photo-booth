@@ -50,16 +50,19 @@ io.on('connection', function(socket){
 	socket.on('get latest photos', function(){
 
 		fs.readdir('./webapp/photos', function(err, files){
-			files.sort();
 
-			var images = [];
-			for (var i = 0; i < files.length; i++) {
-				if (!files[i].includes('large')){  // filter unconverted photos
-					images.push('photos/'+files[i]);
+			if (files) {
+				files.sort();
+
+				var images = [];
+				for (var i = 0; i < files.length; i++) {
+					if (!files[i].includes('large')){  // filter unconverted photos
+						images.push('photos/'+files[i]);
+					}
 				}
-			}
 
-			io.to(socket.id).emit('new photos', images);
+				io.to(socket.id).emit('new photos', images);
+			}			
 		});
 	});
 

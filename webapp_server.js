@@ -95,7 +95,7 @@ io.on('connection', function(socket){
 						var electron = require('electron');
 					    // Module to control application life.
 					    var app = electron.remote.app;
-						app.relaunch();
+						//app.relaunch();
 						app.exit();
 					}
 					//require.cache = {};

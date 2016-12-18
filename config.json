@@ -12,7 +12,7 @@
 	"errorMessage": "Oh shit ... 💩",
 	"branding": {
 		"type":"text",
-		"content":"test	",
+		"content":"test",
 		"position":"bottomright"
 	}
 }

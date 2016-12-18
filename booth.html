@@ -266,9 +266,9 @@
               $("#collage").prepend(img);
             }
           }
+          scaleCollageImages();
         }
       });
-      scaleCollageImages();
     }
 
     // ---------------------------------------------------- //
@@ -279,8 +279,41 @@
 
     $( document ).ready(function() {
       loadRecentImagesAfterStart();
-      if (config.frontCover) $('#front').html(config.frontCover);
+      initializeBranding();
     });
+
+    // ---------------------------------------------------- //
+
+    function initializeBranding() {
+      if (config.branding) {
+
+        var type = config.branding.type
+        if (type == 'text') {
+          $('#front').html(config.branding.content);
+        } else if (type == 'image') {
+          $('#front').html("Not yet implemented");
+        }
+
+        var position = config.branding.position
+        if (position == 'center') {
+          $('#front').css('align-items','center');
+          $('#front').css('justify-content','center');
+        } else if (position == 'topleft') {
+          $('#front').css('align-items','flex-start');
+          $('#front').css('justify-content','flex-start');
+        } else if (position == 'topright') {
+          $('#front').css('align-items','flex-start');
+          $('#front').css('justify-content','flex-end');
+        } else if (position == 'bottomleft') {
+          $('#front').css('align-items','flex-end');
+          $('#front').css('justify-content','flex-start');
+        } else if (position == 'bottomright') {
+          $('#front').css('align-items','flex-end');
+          $('#front').css('justify-content','flex-end');
+        }
+
+      }
+    }
 
     // ---------------------------------------------------- //
 

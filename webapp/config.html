@@ -5,8 +5,8 @@
 	<title>photo booth config</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -51,6 +51,28 @@
 					</div>
 			    </div>
 			  </div>
+
+
+			<div class="row">
+				<div class="cell">
+					<h3>Customize</h3>
+				</div>
+			</div>
+
+			<div class="row">
+			    <div class="cell">Brand this photo booth</div>
+			    <div class="cell">
+						
+					<div class="input-field s12">
+						<select>
+						<option value="2">Image</option>
+						<option value="1">Text</option>
+						<option value="3">Nothing</option>
+						</select>
+					</div>
+
+			    </div>
+			</div>	
 
 
 			<div class="row">
@@ -100,15 +122,15 @@
 
 		</div>
 		<div class="buttons">
-			<button class="btn waves-effect waves-light" type="submit" onclick="save(false)">Save
-			</button>
-			<button class="btn waves-effect waves-light" type="submit" onclick="save(true)">Save and Reload
-			</button>
+			<button class="btn waves-effect waves-light" type="submit" onclick="save(null)">Save</button>
+			<button class="btn waves-effect waves-light" type="submit" onclick="save('restart')">Restart</button>
+			<button class="btn waves-effect waves-light" type="submit" onclick="save('exit')">Close</button>
 		</div>
 	</div>
 
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 
 	<script>
@@ -117,6 +139,10 @@
 		var config = null
 
   		// ------------------------------------------------- //
+
+  		$(document).ready(function() {
+			$('select').material_select();
+		});
 
   		socket.emit('get_config', getCookie('password'));
 
@@ -139,8 +165,8 @@
 			}
 		});
 
-  		function save(restart) {
-  			if (config) {
+  		function save(option) {
+  			if (!option && config) {
 				config.gphoto2.keepImagesOnCamera = $('#keepImagesOnCamera').prop('checked');
 
 				config.showDevTools = $('#showDevTools').prop('checked');
@@ -149,11 +175,10 @@
 
 				config.maxImageSize = $('#maxImageSize').val();
 
-				if (restart) {
-					socket.emit('set_config', {password: getCookie('password'), config: config, restart: true});
-				} else {
-						socket.emit('set_config', {password: getCookie('password'), config: config, restart: false});
-				}
+				socket.emit('set_config', {password: getCookie('password'), config: config});
+			} else if (option) {
+				// option can be 'restart', 'exit'
+				socket.emit('set_config', {password: getCookie('password'), option: option});
 			}
   		}
 

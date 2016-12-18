@@ -10,5 +10,9 @@
 		"optionalParameter": null
 	},
 	"errorMessage": "Oh shit ... 💩",
-	"frontCover": "<div style='font-size: 50px;'><h1>Eigenprojekt</h1><h3>Philipp Trenz</h3></div>"
+	"branding": {
+		"type":"text",
+		"content":"test	",
+		"position":"bottomright"
+	}
 }

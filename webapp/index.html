@@ -78,7 +78,7 @@
 	<script src="js/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 
-	<script>
+	<script>	
 
 		var socket = io();
 
@@ -192,6 +192,10 @@
 				$('#photos').prepend(html);
 			}
 		});
+
+		socket.io.on("connect_error", function(err) {
+			console.log('connection error '+err)
+  		});
 
 	
 	</script>

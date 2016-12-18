@@ -84,26 +84,33 @@ io.on('connection', function(socket){
 
 		if (passwordIsValid(json['password'])) {
 
-			fs.writeFile('./config.json', JSON.stringify(json['config'], null, "\t"), function (err) {
-				if (err) {
-					console.log('updating config failed: '+err);
-				} else {
-					delete require.cache[require.resolve('./config.json')];
+			if (json['config']) {
 
-					if (json['restart']) {
-						// reload electron
-						var electron = require('electron');
-					    // Module to control application life.
-					    var app = electron.remote.app;
-						//app.relaunch();
-						app.exit();
+				fs.writeFile('./config.json', JSON.stringify(json['config'], null, "\t"), function (err) {
+					if (err) {
+						console.log('updating config failed: '+err);
+					} else {
+						// force require('./config.json') to be reloaded
+						delete require.cache[require.resolve('./config.json')];
+
+						console.log('config updated: \n'+JSON.stringify(config, null, "\t"));
 					}
-					//require.cache = {};
-					console.log('config updated: \n'+JSON.stringify(config, null, "\t"));
+				});
+			}
+			if (json['option']) {
+				if (json['option'] == 'restart') {
+					// reload electron
+					var electron = require('electron');
+				    var app = electron.remote.app;
+					app.relaunch();
+					app.exit();
+				}else if (json['option'] == 'exit'){
+					// close electron
+					var electron = require('electron');
+				    var app = electron.remote.app;
+					app.exit();
 				}
-			});
-
-			
+			}
 
 		} else {
 			console.log('password wrong');

@@ -14,8 +14,8 @@ function createWindow () {
 
   var windowSettings = {
     fullscreen: config.fullscreen !== undefined ? config.fullscreen : true,
-    width: 1440, 
-    height: 900, 
+    width: 800, 
+    height: 600, 
     backgroundColor: '#000000'
   };
   console.log((!config.fullscreen ? 'not ':'')+'starting in fullscreen');

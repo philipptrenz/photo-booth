@@ -16,6 +16,8 @@ function createWindow () {
   var width = config.init.width !== undefined ? config.init.width:800;
   var height = config.init.height !== undefined ? config.init.height:600;
 
+  console.log('fullscreen: '+fullscreen+', width: '+width+', height: '+height)
+
   var windowSettings = {
       fullscreen: fullscreen,
       width: width, 

@@ -153,11 +153,13 @@
   			} else if (configObject) {
 	  			config = configObject;
 
+	  			console.log(config)
+
 				$('#keepImagesOnCamera').prop('checked', config.gphoto2.keepImagesOnCamera);
 
-				$('#showDevTools').prop('checked', config.showDevTools);
-				$('#useGPIO').prop('checked', config.useGPIO);
-				$('#fullscreen').prop('checked', config.fullscreen);
+				$('#showDevTools').prop('checked', config.init.showDevTools);
+				$('#useGPIO').prop('checked', config.init.useGPIO);
+				$('#fullscreen').prop('checked', config.init.fullscreen);
 
 				$('#maxImageSize').val(config.maxImageSize);
 			} else {
@@ -169,9 +171,9 @@
   			if (!option && config) {
 				config.gphoto2.keepImagesOnCamera = $('#keepImagesOnCamera').prop('checked');
 
-				config.showDevTools = $('#showDevTools').prop('checked');
-				config.useGPIO = $('#useGPIO').prop('checked');
-				config.fullscreen = $('#fullscreen').prop('checked');
+				config.init.showDevTools = $('#showDevTools').prop('checked');
+				config.init.useGPIO = $('#useGPIO').prop('checked');
+				config.init.fullscreen = $('#fullscreen').prop('checked');
 
 				config.maxImageSize = $('#maxImageSize').val();
 

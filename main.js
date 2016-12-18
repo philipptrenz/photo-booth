@@ -29,7 +29,7 @@ function createWindow () {
   mainWindow = new BrowserWindow(windowSettings)
   mainWindow.setMenu(null);
 
-  mainWindow.setFullScreen(fullscreen)
+  //mainWindow.setFullScreen(fullscreen);
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/booth.html`);

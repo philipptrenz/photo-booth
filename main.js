@@ -25,7 +25,7 @@ function createWindow () {
       backgroundColor: '#000000'
     };
   }
-   = 
+ 
   console.log((!config.fullscreen ? 'not ':'')+'starting in fullscreen');
 
 

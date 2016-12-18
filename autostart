@@ -1,5 +1,9 @@
 #!/bin/bash
+xset s off # don't activate screensaver
+xset -dpms # disable DPMS (Energy Star) features.
+xset s noblank # don't blank the video device
 
+# run photo booth and restart for the case it crashed
 while true; do
 	sudo startx ~/photo-booth/node_modules/.bin/electron ~/photo-booth/ -- -nocursor
 done

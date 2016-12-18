@@ -1,0 +1,5 @@
+#!/bin/bash
+
+while true; do
+	sudo startx ~/photo-booth/node_modules/.bin/electron ~/photo-booth/ -- -nocursor
+done

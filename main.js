@@ -12,12 +12,20 @@ var config = require('./config.json');
 
 function createWindow () {
 
-  var windowSettings = {
-    fullscreen: config.fullscreen !== undefined ? config.fullscreen : true,
-    width: 1440, 
-    height: 900, 
-    backgroundColor: '#000000'
-  };
+  var windowSettings; 
+  if (config.fullscreen !== undefined) {
+    windowSettings = {
+      fullscreen: true,
+      backgroundColor: '#000000'
+    };
+  } else {
+    windowSettings = {
+      width: 1440, 
+      height: 900, 
+      backgroundColor: '#000000'
+    };
+  }
+   = 
   console.log((!config.fullscreen ? 'not ':'')+'starting in fullscreen');
 
 

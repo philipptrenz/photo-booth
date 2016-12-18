@@ -1,5 +1,5 @@
 {
-	"fullscreen": false,
+	"fullscreen": true,
 	"showDevTools": false,
 	"maxImageSize": "1500",
 	"useGPIO": false,

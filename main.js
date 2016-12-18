@@ -12,13 +12,17 @@ var config = require('./config.json');
 
 function createWindow () {
 
+  var fullscreen = config.init.fullscreen !== undefined ? config.init.fullscreen:true;
+  console.log(config.init);
+  var width = config.init.width?config.init.width:800
+  var height = config.init.height?config.init.height:600
+
   var windowSettings = {
-      fullscreen: config.init.fullscreen?config.init.fullscreen:true;
-      width: config.init.width?config.init.width:800, 
-      height: config.init.height?config.init.height:600, 
+      fullscreen: fullscreen,
+      width: width, 
+      height: height, 
       backgroundColor: '#000000'
     };
-  }
 
   // Create the browser window.
   mainWindow = new BrowserWindow(windowSettings)
@@ -30,7 +34,6 @@ function createWindow () {
   // Open the DevTools.
   const showDevTools = config.init.showDevTools !== undefined ? config.init.showDevTools: false;
   if (showDevTools) mainWindow.webContents.openDevTools();
-  console.log((!showDevTools ? 'not ':'')+'opening developer tools');
 
 
   // Emitted when the window is closed.

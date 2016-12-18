@@ -1,8 +1,12 @@
 {
-	"fullscreen": true,
-	"showDevTools": false,
+	"init":{
+		"fullscreen":false,
+		"width":"1440",
+		"height":"900",
+		"showDevTools": false,
+		"useGPIO": false
+	},
 	"maxImageSize": "1500",
-	"useGPIO": false,
 	"gphoto2": {
 		"keepImagesOnCamera": true,
 		"captureTarget": 1,
@@ -13,6 +17,6 @@
 	"branding": {
 		"type":"text",
 		"content":"test",
-		"position":"bottomright"
+		"position":"bottomleft"
 	}
 }

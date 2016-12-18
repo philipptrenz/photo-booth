@@ -12,22 +12,13 @@ var config = require('./config.json');
 
 function createWindow () {
 
-  var windowSettings; 
-  if (config.fullscreen !== undefined) {
-    windowSettings = {
-      fullscreen: true,
-      backgroundColor: '#000000'
-    };
-  } else {
-    windowSettings = {
-      width: 1440, 
-      height: 900, 
+  var windowSettings = {
+      fullscreen: config.init.fullscreen?config.init.fullscreen:true;
+      width: config.init.width?config.init.width:800, 
+      height: config.init.height?config.init.height:600, 
       backgroundColor: '#000000'
     };
   }
-   = 
-  console.log((!config.fullscreen ? 'not ':'')+'starting in fullscreen');
-
 
   // Create the browser window.
   mainWindow = new BrowserWindow(windowSettings)
@@ -37,9 +28,9 @@ function createWindow () {
   mainWindow.loadURL(`file://${__dirname}/booth.html`);
 
   // Open the DevTools.
-  const showDevTools = config.showDevTools !== undefined ? config.showDevTools: false;
+  const showDevTools = config.init.showDevTools !== undefined ? config.init.showDevTools: false;
   if (showDevTools) mainWindow.webContents.openDevTools();
-  console.log((!config.showDevTools ? 'not ':'')+'opening developer tools');
+  console.log((!showDevTools ? 'not ':'')+'opening developer tools');
 
 
   // Emitted when the window is closed.

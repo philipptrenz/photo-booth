@@ -20,19 +20,20 @@ function createWindow () {
      width = config.init.width ? int(config.init.width):800;
      height = config.init.height ? int(config.init.height):600;
   } catch (err) {
-    width = 800;
-    height = 600;
-  }
+    width = 1440;
+    height = 900;
+  } 
 
+  var windowSettings;
   if (fullscreen) {
-    var windowSettings = {
+    windowSettings = {
       fullscreen: fullscreen,
       width: width, 
       height: height, 
       backgroundColor: '#000000'
     };
   } else {
-     var windowSettings = {
+     windowSettings = {
       width: width, 
       height: height, 
       backgroundColor: '#000000'
@@ -40,7 +41,7 @@ function createWindow () {
   }
  
 
-  console.log('window settings: '+windowSettings);
+  console.log('window settings: '+JSON.stringify(windowSettings));
 
   // Create the browser window.
   mainWindow = new BrowserWindow(windowSettings)

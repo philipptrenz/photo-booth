@@ -13,24 +13,24 @@ var config = require('./config.json');
 function createWindow () {
 
   var fullscreen = config.init.fullscreen !== undefined ? config.init.fullscreen:true;
-  var width = config.init.width !== undefined ? config.init.width:800;
-  var height = config.init.height !== undefined ? config.init.height:600;
-
-  var windowSettings
-  if (fullscreen) {
-    windowSettings = {
-      fullscreen: fullscreen,
-      width: width, 
-      height: height, 
-      backgroundColor: '#000000'
-    };
-  } else {
-     windowSettings = {
-      width: width, 
-      height: height, 
-      backgroundColor: '#000000'
-    };
+  var width;
+  var height;
+  try {
+     width = config.init.width !== undefined ? int(config.init.width):800;
+     height = config.init.height !== undefined ? int(config.init.height):600;
+  } catch (err) {
+    width = 800;
+    height = 600;
   }
+
+  var windowSettings = {
+    fullscreen: fullscreen,
+    width: width, 
+    height: height, 
+    backgroundColor: '#000000'
+  };
+  
+ 
 
   console.log('window settings: '+JSON.stringify(windowSettings));
 

@@ -17,11 +17,12 @@ function createWindow () {
   var width;
   var height;
   try {
-     width = config.init.width ? int(config.init.width):800;
-     height = config.init.height ? int(config.init.height):600;
+     width = int(config.init.width);
+     height = int(config.init.height);
   } catch (err) {
     width = 1440;
     height = 900;
+    console.log('loading width and height from config.json failed, fallback to 1440x900')
   } 
 
   var windowSettings;

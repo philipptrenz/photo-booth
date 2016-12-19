@@ -22,25 +22,15 @@ function createWindow () {
   } catch (err) {
     width = 1440;
     height = 900;
-    console.log('loading width and height from config.json failed, fallback to 1440x900')
+    console.log('loading width and height from config.json failed, fallback to 1440x900 \n'+err)
   } 
 
-  var windowSettings;
-  if (fullscreen) {
-    windowSettings = {
-      fullscreen: fullscreen,
-      width: width, 
-      height: height, 
-      backgroundColor: '#000000'
-    };
-  } else {
-     windowSettings = {
-      width: width, 
-      height: height, 
-      backgroundColor: '#000000'
-    };
-  }
- 
+  var windowSettings = {
+    fullscreen: fullscreen,
+    width: width, 
+    height: height, 
+    backgroundColor: '#000000'
+  }; 
 
   console.log('window settings: '+JSON.stringify(windowSettings));
 

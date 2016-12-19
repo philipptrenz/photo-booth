@@ -32,7 +32,7 @@ function createWindow () {
     };
   }
 
-  console.log('window settings: '+windowSettings);
+  console.log('window settings: '+JSON.stringify(windowSettings));
 
   // Create the browser window.
   mainWindow = new BrowserWindow(windowSettings)

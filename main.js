@@ -20,8 +20,8 @@ function createWindow () {
      width = Int(config.init.width);
      height = Int(config.init.height);
   } catch (err) {
-    width = 1440;
-    height = 900;
+    width = 800;
+    height = 600;
     console.log('loading width and height from config.json failed, fallback to 1440x900 \n'+err)
   } 
 

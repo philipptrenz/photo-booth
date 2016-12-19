@@ -161,3 +161,12 @@ span.thumb {
 
 }
 
+.select-wrapper span.caret {
+	/*display: none;*/
+	color: rgb(235, 235, 235);
+	
+	text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+

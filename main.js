@@ -17,8 +17,8 @@ function createWindow () {
   var width;
   var height;
   try {
-     width = Int(config.init.width);
-     height = Int(config.init.height);
+     width = parseInt(config.init.width);
+     height = parseInt(config.init.height);
   } catch (err) {
     width = 800;
     height = 600;

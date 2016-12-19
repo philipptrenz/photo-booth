@@ -9,7 +9,7 @@
 	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 	<link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body style="display: none;">
 
 	<nav>
 		<div class="my-navbar">
@@ -141,6 +141,8 @@
   		// ------------------------------------------------- //
 
   		$(document).ready(function() {
+  			$('body').fadeIn(800);
+
 			$('select').material_select();
 		});
 

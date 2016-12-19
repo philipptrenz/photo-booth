@@ -1,8 +1,8 @@
 {
-	"init":{
-		"fullscreen": true,
-		"width":"1440",
-		"height":"900",
+	"init": {
+		"fullscreen": false,
+		"width": "1440",
+		"height": "900",
 		"showDevTools": true,
 		"useGPIO": false
 	},
@@ -15,8 +15,8 @@
 	},
 	"errorMessage": "Oh shit ... 💩",
 	"branding": {
-		"type":"text",
-		"content":"test",
-		"position":"bottomleft"
+		"type": "text",
+		"content": "test",
+		"position": "bottomleft"
 	}
 }

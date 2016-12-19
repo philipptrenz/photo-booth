@@ -94,8 +94,22 @@ ul#photos li {
 }
 
 .windows {
-	margin-left: 25px;
-	margin-right: 25px;
+	margin: 15px 0;
+	padding: 10px;
+	display: block;
+}
+
+.windows h3 {
+	margin-top: 0;
+}
+
+.close-button {
+	position: absolute;
+
+	top: 12px;
+	right: 17px;
+
+	font-size: 25px;
 }
 
 .image {

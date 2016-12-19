@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body style="display: none;">
 
 	<nav>
 		<div class="my-navbar">
@@ -23,7 +23,7 @@
 	<div class="wrapper">
 		<div class="container">
 
-			<div class="row windows" id="mail-window">
+			<div class="row windows" id="mail-window" style="display: none;">
 				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
 
 					<h3>Online-Gallerie</h3>
@@ -82,14 +82,24 @@
 
 		var socket = io();
 
+		$(document).ready(function() {
+
+			$('body').fadeIn(800);
+
+			if (!document.cookie.includes('showMailWindow')) {
+				//$('#mail-window').show();
+				setTimeout(function() {
+					$('#mail-window').slideDown('slow');
+					$('#mail').focus();
+				}, 1500);
+			}
+		});
+
+
 		// request latest image from the server
 		socket.emit('get latest photos');
 
-		if (document.cookie.includes('showMailWindow')) {
-			$('#mail-window').hide();
-		} else {
-			$('#mail').focus();
-		}
+		
 
 		// send mailaddress
 		$('#mail-form').submit(function(){
@@ -150,7 +160,6 @@
 	  			}
 			}
   		}
-
 
   		$('#auth-form').submit(function(){
   			console.log('send password to server for validation');

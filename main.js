@@ -16,20 +16,27 @@ function createWindow () {
   var width = config.init.width !== undefined ? config.init.width:800;
   var height = config.init.height !== undefined ? config.init.height:600;
 
-  console.log('fullscreen: '+fullscreen+', width: '+width+', height: '+height)
-
-  var windowSettings = {
+  var windowSettings
+  if (fullscreen) {
+    windowSettings = {
       fullscreen: fullscreen,
       width: width, 
       height: height, 
       backgroundColor: '#000000'
     };
+  } else {
+     windowSettings = {
+      width: width, 
+      height: height, 
+      backgroundColor: '#000000'
+    };
+  }
+
+  console.log('window settings: '+windowSettings);
 
   // Create the browser window.
   mainWindow = new BrowserWindow(windowSettings)
   mainWindow.setMenu(null);
-
-  //mainWindow.setFullScreen(fullscreen);
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/booth.html`);

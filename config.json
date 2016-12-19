@@ -1,6 +1,6 @@
 {
 	"init":{
-		"fullscreen": true,
+		"fullscreen": false,
 		"width":"1440",
 		"height":"900",
 		"showDevTools": true,

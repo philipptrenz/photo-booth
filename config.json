@@ -4,7 +4,7 @@
 		"width": "1440",
 		"height": "900",
 		"showDevTools": true,
-		"useGPIO": false
+		"useGPIO": true
 	},
 	"maxImageSize": "1500",
 	"gphoto2": {

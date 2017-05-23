@@ -14,8 +14,10 @@
   </body>
 
  <script>
+    'use strict';
     import 'util';
     import fs from 'fs';
+    import path from 'path';
     import $ from 'jquery';
     import sharp from 'sharp';
     import webApp from './webapp_server.js';
@@ -111,7 +113,7 @@
 
     // TODO: Adjust dynamically, depends on hardware!
     // Idea: avg of time used for shoot and converting +5 seconds
-    const timeoutAfterSeconds = 10; 
+    const timeoutAfterSeconds = 20; 
 
     var isTakingPhoto = false;
     function takePhoto() {
@@ -163,7 +165,8 @@
     function takePhotoSaveShowAndHide(){
       var exec = require('child_process').exec;
 
-      const dir = './webapp/photos';
+      const dir = path.resolve(__dirname, './webapp/photos/');
+      console.log(dir);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 
       const maxImageSize = config.maxImageSize ? config.maxImageSize : 1500;

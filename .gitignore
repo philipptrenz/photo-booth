@@ -1,6 +1,7 @@
 node_modules
 tmp
 compileCache*/
+webapp/photos/*
 npm-debug.log
 coverimage.png
 *.jpg
@@ -10,3 +11,4 @@ coverimage.png
 *.png
 *.PNG
 email-addresses.txt
+.DS_Store

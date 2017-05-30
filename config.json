@@ -14,7 +14,7 @@
 		"optionalParameter": null
 	},
 	"errorMessage": "Oh shit ... 💩",
-	"content_dir": "/Users/philipp/test",
+	"content_dir": "",
 	"webapp": {
 		"password":"test"
 	},

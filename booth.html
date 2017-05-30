@@ -326,7 +326,7 @@
           files.sort();
 
           for (var i = 0; i < files.length; i++) {
-            console.log(photos_dir+"/"+files[i]);
+            //console.log(photos_dir+"/"+files[i]);
             var isImage =  files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG");
 
             if ( isImage && !files[i].includes('large')){  // filter unconverted photos

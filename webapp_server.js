@@ -4,7 +4,7 @@
  */
 
 import fs from 'fs';
-//import config from './config.json';
+import config from './config.json';
 
 var express = require('express');
 var app = express();
@@ -123,8 +123,12 @@ io.on('connection', function(socket){
 
 
 function passwordIsValid(password) {
-	console.log('validation of password not yet implemented');
-	return (password && password == 'test');
+	if (config && config.webapp.password) {
+		console.log(password+" == "+config.webapp.password+": "+(password && password == config.webapp.password));
+		return (password && password == config.webapp.password);
+	}
+	console.log('getting password from config.json failed');
+	return false;
 }
 
 /*

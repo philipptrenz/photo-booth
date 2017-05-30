@@ -12,3 +12,4 @@ coverimage.png
 *.PNG
 email-addresses.txt
 .DS_Store
+content/*

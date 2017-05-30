@@ -14,16 +14,24 @@
   </body>
 
  <script>
-    'use strict';
+    //'use strict';
     import 'util';
     import fs from 'fs';
     import path from 'path';
-    import $ from 'jquery';
     import sharp from 'sharp';
+  
+    var config = require('./config.json');
+
+    getContentDirectory();
+    loadRecentImagesAfterStart();
+    initializeBranding();
+    
+
+    import $ from 'jquery';
     import webApp from './webapp_server.js';
+    
 
     // ---------------------------------------------------- //
-    var config = require('./config.json');
 
      /*
      * Every downloaded image from your camera gets resized and stored,
@@ -110,6 +118,57 @@
 
     // ---------------------------------------------------- //
 
+    var getContentDirectoryInitialized = false;
+    var contentDirectory;
+    function getContentDirectory() {
+      if (!getContentDirectoryInitialized) {
+        var content_dir = path.resolve(__dirname, './content/');
+        try {
+          if (!fs.existsSync(config.content_dir)) fs.mkdirSync(config.content_dir);
+          content_dir = config.content_dir;
+          if(!content_dir.endsWith("/")) content_dir = content_dir + "/";
+          getContentDirectoryInitialized = true;
+          contentDirectory = content_dir
+          getPhotosDirectory();
+        } catch (err) {
+            console.log('Could not open or create content_dir \''+config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'./content\'');
+            getContentDirectoryInitialized = true;
+            contentDirectory = content_dir
+            getPhotosDirectory();
+        }
+      }
+      return contentDirectory;
+    }
+
+    var getPhotosDirectoryInitialized = false;
+    var photoDirectory;
+    function getPhotosDirectory() {
+      if (!getPhotosDirectoryInitialized) {
+        const web_dir = path.resolve(getContentDirectory(), "./web/");
+        if (!fs.existsSync(web_dir)) fs.mkdirSync(web_dir);
+        photoDirectory = web_dir
+        getPhotosDirectoryInitialized = true;
+        getPhotoWebDirectory()
+        return web_dir;
+      }
+      return photoDirectory;
+    }
+
+    var getPhotoWebDirectoryInitialized = false;
+    function getPhotoWebDirectory() {
+
+      if (!getPhotoWebDirectoryInitialized) {
+        const web_dir = path.resolve(__dirname, "./webapp/photos/");
+        if (!fs.existsSync(web_dir)) fs.unlinkSync(getPhotosDirectory());
+        fs.symlinkSync(getPhotosDirectory(), web_dir);
+        getPhotoWebDirectoryInitialized = true;
+      }
+      
+      return 'photos/';
+    }
+
+    // ---------------------------------------------------- //
+
 
     // TODO: Adjust dynamically, depends on hardware!
     // Idea: avg of time used for shoot and converting +5 seconds
@@ -165,16 +224,15 @@
     function takePhotoSaveShowAndHide(){
       var exec = require('child_process').exec;
 
-      const dir = path.resolve(__dirname, './webapp/photos/');
-      console.log(dir);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+      const dir = getPhotosDirectory();
 
       const maxImageSize = config.maxImageSize ? config.maxImageSize : 1500;
       var filename = 'img_'+getTimestamp(new Date());
       var fileextension = '.jpg';
       var inputFilepath = dir+'/'+filename+'_large'+fileextension;
       var filepath = dir+'/'+filename+fileextension;
-      var webFilepath = 'photos/'+filename+fileextension;
+      var webFilepath = getPhotoWebDirectory()+filename+fileextension;
+      console.log("web file path: "+webFilepath);
       
       console.time('photo taken, downloaded and converted');
 
@@ -258,14 +316,16 @@
 
     function loadRecentImagesAfterStart() {
 
-      fs.readdir('./webapp/photos', function(err, files){
+      fs.readdir(getContentDirectory(), function(err, files){
         if (files) {
           files.sort();
           for (var i = 0; i < files.length; i++) {
-            if (!files[i].includes('large')){  // filter unconverted photos
+            var isImage =  files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG");
+
+            if (!files[i].includes('large') && isImage ){  // filter unconverted photos
               // add image to collage
               var img = $('<img>');
-              img.attr('src', 'webapp/photos/'+files[i]);
+              img.attr('src', getPhotosDirectory()+files[i]);
               $("#collage").prepend(img);
             }
           }
@@ -278,11 +338,6 @@
 
     $( window ).resize(function() {
       scaleCollageImages();
-    });
-
-    $( document ).ready(function() {
-      loadRecentImagesAfterStart();
-      initializeBranding();
     });
 
     // ---------------------------------------------------- //
@@ -350,6 +405,8 @@
     function getDate(now) {
       return now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
     }
+
+    
 
   </script>
 

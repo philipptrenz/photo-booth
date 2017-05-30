@@ -23,11 +23,10 @@
     var config = require('./config.json');
 
     getContentDirectory();
-    loadRecentImagesAfterStart();
     initializeBranding();
+    loadRecentImagesAfterStart();
     printIpAddresses();
     
-
     import $ from 'jquery';
     import webApp from './webapp_server.js';
     
@@ -320,7 +319,7 @@
 
     function loadRecentImagesAfterStart() {
 
-      fs.readdir(getContentDirectory(), function(err, files){
+      fs.readdir(getPhotosDirectory(), function(err, files){
         if (files) {
           files.sort();
           for (var i = 0; i < files.length; i++) {

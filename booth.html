@@ -319,13 +319,17 @@
 
     function loadRecentImagesAfterStart() {
 
-      fs.readdir(getPhotosDirectory(), function(err, files){
+      var photos_dir = getPhotosDirectory();
+
+      fs.readdir(photos_dir, function(err, files){
         if (files) {
           files.sort();
+
           for (var i = 0; i < files.length; i++) {
+            console.log(photos_dir+"/"+files[i]);
             var isImage =  files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG");
 
-            if (!files[i].includes('large') && isImage ){  // filter unconverted photos
+            if ( isImage && !files[i].includes('large')){  // filter unconverted photos
               // add image to collage
               var img = $('<img>');
               img.attr('src', getPhotosDirectory()+files[i]);

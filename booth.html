@@ -135,6 +135,7 @@
             console.log('Could not open or create content_dir \''+config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'./content\'');
             getContentDirectoryInitialized = true;
             contentDirectory = content_dir
+            if (!fs.existsSync(content_dir)) fs.mkdirSync(content_dir);
             getPhotosDirectory();
         }
       }

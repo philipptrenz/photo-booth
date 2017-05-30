@@ -25,6 +25,7 @@
     getContentDirectory();
     loadRecentImagesAfterStart();
     initializeBranding();
+    printIpAddresses();
     
 
     import $ from 'jquery';
@@ -159,7 +160,7 @@
 
       if (!getPhotoWebDirectoryInitialized) {
         const web_dir = path.resolve(__dirname, "./webapp/photos/");
-        if (!fs.existsSync(web_dir)) fs.unlinkSync(getPhotosDirectory());
+        if (fs.existsSync(web_dir)) fs.unlinkSync(getPhotosDirectory());
         fs.symlinkSync(getPhotosDirectory(), web_dir);
         getPhotoWebDirectoryInitialized = true;
       }
@@ -404,6 +405,31 @@
 
     function getDate(now) {
       return now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
+    }
+
+    function printIpAddresses() {
+      var os = require('os');
+      var ifaces = os.networkInterfaces();
+
+      Object.keys(ifaces).forEach(function (ifname) {
+        var alias = 0;
+
+        ifaces[ifname].forEach(function (iface) {
+          if ('IPv4' !== iface.family || iface.internal !== false) {
+            // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+            return;
+          }
+
+          if (alias >= 1) {
+            // this single interface has multiple ipv4 addresses
+            console.log("ipaddress: "+ifname + ':' + alias, iface.address);
+          } else {
+            // this interface has only one ipv4 adress
+            console.log("ipaddress: "+ifname, iface.address);
+          }
+          ++alias;
+        });
+      });
     }
 
     

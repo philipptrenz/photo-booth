@@ -2,6 +2,7 @@ node_modules
 tmp
 compileCache*/
 webapp/photos/*
+webapp/photos
 npm-debug.log
 coverimage.png
 *.jpg

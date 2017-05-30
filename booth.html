@@ -161,7 +161,7 @@
 
       if (!getPhotoWebDirectoryInitialized) {
         const web_dir = path.resolve(__dirname, "./webapp/photos/");
-        if (fs.existsSync(web_dir)) fs.unlinkSync(getPhotosDirectory());
+        if (fs.existsSync(web_dir)) fs.unlinkSync(web_dir);
         fs.symlinkSync(getPhotosDirectory(), web_dir);
         getPhotoWebDirectoryInitialized = true;
       }

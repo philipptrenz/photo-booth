@@ -332,7 +332,7 @@
             if ( isImage && !files[i].includes('large')){  // filter unconverted photos
               // add image to collage
               var img = $('<img>');
-              img.attr('src', getPhotosDirectory()+files[i]);
+              img.attr('src', getPhotosDirectory()+"/"+files[i]);
               $("#collage").prepend(img);
             }
           }

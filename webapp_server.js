@@ -124,7 +124,6 @@ io.on('connection', function(socket){
 
 function passwordIsValid(password) {
 	if (config && config.webapp.password) {
-		console.log(password+" == "+config.webapp.password+": "+(password && password == config.webapp.password));
 		return (password && password == config.webapp.password);
 	}
 	console.log('getting password from config.json failed');

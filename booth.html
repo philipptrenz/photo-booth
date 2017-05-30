@@ -177,6 +177,7 @@
     const timeoutAfterSeconds = 20; 
 
     var isTakingPhoto = false;
+    var counter;
     function takePhoto() {
       // prevent two tasks at the same time!
       if (isTakingPhoto) return;
@@ -189,7 +190,7 @@
       $("#countdown").fadeIn(250);
       $("#countdown").html('<span class="fadeout">'+duration+'</span>');
 
-      var counter = setInterval(function () {
+      counter = setInterval(function () {
           duration--;
           console.log(duration);
 
@@ -302,6 +303,7 @@
     }
 
     function hideCountdown(delay) {
+      clearInterval(counter);
       var waiter = setInterval(function() {
         $("#countdown").addClass("fadeout");
         var wait = setInterval(function() {

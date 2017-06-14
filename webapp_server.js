@@ -147,7 +147,7 @@ io.on('connection', function(socket){
 
 					console.log("pulling from git repo");
 					var exec = require('child_process').exec;
-					exec("git pull", function (error, stdout, stderr) {
+					exec("cd "+__dirname+" && git pull", function (error, stdout, stderr) {
 						console.log("execute 'git pull', stdout: "+stdout);
 					});
 				}

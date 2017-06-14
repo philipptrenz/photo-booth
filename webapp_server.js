@@ -19,6 +19,8 @@ server.listen(port, function () {
 // Routing
 app.use(express.static(__dirname + '/webapp'));
 
+const currentDirectory = process.cwd();
+console.log("current directory: "+currentDirectory);
 
 // Connect event
 io.on('connection', function(socket){
@@ -51,7 +53,7 @@ io.on('connection', function(socket){
 
 		console.log("requested latest photos by webapp");
 
-		fs.readdir('./webapp/photos', function(err, files){
+		fs.readdir(currentDirectory+'/webapp/photos', function(err, files){
 
 			if (files) {
 				files.sort();

@@ -115,10 +115,10 @@ io.on('connection', function(socket){
 					var exec = require('child_process').exec;
 					exec("reboot", function (error, stdout, stderr) {
 						console.log(stdout);
-					}
+					});
 
 
-				}else if (json['option'] == 'exit'){
+				} else if (json['option'] == 'exit'){
 					// close electron
 					var electron = require('electron');
 				    var app = electron.remote.app;

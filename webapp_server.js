@@ -66,6 +66,8 @@ io.on('connection', function(socket){
 				console.log("sending "+files.length+" latest photos to webapp");
 
 				io.to(socket.id).emit('new photos', images);
+			} else {
+				console.log("no files to get sent, something went wrong! files="+files);
 			}			
 		});
 	});

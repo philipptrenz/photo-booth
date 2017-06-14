@@ -49,6 +49,8 @@ io.on('connection', function(socket){
 	// send photo urls to requesting client
 	socket.on('get latest photos', function(){
 
+		console.log("requested latest photos by webapp");
+
 		fs.readdir('./webapp/photos', function(err, files){
 
 			if (files) {
@@ -60,6 +62,8 @@ io.on('connection', function(socket){
 						images.push('photos/'+files[i]);
 					}
 				}
+
+				console.log("sending "+files.length+" latest photos to webapp");
 
 				io.to(socket.id).emit('new photos', images);
 			}			

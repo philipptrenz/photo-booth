@@ -29,6 +29,8 @@
     
     import $ from 'jquery';
     import webApp from './webapp_server.js';
+
+    const timeoutAfterSeconds = 20; 
     
 
     // ---------------------------------------------------- //
@@ -173,7 +175,6 @@
 
     // TODO: Adjust dynamically, depends on hardware!
     // Idea: avg of time used for shoot and converting +5 seconds
-    const timeoutAfterSeconds = 20; 
 
     var isTakingPhoto = false;
     var counter;
@@ -182,6 +183,16 @@
       if (isTakingPhoto) return;
 
       config = require('./config.json');
+
+      isCameraConnected(function(cameraFound) {
+        if (cameraFound == false) {
+          if (isTakingPhoto && (!$("#countdown").has("#preview") || !$("#countdown").html().includes(getErrorMessage()))) {
+            throwError('No camera found!');
+          }
+          clearInterval(counter);
+          isTakingPhoto = false;
+        }
+      });
 
       isTakingPhoto = true;
       var duration = 5;
@@ -219,6 +230,50 @@
             clearInterval(counter);
           }
         }, 1000);
+    }
+
+    function isCameraConnected(callback) {
+
+      var exec = require('child_process').exec;
+      exec("gphoto2 --auto-detect", function (error, stdout, stderr) {
+        if (error) {
+          throwError(error);
+        }
+
+
+        /* output is e.g.:
+          
+          Model                          Port                                            
+          ----------------------------------------------------------
+          Nikon DSC D5300                usb:020,010     
+
+        */
+
+        if (!stdout) callback(false);
+        var lines = stdout.split("\n"); 
+        lines = cleanArray(lines);
+
+        if (lines.length > 2) {
+          for (var i = 2; i < lines.length; i++) {
+            var camera = lines[i].substr(0, lines[i].indexOf("   "));
+            console.log("found camera: "+camera);
+          }
+          callback(true);
+        } else {
+          callback(false);
+        }
+      });
+
+    }
+
+    function cleanArray(actual) {
+      var newArray = new Array();
+      for (var i = 0; i < actual.length; i++) {
+        if (actual[i]) {
+          newArray.push(actual[i]);
+        }
+      }
+      return newArray;
     }
 
     // ---------------------------------------------------- //

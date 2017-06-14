@@ -13,6 +13,8 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 80;
 
+var remote = require('electron').remote; 
+
 server.listen(port, function () {
 	console.log('Server listening at port %d', port);
 });
@@ -107,6 +109,24 @@ io.on('connection', function(socket){
 						console.log('config updated: \n'+JSON.stringify(config, null, "\t"));
 					}
 				});
+
+				const newDevToolState = json['config'].init.showDevTools;
+				const oldDevToolState = config.init.showDevTools;
+				if (newDevToolState != undefined) {
+					/*
+					console.log("send ipcRenderer message");
+					var ipcRenderer = require('electron').ipcRenderer;     
+     				ipcRenderer.send('toggle-devTools');*/
+					// toggleDevTools()
+					//mainWindow.webcontents.openDevTools();
+
+					if (newDevToolState) {
+						remote.getGlobal('sharedObj').mainWindow.openDevTools();
+					} else {
+						remote.getGlobal('sharedObj').mainWindow.closeDevTools();
+					}
+
+				}
 			}
 			if (json['option']) {
 				if (json['option'] == 'reboot') {

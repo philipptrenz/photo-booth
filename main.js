@@ -3,6 +3,7 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+const ipcMain = electron.ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -42,6 +43,14 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/booth.html`);
+
+
+  global.sharedObj = {mainWindow: mainWindow};
+
+  ipcMain.on('toggle-devTools', function(event) {
+    console.log("toggle-devTools ipc Event: "+event);
+    console.log(global.sharedObj.mainWindow);
+  });
 
   // Open the DevTools.
   const showDevTools = config.init.showDevTools !== undefined ? config.init.showDevTools: false;

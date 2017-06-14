@@ -97,12 +97,12 @@ io.on('connection', function(socket){
 
 			if (json['config']) {
 
-				fs.writeFile('./config.json', JSON.stringify(json['config'], null, "\t"), function (err) {
+				fs.writeFile(__dirname+'/config.json', JSON.stringify(json['config'], null, "\t"), function (err) {
 					if (err) {
 						console.log('updating config failed: '+err);
 					} else {
 						// force require('./config.json') to be reloaded
-						delete require.cache[require.resolve('./config.json')];
+						delete require.cache[require.resolve(__dirname+'/config.json')];
 
 						console.log('config updated: \n'+JSON.stringify(config, null, "\t"));
 					}

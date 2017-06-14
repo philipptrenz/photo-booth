@@ -13,7 +13,7 @@
 		"port": null,
 		"optionalParameter": null
 	},
-	"errorMessage": "Oh shit ... 💩",
+	"errorMessage": "<i class='fa fa-exclamation-circle' aria-hidden='true' style='font-size: 1em; padding-right: 10px;'></i> Oh shit ...",
 	"content_dir": "",
 	"webapp": {
 		"password":"test"

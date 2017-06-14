@@ -46,18 +46,30 @@ It looks like this:
 
 ```json
 {
-	"fullscreen": 		false,
-	"showDevTools": 	true,
-	"useGPIO": 			true,
-	"maxImageSize": 	1500,
-	"gphoto2": {
-		"keepImagesOnCamera": 	true,
-		"captureTarget": 		1,
-		"port":					"usb",
-		"optionalParameter": 	null
+	"init": {
+		"fullscreen": false,
+		"width": "1440",
+		"height": "900",
+		"showDevTools": true,
+		"useGPIO": true
 	},
-	"errorMessage": 	"ooops, shit happend 💩",
-	"frontCover":		"<p>This is HTML</p>"
+	"maxImageSize": "1500",
+	"gphoto2": {
+		"keepImagesOnCamera": true,
+		"captureTarget": 1,
+		"port": null,
+		"optionalParameter": null
+	},
+	"errorMessage": "<i class='fa fa-exclamation-circle' aria-hidden='true' style='font-size: 1em; padding-right: 10px;'></i> Oh shit ...",
+	"content_dir": "",
+	"webapp": {
+		"password": "test"
+	},
+	"branding": {
+		"type": "text",
+		"content": "<div style='font-size: 1.2em; padding-left: 25px;'><i class='fa fa-wifi' aria-hidden='true' style='font-size: 2.5em;'></i> <b style='font-size: 2em; padding-left: 15px;'>photo-booth</b><br /><p>Log into wifi, browse to <b style='padding: 0 5px;'>photo.app</b> and download your photos!</p></div>",
+		"position": "bottomleft"
+	}
 }
 ```
 Some notes to this:

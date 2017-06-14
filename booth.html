@@ -30,7 +30,7 @@
     import $ from 'jquery';
     import webApp from './webapp_server.js';
 
-    const timeoutAfterSeconds = 20; 
+    const timeoutAfterSeconds = 25; 
     
 
     // ---------------------------------------------------- //
@@ -202,7 +202,7 @@
 
       counter = setInterval(function () {
           duration--;
-          console.log(duration);
+          //console.log(duration);
 
           if (duration > 0) {
             $("#countdown").html('<span class="fadeout">'+duration+'</span>');
@@ -289,7 +289,7 @@
       var inputFilepath = dir+'/'+filename+'_large'+fileextension;
       var filepath = dir+'/'+filename+fileextension;
       var webFilepath = getPhotoWebDirectory()+filename+fileextension;
-      console.log("web file path: "+webFilepath);
+      //console.log("web file path: "+webFilepath);
       
       console.time('photo taken, downloaded and converted');
 

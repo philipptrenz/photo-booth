@@ -143,6 +143,13 @@ io.on('connection', function(socket){
 					var electron = require('electron');
 				    var app = electron.remote.app;
 					app.exit();
+				} else if (json['option'] == 'git-pull'){
+
+					console.log("pulling from git repo");
+					var exec = require('child_process').exec;
+					exec("git pull", function (error, stdout, stderr) {
+						console.log("execute 'git pull', stdout: "+stdout);
+					});
 				}
 			}
 

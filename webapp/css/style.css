@@ -146,6 +146,10 @@ ul#photos li {
 .buttons {
 }
 
+.buttons button {
+	margin-bottom: 3px;
+}
+
 
 /* -------------------- */
 

@@ -129,14 +129,20 @@ io.on('connection', function(socket){
 				}
 			}
 			if (json['option']) {
-				if (json['option'] == 'reboot') {
+
+				if (json['option'] == 'shutdown'){
+					var exec = require('child_process').exec;
+					exec("shutdown now", function (error, stdout, stderr) {
+						console.log(stdout);
+					});
+
+				} else if (json['option'] == 'reboot') {
 					// reload electron
 
 					var exec = require('child_process').exec;
 					exec("reboot", function (error, stdout, stderr) {
 						console.log(stdout);
 					});
-
 
 				} else if (json['option'] == 'exit'){
 					// close electron

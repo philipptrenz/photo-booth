@@ -5,6 +5,7 @@
 
 import fs from 'fs';
 import config from './config.json';
+import path from 'path';
 
 var express = require('express');
 var app = express();
@@ -31,8 +32,10 @@ io.on('connection', function(socket){
 
 	// save mail address
 	socket.on('mail address', function(msg){
+
+		var mycontentdir = getContentDirectory();
 		
-		fs.appendFile('email-addresses.txt', msg+",\n", function (err) {
+		fs.appendFile(mycontentdir+'/email-addresses.txt', msg+",\n", function (err) {
 			if (err) {
 				console.log('writing mail address to file failed: '+err);
 			} else {
@@ -128,7 +131,28 @@ io.on('connection', function(socket){
 
 });
 
-
+var getContentDirectoryInitialized = false;
+var contentDirectory;
+function getContentDirectory() {
+  if (!getContentDirectoryInitialized) {
+    var content_dir = path.resolve(__dirname, './content/');
+    try {
+      if (!fs.existsSync(config.content_dir)) fs.mkdirSync(config.content_dir);
+      content_dir = config.content_dir;
+      if(!content_dir.endsWith("/")) content_dir = content_dir + "/";
+      getContentDirectoryInitialized = true;
+      contentDirectory = content_dir
+      getPhotosDirectory();
+    } catch (err) {
+        console.log('Could not open or create content_dir \''+config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'./content\'');
+        getContentDirectoryInitialized = true;
+        contentDirectory = content_dir
+        if (!fs.existsSync(content_dir)) fs.mkdirSync(content_dir);
+        getPhotosDirectory();
+    }
+  }
+  return contentDirectory;
+}
 
 function passwordIsValid(password) {
 	if (config && config.webapp.password) {

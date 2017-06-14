@@ -109,12 +109,15 @@ io.on('connection', function(socket){
 				});
 			}
 			if (json['option']) {
-				if (json['option'] == 'restart') {
+				if (json['option'] == 'reboot') {
 					// reload electron
-					var electron = require('electron');
-				    var app = electron.remote.app;
-					app.relaunch();
-					app.exit();
+
+					var exec = require('child_process').exec;
+					exec("reboot", function (error, stdout, stderr) {
+						console.log(stdout);
+					}
+
+
 				}else if (json['option'] == 'exit'){
 					// close electron
 					var electron = require('electron');

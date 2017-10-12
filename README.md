@@ -76,7 +76,7 @@ Some notes to this:
 
 * Booleans are always `true` or `false`
 * Images get shrinked after got downloaded from the camera, set the size with maxImageWidth
-* You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned off. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so.
+* You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned off. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so. This should be your first try if a photo gets taken, but it won't show up at the screen.
 * The gphoto2 port definition can be null, then gphoto2 searches for your camera via USB, this works mostly. Also `serial` and `ptpip` for connection over wifi is available. When using wifi you'll need to define the IP address of your camera, this could look like this: `ptpip:192.168.1.1`
 * Optional parameters for gphoto2 can be applied as string
 * The errorMessage is pure HTML, just type in what you want. It gets displayed, if anything went wrong

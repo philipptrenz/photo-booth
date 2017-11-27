@@ -14,7 +14,9 @@ Because of the use of gphoto2 it works with nearly any camera like plug and play
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) and [gphoto2](http://gphoto.sourceforge.net/) installed on your computer. 
 
-I ran this app on Ubuntu Linux (64bit), MacOS 10.12 and Raspbian (Raspberry Pi 3, ARM) and it works fine. It will probably not work on Windows, but not sure what Node.js magic is capable of. Anyway, the documentation here will be focused on Linux based systems.
+I ran this app on Ubuntu Linux (64bit), MacOS 10.12 and Raspbian Jessie (Raspberry Pi 3, ARM) and it works fine. It will probably not work on Windows, but not sure what Node.js magic is capable of. Anyway, the documentation here will be focused on Linux based systems.
+
+**NOTE:** Please use Raspbian Jessie, Raspbian STRETCH causes some problems, probably because of the Pixel desktop.
 
 From your command line:
 

@@ -14,7 +14,7 @@ Because of the use of gphoto2 it works with nearly any camera like plug and play
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) and [gphoto2](http://gphoto.sourceforge.net/) installed on your computer. 
 
-I ran this app on Ubuntu Linux (64bit), MacOS 10.12 and Raspbian Jessie (Raspberry Pi 3, ARM) and it works fine. It will probably not work on Windows, but not sure what Node.js magic is capable of. Anyway, the documentation here will be focused on Linux based systems.
+I ran this app on Ubuntu Linux (64bit), MacOS 10.12 and Raspbian JESSIE (Raspberry Pi 3, ARM) and it works fine. **If you want to run photo-booth on Raspbian STRETCH (latest Raspbian version) please note the hints above!** It will probably not work on Windows, but not sure what Node.js magic is capable of. Anyway, the documentation here will be focused on Linux based systems. 
 
 **NOTE:** Please use Raspbian Jessie, Raspbian STRETCH causes some problems, probably because of the Pixel desktop.
 
@@ -36,9 +36,35 @@ cd photo-booth
 npm install && ./node_modules/.bin/electron-rebuild
 sudo npm start
 ```
+
+
+
+**For Raspbian STRETCH:**
+
+```bash
+# Install needed dependencies
+sudo apt-get install git gphoto2 libxss-dev libgconf-2-4 libnss3
+git clone https://github.com/audstanley/NodeJs-Raspberry-Pi-Arm7 && cd NodeJs-Raspberry-Pi-Arm7 && chmod +x Install-Node.sh && sudo ./Install-Node.sh;
+
+# If you want to use a Raspberry Pi > 1: Activate hardware acceleration
+sudo apt-get install libgl1-mesa-dri
+sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
+
+# Clone this repository
+git clone https://github.com/philipptrenz/photo-booth
+# Go into the repository
+cd photo-booth
+# Install dependencies and run the app
+npm install && ./node_modules/.bin/electron-rebuild
+sudo bash start.sh
+```
+
 **NOTE:** For using GPIO Pins and starting the web server the application has to run as root!
 
 **HINT:** The little linux tool `unclutter` can hide the cursor.
+
+If you run into any problems feel free to report an issue, I'll try to help!
+
  
 ## Configure it
 

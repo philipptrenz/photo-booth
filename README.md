@@ -140,3 +140,4 @@ It's just CSS, change line 21 and 90 of the file `css/main.css` to
 /* -webkit-filter: grayscale(100%); */
 ```
 
+More to come bit by bit

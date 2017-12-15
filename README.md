@@ -137,5 +137,5 @@ If you need more complex preferences, like wpa-key, use the `/etc/wpa_supplicant
 It's just CSS, change line 21 of the file `css/main.css` to
 ```css
 /* -webkit-filter: grayscale(100%); */
-```css
+```
 

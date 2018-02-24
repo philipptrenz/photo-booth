@@ -10,7 +10,7 @@ photo booth also provides a web application by running a webserver. Every newly 
 
 Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices you can found [here](http://gphoto.org/proj/libgphoto2/support.php).
 
-## To Use
+## Installation
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) and [gphoto2](http://gphoto.sourceforge.net/) installed on your computer. 
 
@@ -115,6 +115,33 @@ As mentioned above photo booth has a built in web page where images can be downl
 
 For an easy way to use it, start a open wifi hotspot on the computer photo booth runs on. If you use a Raspberry Pi, there're enough tutorials out there to figure it out. Then connect your device, e.g. a smartphone, with the wifi, open your browser and type in the ip address of the Pi. More elegant is it to configure a DNS redirect so the users can type in a web address like "photo.booth", therefor I use dnsmasq which is also configured as DHCP server.
 
+## Use a push button to trigger photos
+
+You can connect a physical push button to the GPIO Pins of your Pi to trigger photos!
+Therefore activate the use of GPIOs by setting `"useGPIO": true` in config.json. Then connect the first port of the push button to the ground pin of your Pi, second to GPIO 3 (PIN 5) and to a resistor of about 10k-100kΩ, the other end of the resistor to 3.3V (e.g. PIN 1). That's all!
+
+**NOTE:** For using GPIOs it has to run as root, start with `sudo npm start`.
+
+```
+ _______RASPBERRY PI_______
+                          |
+          |----3.3V---●o  |
+ ~50kΩ →  ▯           oo  |
+          |----GPIO3--●o  |
+      [-\             oo  |
+         \------GND---●o  |
+                      oo  |
+                      oo  |
+                      oo  |
+                      oo  |
+                      oo  |
+                      oo  |
+                      oo  |
+                      oo  |
+                          |
+                          |
+```
+
 ## Connect your camera via wifi
 
 Maybe you want to connect your camera via builtin wifi to an Raspberry Pi running this app, then follow these steps:
@@ -131,13 +158,8 @@ If you need more complex preferences, like wpa-key, use the `/etc/wpa_supplicant
 **NOTE:** My Nikon first didn't want to work via wifi, then I figured out that the gphoto2 and libgphoto2 version from the package manager were far to old. Install latest version of gphoto2 with this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater) and star it, he deserves it!
 
 
-## FAQ
+## Mentions
 
-**1. Why are all the images so black and white?**
+We got featured at **[The Verge](https://www.theverge.com/circuitbreaker/2017/8/24/16193418/diy-photo-booth-party-wedding-dlsr-camera-how-to-build-raspberry-pi)**, incredible!
 
-It's just CSS, change line 21 and 90 of the file `css/main.css` to
-```css
-/* -webkit-filter: grayscale(100%); */
-```
-
-More to come bit by bit
+Also take a look at the video they made at [Facebook](https://www.facebook.com/circuitbreaker/videos/1839861396306681/)

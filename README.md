@@ -118,6 +118,7 @@ For an easy way to use it, start a open wifi hotspot on the computer photo booth
 ## Use a push button to trigger photos
 
 You can connect a physical push button to the GPIO Pins of your Pi to trigger photos!
+
 Therefore activate the use of GPIOs by setting `"useGPIO": true` in config.json. Then connect the first port of the push button to the ground pin of your Pi, second to GPIO 3 (PIN 5) and to a resistor of about 10k-100kΩ, the other end of the resistor to 3.3V (e.g. PIN 1). That's all!
 
 **NOTE:** For using GPIOs it has to run as root, start with `sudo npm start`.

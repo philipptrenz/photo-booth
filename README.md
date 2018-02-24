@@ -156,7 +156,7 @@ If you need more complex preferences, like wpa-key, use the `/etc/wpa_supplicant
 6. Try to run `gphoto2 --port ptpip:192.168.1.1 --capture-image` - the last digit of the IP address has to be 1, that's your camera ;)
 7. Edit to your config.json `..."port": "ptpip:192.168.1.1", ...` and restart photo-booth
 
-**NOTE:** My Nikon first didn't want to work via wifi, then I figured out that the gphoto2 and libgphoto2 version from the package manager were far to old. Install latest version of gphoto2 with this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater) and star it, he deserves it!
+**NOTE:** My Nikon first didn't want to work via wifi, then I figured out that the gphoto2 and libgphoto2 version from the package manager were far to old. Install latest version of gphoto2 with this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater) and star that project, it deserves it!
 
 
 ## Mentions

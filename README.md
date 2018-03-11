@@ -59,7 +59,7 @@ git clone https://github.com/philipptrenz/photo-booth
 cd photo-booth
 # Install dependencies and run the app
 npm install && ./node_modules/.bin/electron-rebuild
-sudo bash start.sh
+sudo npm start
 ```
 
 **NOTE:** For using GPIOs and the web server the application has to run as root (use `sudo`)!

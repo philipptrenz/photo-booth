@@ -179,8 +179,9 @@ This may be related to wrong capture target settings. Run `gphoto2 --get-config 
 Label: Capture Target
 Type: RADIO
 Current: Internal RAM
-Choice: 0 Internal RAM
-Choice: 1 Memory card
+Choice: 0 Memory card
+Choice: 1 Internal RAM
+
 ```
 Identify the number of the memory card and change the `captureTarget` property in `config.json`. 
 

@@ -113,10 +113,6 @@ Some notes to this:
 * Optional parameters for gphoto2 can be applied as string
 * The errorMessage is pure HTML, just type in what you want. It gets displayed, if anything went wrong
 
-### Why are all images in grayscale?
-
-Go to `config.json` and change `grayscaleMode` to `false`.
-
 ## Let everyone download their photos via wifi
 
 As mentioned above photo booth has a built in web page where images can be downloaded. 
@@ -166,6 +162,27 @@ If you need more complex preferences, like wpa-key, use the `/etc/wpa_supplicant
 
 **NOTE:** My Nikon first didn't want to work via wifi, then I figured out that the gphoto2 and libgphoto2 version from the package manager were far to old. Install latest version of gphoto2 with this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater) and star that project, it deserves it!
 
+
+## Common issues
+
+If you have any problems, start reading here. If you do not find anything, check under [Issues](https://github.com/philipptrenz/photo-booth/issues), if someone else already had a similar problem. If you still have no solution, open a new Issue.
+
+### Why are all images in grayscale?
+
+Go to `config.json` and change `grayscaleMode` to `false`.
+
+### My camera takes a photo, but it does not show up
+
+This may be related to wrong capture target settings. Run `gphoto2 --get-config capturetarget` from the console, the output looks something like this:
+
+```
+Label: Capture Target
+Type: RADIO
+Current: Internal RAM
+Choice: 0 Internal RAM
+Choice: 1 Memory card
+```
+Identify the number of the memory card and change the `captureTarget` property in `config.json`. 
 
 ## Mentions
 

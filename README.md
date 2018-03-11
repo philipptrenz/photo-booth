@@ -82,7 +82,8 @@ It looks like this:
 		"width": "1440",
 		"height": "900",
 		"showDevTools": true,
-		"useGPIO": true
+		"useGPIO": true,
+		"grayscaleMode": true
 	},
 	"maxImageSize": "1500",
 	"gphoto2": {
@@ -111,6 +112,10 @@ Some notes to this:
 * The gphoto2 port definition can be null, then gphoto2 searches for your camera via USB, this works mostly. Also `serial` and `ptpip` for connection over wifi is available. When using wifi you'll need to define the IP address of your camera, this could look like this: `ptpip:192.168.1.1`
 * Optional parameters for gphoto2 can be applied as string
 * The errorMessage is pure HTML, just type in what you want. It gets displayed, if anything went wrong
+
+### Why are all images in grayscale?
+
+Go to `config.json` and change `grayscaleMode` to `false`.
 
 ## Let everyone download their photos via wifi
 

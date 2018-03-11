@@ -4,7 +4,8 @@
 		"width": "1440",
 		"height": "900",
 		"showDevTools": true,
-		"useGPIO": true
+		"useGPIO": true,
+		"grayscaleMode": true
 	},
 	"maxImageSize": "1500",
 	"gphoto2": {

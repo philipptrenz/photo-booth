@@ -22,10 +22,12 @@
   
     var config = require('./config.json');
 
+    checkGrayscaleMode();
     getContentDirectory();
     initializeBranding();
     loadRecentImagesAfterStart();
     printIpAddresses();
+
     
     import $ from 'jquery';
     import webApp from './webapp_server.js';
@@ -493,6 +495,12 @@
       });
     }
 
+    function checkGrayscaleMode() {
+      if (config.init.grayscaleMode) {
+        console.log("using grayscale mode");
+        $('head').append('<link rel="stylesheet" type="text/css" href="css/grayscale.css">');
+      }
+    }
     
 
   </script>

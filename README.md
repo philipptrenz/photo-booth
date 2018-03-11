@@ -62,7 +62,7 @@ npm install && ./node_modules/.bin/electron-rebuild
 sudo bash start.sh
 ```
 
-**NOTE:** For using GPIOs and the web server the application has to run as root (use `sudo)!
+**NOTE:** For using GPIOs and the web server the application has to run as root (use `sudo`)!
 
 **HINT:** The little linux tool `unclutter` can hide the cursor.
 

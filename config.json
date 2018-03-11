@@ -3,9 +3,9 @@
 		"fullscreen": false,
 		"width": "1440",
 		"height": "900",
-		"showDevTools": true,
-		"useGPIO": true,
-		"grayscaleMode": true
+		"showDevTools": false,
+		"useGPIO": false,
+		"grayscaleMode": false
 	},
 	"maxImageSize": "1500",
 	"gphoto2": {

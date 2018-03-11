@@ -165,7 +165,7 @@ If you need more complex preferences, like wpa-key, use the `/etc/wpa_supplicant
 
 ## Common issues
 
-If you have any problems, start reading here. If you do not find anything, check under [Issues](https://github.com/philipptrenz/photo-booth/issues), if someone else already had a similar problem. If you still have no solution, open a new Issue.
+If you have any problems, start reading here. If you do not find anything, check under [Issues](https://github.com/philipptrenz/photo-booth/issues), if someone else already had a similar problem. If you still have no solution, open a new issue.
 
 ### Why are all images in grayscale?
 

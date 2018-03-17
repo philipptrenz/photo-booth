@@ -154,8 +154,9 @@ It's as easy as this:
 sudo cp start.sh /etc/init.d/photo-booth
 sudo chmod 755 /etc/init.d/photo-booth
 sudo update-rc.d photo-booth defaults
-sudo service photo-booth start
 ```
+
+Now start the service via `sudo service photo-booth start` and check its status with `sudo service photo-booth status`.
 
 ## Common issues
 

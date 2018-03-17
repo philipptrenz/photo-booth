@@ -147,21 +147,16 @@ Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then c
                           |
 ```
 
-## Connect your camera via wifi
+## Run photo booth on boot of your Raspberry Pi
 
-Maybe you want to connect your camera via builtin wifi to an Raspberry Pi running this app, then follow these steps:
+It's as easy as this:
+```
+sudo cp start.sh /etc/init.d/photo-booth
+sudo chmod 755 /etc/init.d/photo-booth
+sudo update-rc.d photo-booth defaults
+```
 
-1. Figure out the SSID broadcasted by your camera, e.g. by command `sudo iwlist wlan0 scan`
-2. Run `sudo iwconfig wlan0 essid name_of_my_cameras_wifi`
-If you need more complex preferences, like wpa-key, use the `/etc/wpa_supplicant/wpa_supplicant.conf`
-3. Restart wifi with `sudo ifdown wlan0 && sudo ifup wlan0`
-4. Make shure your cameras wifi is enabled
-5. Run `ifconfig` and look up your IP address on wlan0, e.g. 192.168.1.X
-6. Try to run `gphoto2 --port ptpip:192.168.1.1 --capture-image` - the last digit of the IP address has to be 1, that's your camera ;)
-7. Edit to your config.json `..."port": "ptpip:192.168.1.1", ...` and restart photo-booth
-
-**NOTE:** My Nikon first didn't want to work via wifi, then I figured out that the gphoto2 and libgphoto2 version from the package manager were far to old. Install latest version of gphoto2 with this [gphoto2-updater scipt](https://github.com/gonzalo/gphoto2-updater) and star that project, it deserves it!
-
+Now start the service via `sudo service photo-booth start` and check its status with `sudo service photo-booth status`.
 
 ## Common issues
 

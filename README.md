@@ -147,7 +147,7 @@ Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then c
                           |
 ```
 
-## Run photo booth on boot
+## Run photo booth on boot of your Raspberry Pi
 
 It's as easy as this:
 ```

@@ -11,7 +11,4 @@
 ### END INIT INFO
 
 # run photo booth
-#while true; do
-xset -dpms ; xset s off # turn display power management off which causes display sleep
 sudo startx /home/pi/photo-booth/node_modules/.bin/electron /home/pi/photo-booth/ -- -nocursor
-#done

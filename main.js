@@ -56,6 +56,13 @@ function createWindow () {
   const showDevTools = config.init.showDevTools !== undefined ? config.init.showDevTools: false;
   if (showDevTools) mainWindow.webContents.openDevTools();
 
+  // Prevent Screensaver / Display Sleep
+  const preventScreensaver = config.init.preventScreensaver !== undefined ? config.init.preventScreensaver : false;
+  if (preventScreensaver) {
+    const {powerSaveBlocker} = require('electron');
+    const id = powerSaveBlocker.start('prevent-display-sleep');
+    console.log('prevent screensaver: '+powerSaveBlocker.isStarted(id));
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

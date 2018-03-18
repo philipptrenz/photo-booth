@@ -83,7 +83,8 @@ It looks like this:
 		"height": "900",
 		"showDevTools": true,
 		"useGPIO": true,
-		"grayscaleMode": true
+		"grayscaleMode": true,
+		"preventScreensaver": false
 	},
 	"maxImageSize": "1500",
 	"gphoto2": {

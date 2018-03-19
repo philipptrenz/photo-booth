@@ -1,6 +1,6 @@
 # photo booth
 
-**A Photo Booth Software using Electron, gphoto2 and your camera**
+**A multi-platform Photo Booth Software using Electron, gphoto2 and your camera**
 
 ![photo booth image from The Verge](https://cdn.vox-cdn.com/thumbor/gkbHIytNYvEPwbLLVxmVuTA5cjM=/1600x0/filters:no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/9062729/akrales_170815_1889_0006.jpg)
 (Source: [The Verge](https://www.theverge.com/circuitbreaker/2017/8/24/16193418/diy-photo-booth-party-wedding-dlsr-camera-how-to-build-raspberry-pi), accessed 08 March 2018)
@@ -17,7 +17,7 @@ Because of the use of gphoto2 it works with nearly any camera like plug and play
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) and [gphoto2](http://gphoto.sourceforge.net/) installed on your computer. 
 
-I ran this app on Ubuntu Linux (64bit), MacOS 10.12 and Raspbian JESSIE (Raspberry Pi 3, ARM) and it works fine. **If you want to run photo-booth on Raspbian STRETCH (latest Raspbian version) please note the hints above!** It will probably not work on Windows, but not sure what Node.js magic is capable of. Anyway, the documentation here will be focused on Linux based systems. 
+I tested it under Ubuntu Linux (64bit), MacOS 10.12 and Raspbian (Raspberry Pi 3, ARM). It will probably not work on Windows, but please try it out. Anyway, the documentation here will be focused on Linux based systems. 
 
 **For Raspbian JESSIE:**
 

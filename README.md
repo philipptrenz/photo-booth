@@ -19,9 +19,7 @@ To clone and run this repository you'll need [Git](https://git-scm.com), [Node.j
 
 I ran this app on Ubuntu Linux (64bit), MacOS 10.12 and Raspbian JESSIE (Raspberry Pi 3, ARM) and it works fine. **If you want to run photo-booth on Raspbian STRETCH (latest Raspbian version) please note the hints above!** It will probably not work on Windows, but not sure what Node.js magic is capable of. Anyway, the documentation here will be focused on Linux based systems. 
 
-**NOTE:** Please use Raspbian Jessie, Raspbian STRETCH causes some problems, probably because of the Pixel desktop.
-
-From your command line:
+**For Raspbian JESSIE:**
 
 ```bash
 # Install needed dependencies
@@ -39,7 +37,6 @@ cd photo-booth
 npm install && ./node_modules/.bin/electron-rebuild
 sudo npm start
 ```
-
 
 
 **For Raspbian STRETCH:**

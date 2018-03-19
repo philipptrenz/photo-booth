@@ -17,7 +17,7 @@ Because of the use of gphoto2 it works with nearly any camera like plug and play
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) and [gphoto2](http://gphoto.sourceforge.net/) installed on your computer. 
 
-I tested it under Ubuntu Linux (64bit), MacOS 10.12 and Raspbian (Raspberry Pi 3, ARM). It will probably not work on Windows, but please try it out. Anyway, the documentation here will be focused on Linux based systems. 
+I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). It will probably not work on Windows, but please try it out. Anyway, the documentation here will be focused on Linux based systems. 
 
 **For Raspbian JESSIE:**
 

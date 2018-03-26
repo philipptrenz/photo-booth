@@ -9,7 +9,7 @@
 
 **NEW NEW NEW** 
 
-If you want to stay up to date, sign up for the mailing list. You'll get notified about updates and it's the place to get in touch with other users.
+If you want to stay up to date, sign up for the mailing list. You'll get notified about updates and it's the place to get in touch with other users. From time to time I also need a few testers.
 Write an email to [photo-booth-subscribe@philipptrenz.de](mailto:photo-booth-subscribe@philipptrenz.de) to join the list.
 
 ## How it works

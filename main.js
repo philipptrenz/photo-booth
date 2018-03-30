@@ -42,7 +42,7 @@ function createWindow () {
   //mainWindow.setFullScreen(fullscreen);
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/booth.html`);
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
 
   global.sharedObj = {mainWindow: mainWindow};

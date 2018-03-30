@@ -1,0 +1,9 @@
+install:
+- npm install
+language: node_js
+node_js:
+- lts/*
+- node
+- '0.12'
+- '0.10'
+dist: trusty

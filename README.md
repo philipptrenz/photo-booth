@@ -1,6 +1,8 @@
 # photo booth
 
-**A multi-platform Photo Booth Software using Electron, gphoto2 and your camera**
+[![Build Status](https://travis-ci.org/philipptrenz/photo-booth.svg?branch=master)](https://travis-ci.org/philipptrenz/photo-booth)
+
+A multi-platform Photo Booth Software using Electron, gphoto2 and your camera
 
 ![photo booth image from The Verge](https://cdn.vox-cdn.com/thumbor/gkbHIytNYvEPwbLLVxmVuTA5cjM=/1600x0/filters:no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/9062729/akrales_170815_1889_0006.jpg)
 (Source: [The Verge](https://www.theverge.com/circuitbreaker/2017/8/24/16193418/diy-photo-booth-party-wedding-dlsr-camera-how-to-build-raspberry-pi), accessed 08 March 2018)

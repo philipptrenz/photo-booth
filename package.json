@@ -10,9 +10,10 @@
     "start": "electron ."
   },
   "keywords": [
-    "Electron",
     "Photo Booth",
-    "gphoto2"
+    "photo-booth",
+    "gphoto2",
+    "Electron"
   ],
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",

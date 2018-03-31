@@ -5,9 +5,6 @@ import path from 'path';
 
 import config from './config.json';
 
-
-// ---------------------------------------------------- //
-
 class Utils {
 
   constructor() {
@@ -26,12 +23,19 @@ class Utils {
     if (!this.getContentDirectoryInitialized) {
       var content_dir = path.resolve(__dirname, './content/');
       try {
-        if (!fs.existsSync(config.content_dir)) fs.mkdirSync(config.content_dir);
-        content_dir = config.content_dir;
-        if(!content_dir.endsWith("/")) content_dir = content_dir + "/";
-        this.getContentDirectoryInitialized = true;
-        this.contentDirectory = content_dir
-        this.getPhotosDirectory();
+        if (config.content_dir && config.content_dir.length > 0 && !fs.existsSync(config.content_dir)) {
+          fs.mkdirSync(config.content_dir);
+          content_dir = config.content_dir;
+          if(!content_dir.endsWith("/")) content_dir = content_dir + "/";
+          this.getContentDirectoryInitialized = true;
+          this.contentDirectory = content_dir
+          this.getPhotosDirectory();
+        } else {
+          this.getContentDirectoryInitialized = true;
+          this.contentDirectory = content_dir
+          if (!fs.existsSync(content_dir)) fs.mkdirSync(content_dir);
+          this.getPhotosDirectory();
+        }
       } catch (err) {
           console.log('Could not open or create content_dir \''+config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'./content\'');
           this.getContentDirectoryInitialized = true;
@@ -72,7 +76,6 @@ class Utils {
   loadRecentImagesAfterStart() {
 
     var photos_dir = this.getPhotosDirectory();
-
     fs.readdir(photos_dir, function(err, files){
       var utils = require('./utils.js').utils;
 
@@ -82,7 +85,6 @@ class Utils {
         for (var i = 0; i < files.length; i++) {
           //console.log(photos_dir+"/"+files[i]);
           var isImage =  files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG");
-
           if ( isImage && !files[i].includes('large')){  // filter unconverted photos
             // add image to collage
             utils.prependImage(utils.getPhotosDirectory()+"/"+files[i]);
@@ -187,7 +189,4 @@ class Utils {
 /*
  * Module exports for connection
  */
-
-var utils = new Utils();
-
-export { Utils, utils };
+export let utils = new Utils();

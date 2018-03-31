@@ -23,7 +23,11 @@ I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM)
 
 ```bash
 # Install needed dependencies
-sudo apt-get install git npm gphoto2 libxss-dev libgconf-2-4 libnss3
+sudo apt-get install git npm libxss-dev libgconf-2-4 libnss3
+
+# Install latest version of libgphoto2
+sudo wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh 
+sudo chmod +x gphoto2-updater.sh && sudo ./gphoto2-updater.sh
 
 # If you want to use a Raspberry Pi > 1: Activate hardware acceleration
 sudo apt-get install libgl1-mesa-dri
@@ -43,8 +47,13 @@ sudo npm start
 
 ```bash
 # Install needed dependencies
-sudo apt-get install git gphoto2 libxss-dev libgconf-2-4 libnss3
-git clone https://github.com/audstanley/NodeJs-Raspberry-Pi-Arm7 && cd NodeJs-Raspberry-Pi-Arm7 && chmod +x Install-Node.sh && sudo ./Install-Node.sh;
+sudo apt-get install git libxss-dev libgconf-2-4 libnss3
+git clone https://github.com/audstanley/NodeJs-Raspberry-Pi-Arm7 && cd NodeJs-Raspberry-Pi-Arm7 
+sudo chmod +x Install-Node.sh && sudo ./Install-Node.sh
+
+# Install latest version of libgphoto2
+sudo wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh 
+sudo chmod +x gphoto2-updater.sh && sudo ./gphoto2-updater.sh
 
 # If you want to use a Raspberry Pi > 1: Activate hardware acceleration
 sudo apt-get install libgl1-mesa-dri

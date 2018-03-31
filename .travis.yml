@@ -6,3 +6,12 @@ node_js:
 - lts/*
 - node
 dist: trusty
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+    - libgphoto2-6
+    - libgphoto2-dev
+    - libgphoto2-port10

@@ -79,16 +79,14 @@ It looks like this:
 		"width": "1440",
 		"height": "900",
 		"showDevTools": true,
-		"useGPIO": true,
+		"useGPIO": false,
 		"grayscaleMode": true,
 		"preventScreensaver": false
 	},
 	"maxImageSize": "1500",
 	"gphoto2": {
-		"keepImagesOnCamera": true,
-		"captureTarget": 1,
-		"port": null,
-		"optionalParameter": null
+		"capturetarget": 1,
+		"keep": true
 	},
 	"errorMessage": "<i class='fa fa-exclamation-circle' aria-hidden='true' style='font-size: 1em; padding-right: 10px;'></i> Oh shit ...",
 	"content_dir": "",
@@ -107,8 +105,7 @@ Some notes to this:
 * Booleans are always `true` or `false`
 * Images get shrinked after got downloaded from the camera, set the size with maxImageWidth
 * You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned off. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so. This should be your first try if a photo gets taken, but it won't show up at the screen.
-* The gphoto2 port definition can be null, then gphoto2 searches for your camera via USB, this works in most cases. Also `serial` and `ptpip` for connection over wifi is available
-* Optional parameters for gphoto2 can be applied as a string, check out the [gphoto2 cli documentation](http://www.gphoto.org/doc/manual/ref-gphoto2-cli.html)
+* If you want to keep images on camera, set `keep` to `true`
 * The errorMessage is pure HTML, just fill in whatever you want
 
 ## Let everyone download their photos via wifi

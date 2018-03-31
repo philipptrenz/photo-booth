@@ -1,0 +1,8 @@
+install:
+- npm install
+- ./node_modules/.bin/electron-rebuild
+language: node_js
+node_js:
+- lts/*
+- node
+dist: trusty

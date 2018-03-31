@@ -158,7 +158,6 @@ button {
 #countdown span.fadeout {
 	animation: fadeout 1s;
 	animation-timing-function: ease-out;
-	
 }
 #countdown span.fadein {
 	font-size: 5vw;

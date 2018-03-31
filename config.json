@@ -3,17 +3,15 @@
 		"fullscreen": false,
 		"width": "1440",
 		"height": "900",
-		"showDevTools": false,
+		"showDevTools": true,
 		"useGPIO": false,
 		"grayscaleMode": true,
 		"preventScreensaver": false
 	},
 	"maxImageSize": "1500",
 	"gphoto2": {
-		"keepImagesOnCamera": true,
-		"captureTarget": 1,
-		"port": null,
-		"optionalParameter": null
+		"capturetarget": 1,
+		"keep": true
 	},
 	"errorMessage": "<i class='fa fa-exclamation-circle' aria-hidden='true' style='font-size: 1em; padding-right: 10px;'></i> Oh shit ...",
 	"content_dir": "",

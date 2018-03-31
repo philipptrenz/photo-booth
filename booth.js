@@ -5,6 +5,9 @@ import $ from 'jquery';
 import path from 'path';
 import sharp from 'sharp';
 
+import 'popper.js';
+import 'bootstrap';
+
 import config from './config.json';
 import webApp from './webapp_server.js';
 
@@ -14,50 +17,49 @@ var utils = require('./utils.js').utils;
 var gphoto2 = require('../node-gphoto2/build/Release/gphoto2')
 var GPhoto = new gphoto2.GPhoto2();
 
+initializeCamera();
+
 var camera;
 const timeoutAfterSeconds = 25; 
 var keepImagesOnCamera = config.gphoto2.keep ? config.gphoto2.keep : false;
 
-$( window ).resize(function() {
-  utils.scaleCollageImages();
+
+/*
+ * Trigger photo when clicking / touching anywhere at the screen
+ */
+$( "body" ).click(function() {
+  takePhoto();
 });
+
 
 /*
  * Detect and configure camera
  */
-GPhoto.list(function (list) {
-  if (list.length === 0) {
-    throwError('gphoto2: No camera found!');
-    return;
-  }
-  camera = list[0];
-  console.log('gphoto2: Found', camera.model);
+function initializeCamera() {
 
-  /*
-  camera.getConfig(function (err, config) {
-    console.log('gphoto2: config=', config)
+  GPhoto.list(function (list) {
+    if (list.length === 0) {
+      throwError('gphoto2: No camera found!');
+      return;
+    }
+    camera = list[0];
+    console.log('gphoto2: Found', camera.model);
+
+    // Set configuration values
+    const gphoto2_config = config.gphoto2;
+    
+    if (gphoto2_config.capturetarget) {
+      camera.setConfigValue('capturetarget', gphoto2_config.capturetarget, function (err) {
+        if (err){
+          throwError(err);
+        } else {
+          console.log('gphoto2: capturetarget=',gphoto2_config.capturetarget);
+        }
+      });
+    }
+
   });
-  */
-  
-  // Set configuration values
-  const gphoto2_config = config.gphoto2;
-  
-  if (gphoto2_config.capturetarget) {
-    camera.setConfigValue('capturetarget', gphoto2_config.capturetarget, function (err) {
-      if (err){
-        throwError(err);
-      } else {
-        console.log('gphoto2: capturetarget=',gphoto2_config.capturetarget);
-      }
-    });
-  }
-
-});
-
-
-$( "body" ).click(function() {
-  takePhoto();
-});
+}
 
 
 /* Listen for pushbutton on GPIO 3 (PIN 5)
@@ -116,7 +118,6 @@ function takePhoto() {
   // prevent two tasks at the same time!
   if (isTakingPhoto) return;
   if (camera === undefined) {
-    // TODO: Show error message
     return;
   }
 
@@ -173,15 +174,9 @@ function cleanArray(actual) {
 function takePhotoSaveShowAndHide(){
 
   const maxImageSize = config.maxImageSize ? config.maxImageSize : 1500;
-
   var filename = 'img_'+ utils.getTimestamp(new Date()) ;
-
   var filepath = utils.getPhotosDirectory()+'/'+filename+'.jpg';
   var webFilepath = utils.getPhotoWebDirectory()+filename+'.jpg';
-  //console.log("web file path: "+webFilepath);
-  
-  //console.time('photo taken, downloaded and converted');
-
 
   // Take picture with camera object obtained from list()
   camera.takePicture({ download: true, keep: keepImagesOnCamera }, function (err, data) {
@@ -208,11 +203,7 @@ function takePhotoSaveShowAndHide(){
             webApp.sendNewPhoto([webFilepath]);  // TESTING
 
             // add image to collage
-            var img = $('<img>');
-            img.attr('src', filepath);
-            $("#collage").prepend(img);
-
-            utils.scaleCollageImages();
+            utils.prependImage(filepath)
 
             // show picture for 5 seconds then hide
             hideCountdown(5);

@@ -85,14 +85,18 @@ class Utils {
 
           if ( isImage && !files[i].includes('large')){  // filter unconverted photos
             // add image to collage
-            var img = $('<img>');
-            img.attr('src', utils.getPhotosDirectory()+"/"+files[i]);
-            $("#collage").prepend(img);
+            utils.prependImage(utils.getPhotosDirectory()+"/"+files[i]);
           }
         }
-        utils.scaleCollageImages();
       }
     });
+  }
+
+  prependImage(path) {
+    var img = $('<img>');
+    img.attr('src', path);
+    var div = $('<div class="img-wrapper col-6 col-md-4">').append(img);
+    $("#collage").prepend(div);
   }
 
   // ---------------------------------------------------- //
@@ -131,20 +135,6 @@ class Utils {
       }
     }
   }
-
-  // ---------------------------------------------------- //
-
-  scaleCollageImages() {
-    var collageWidth = $("#collage").width();
-    var imgPerRow = Math.round(collageWidth/300);              
-    $("#collage > img").outerWidth(collageWidth/imgPerRow);
-
-    while( $("#collage").children().length > 6*Math.pow(imgPerRow, 2)) {
-       $("#collage").children().last().remove();
-    }
-  }
-
-  // ---------------------------------------------------- //
 
   getTimestamp(now) {
     var secs = now.getSeconds() < 10 ? '0'+now.getSeconds() : now.getSeconds();

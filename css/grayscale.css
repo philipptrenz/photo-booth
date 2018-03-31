@@ -2,7 +2,7 @@ img {
   -webkit-filter: grayscale(100%);
 }
 
-#collage img {
+#collage .img-wrapper img {
   -webkit-filter: grayscale(100%);
 }
 

@@ -4,8 +4,10 @@
  */
 
 import fs from 'fs';
-import config from './config.json';
 import path from 'path';
+
+import config from './config.json';
+import { utils } from "./utils.js";
 
 var express = require('express');
 var app = express();
@@ -23,8 +25,6 @@ server.listen(port, function () {
 const currentDirectory = __dirname + '/webapp';
 app.use(express.static(currentDirectory));
 
-console.log("current directory: "+currentDirectory);
-
 // Connect event
 io.on('connection', function(socket){
 
@@ -35,7 +35,7 @@ io.on('connection', function(socket){
 	// save mail address
 	socket.on('mail address', function(msg){
 
-		var mycontentdir = getContentDirectory();
+		var mycontentdir = utils.getContentDirectory();
 		
 		fs.appendFile(mycontentdir+'/email-addresses.txt', msg+",\n", function (err) {
 			if (err) {
@@ -166,29 +166,6 @@ io.on('connection', function(socket){
 	});
 
 });
-
-var getContentDirectoryInitialized = false;
-var contentDirectory;
-function getContentDirectory() {
-  if (!getContentDirectoryInitialized) {
-    var content_dir = path.resolve(__dirname, './content/');
-    try {
-      if (!fs.existsSync(config.content_dir)) fs.mkdirSync(config.content_dir);
-      content_dir = config.content_dir;
-      if(!content_dir.endsWith("/")) content_dir = content_dir + "/";
-      getContentDirectoryInitialized = true;
-      contentDirectory = content_dir
-      getPhotosDirectory();
-    } catch (err) {
-        console.log('Could not open or create content_dir \''+config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'./content\'');
-        getContentDirectoryInitialized = true;
-        contentDirectory = content_dir
-        if (!fs.existsSync(content_dir)) fs.mkdirSync(content_dir);
-        getPhotosDirectory();
-    }
-  }
-  return contentDirectory;
-}
 
 function passwordIsValid(password) {
 	if (config && config.webapp.password) {

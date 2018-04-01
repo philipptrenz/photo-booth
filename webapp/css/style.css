@@ -176,6 +176,14 @@ ul#photos li {
 	margin-bottom: 3px;
 }
 
+button, .btn, .btn-default {
+	background: rgba(255, 255, 255, .1) !important;
+}
+
+
+.well {
+	background: rgba(255, 255, 255, .1);
+}
 
 /* -------------------- */
 

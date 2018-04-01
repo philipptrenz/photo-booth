@@ -5,13 +5,14 @@
 		"height": "900",
 		"showDevTools": true,
 		"useGPIO": false,
-		"grayscaleMode": true,
+		"grayscaleMode": false,
 		"preventScreensaver": false
 	},
-	"maxImageSize": "1700",
+	"maxImageSize": "1500",
 	"gphoto2": {
 		"capturetarget": 1,
-		"keep": true
+		"keep": true,
+		"keepImagesOnCamera": false
 	},
 	"errorMessage": "<i class='fa fa-exclamation-circle' aria-hidden='true' style='font-size: 1em; padding-right: 10px;'></i> Oh shit ...",
 	"content_dir": null,

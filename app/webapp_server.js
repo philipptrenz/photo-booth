@@ -42,6 +42,10 @@ app.use(express.static(currentDirectory));
 // Connect event
 io.on('connection', function(socket){
 
+	if (utils.getConfig().init.grayscaleMode) {
+		io.to(socket.id).emit('use grayscale');
+	}
+
 	socket.on('disconnect', function(){
 
 	});

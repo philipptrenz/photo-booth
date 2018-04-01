@@ -52,7 +52,7 @@ class Utils {
 
   saveConfig(new_config, callback) {
 
-    // TODO: Add json-schema validation of config.json
+    // TODO: Add json-schema validation for config.json
 
     if (!new_config) {
       callback(false);

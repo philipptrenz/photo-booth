@@ -28,18 +28,24 @@ html {
 	overflow-x: hidden;
 }
 
+body {
+	background-color: black;
+}
+
 /* -------------------- */
 
 nav {
 	height: 64px;
-		line-height: 64px;
+	line-height: 64px;
 	width: 100%;
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
 	display: block;
 	font-size: 17px;
 
 	color: #ebebeb;
-		background-color: #4e5d6c;
+	/*background-color: #4e5d6c;*/
+	background: rgba(255, 255, 255, .1);
+	margin-bottom: 15px;
 }
 
 nav .my-navbar {

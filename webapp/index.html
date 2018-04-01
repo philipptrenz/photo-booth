@@ -206,6 +206,11 @@
 
 		// ------------------------------------------------- //
 
+		socket.on('use grayscale', function() {
+			$('head').append('<link rel="stylesheet" type="text/css" href="css/grayscale.css">');
+		});
+
+
 		socket.on('new photos', function(imgUrlArray){
 			for (i = 0; i < imgUrlArray.length; i++) {
 				var url = imgUrlArray[i];

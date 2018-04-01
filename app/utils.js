@@ -11,6 +11,8 @@ class Utils {
     this.defaultContentDirectory = path.join(__dirname, '../', '/content');
     this.webappSymlink = path.join(__dirname, "../", "./webapp/photos");
 
+    this.maxImages = 20;
+
     this.getConfig();
     this.checkGrayscaleMode();
     this.getContentDirectory();
@@ -37,18 +39,18 @@ class Utils {
       return;
     }
 
-    var instance = this;
+    var self = this;
     fs.writeFile(this.config_path, JSON.stringify(new_config, null, "\t"), function (err) {
       if (err) {
         console.error('utils: updating config.json failed', err);
         callback(false, err);
       } else {
         // force config.json to be reloaded
-        const path = require.resolve(instance.config_path);
+        const path = require.resolve(self.config_path);
         delete require.cache[path];
 
-        instance.config = require(instance.config_path); // should not be needed
-        //console.log('utils: config.json updated: \n'+JSON.stringify(instance.config, null, "\t"));
+        self.config = require(self.config_path); // should not be needed
+        //console.log('utils: config.json updated: \n'+JSON.stringify(self.config, null, "\t"));
         console.log('utils: config.json updated');
         callback(true);
       }
@@ -112,18 +114,17 @@ class Utils {
   loadRecentImagesAfterStart() {
 
     var photos_dir = this.getPhotosDirectory();
-    var instance = this;
+    var self = this;
     fs.readdir(photos_dir, function(err, files){
 
       if (files) {
         files.sort();
-
-        for (var i = 0; i < files.length; i++) {
+        var numberImages = (files.length < self.maxImages) ? files.length : self.maxImages;
+        for (var i = 0; i < numberImages; i++) {
           //console.log(photos_dir+"/"+files[i]);
-          var isImage =  files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG");
-          if ( isImage && !files[i].includes('large')){  // filter unconverted photos
-            // add image to collage
-            instance.prependImage(instance.getPhotosDirectory()+"/"+files[i]);
+          // just take jpegs
+          if ( files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG") ){  
+            self.prependImage(self.getPhotosDirectory()+"/"+files[i]);
           }
         }
       }

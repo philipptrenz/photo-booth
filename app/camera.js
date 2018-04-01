@@ -11,28 +11,29 @@ class Camera {
 
 		// Negative value or undefined will disable logging, levels 0-4 enable it.
 		this.GPhoto.setLogLevel(-1);
+		/*
 		this.GPhoto.on('log', function (level, domain, message) {
 		  console.log(domain, message);
 		});
-
+		*/
 	}
 
 	/*
 	* Detect and configure camera
 	*/
 	initialize(callback) {
-		var instance = this;
+		var self = this;
 		this.GPhoto.list(function (list) {
 			if (list.length === 0) {
 				callback(false, 'camera not found', null);
 				return;
 			}
-			instance.camera = list[0];
+			self.camera = list[0];
 
-			console.log('gphoto2: Found', instance.camera.model);
+			console.log('gphoto2: Found', self.camera.model);
 
 			if (utils.getConfig().gphoto2.capturetarget) {
-				instance.camera.setConfigValue('capturetarget', utils.getConfig().gphoto2.capturetarget, function (err) {
+				self.camera.setConfigValue('capturetarget', utils.getConfig().gphoto2.capturetarget, function (err) {
 					if (err){
 						callback(false, 'setting config failed', err);
 					} else {
@@ -67,7 +68,7 @@ class Camera {
 			return;
 		}
 
-		var instance = this;
+		var self = this;
 		const maxImageSize = utils.getConfig().maxImageSize ? utils.getConfig().maxImageSize : 1500;
 
 		this.camera.takePicture({ download: true, keep: keep }, function (err, data) {

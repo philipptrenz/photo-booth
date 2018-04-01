@@ -14,7 +14,7 @@ import webApp from './webapp_server.js';
 
 camera.initialize(function( res, msg, err) {
   if (!res) {
-    console.error(msg, err);
+    console.error('camera:', msg, err);
 
     // TODO: handle error
 

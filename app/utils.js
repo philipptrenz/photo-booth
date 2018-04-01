@@ -22,6 +22,7 @@ import os from 'os';
 import fs from 'fs';
 import $ from 'jquery';
 import path from 'path';
+import sharp from 'sharp';
 
 
 class Utils {
@@ -66,8 +67,8 @@ class Utils {
         callback(false, err);
       } else {
         // force config.json to be reloaded
-        const path = require.resolve(self.config_path);
-        delete require.cache[path];
+        const _path = require.resolve(self.config_path);
+        delete require.cache[_path];
 
         self.config = require(self.config_path); // should not be needed
         //console.log('utils: config.json updated: \n'+JSON.stringify(self.config, null, "\t"));
@@ -238,6 +239,41 @@ class Utils {
     if (this.getConfig().init.grayscaleMode) {
       console.log("utils: using grayscale mode");
       $('head').append('<link rel="stylesheet" type="text/css" href="css/grayscale.css">');
+    }
+  }
+
+  convertImageForDownload(filename, grayscale, callback) {
+
+    var self = this;
+    var _path = path.join(this.photosDir, filename);
+    var newFilename = 'photo-booth_'+filename.replace('img_', '');
+    var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
+    var convertedFilepath = path.join(this.getPhotosDirectory(), './tmp', newFilename);
+    var webappFilepath = path.join(this.getWebAppPhotosDirectory(), 'tmp', newFilename);
+
+    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+
+    function cb(err) {
+      if (err) {
+        callback(false, 'resizing image failed', err)
+      } else {
+        callback(true, webappFilepath);
+      }
+      // delete file after 10s
+      setInterval(function(){
+        if (fs.existsSync(convertedFilepath)) fs.unlinkSync(convertedFilepath);
+      },10000);
+    }
+
+    if (grayscale) {
+      sharp(_path) // resize image to given maxSize
+        .grayscale()
+        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
+        .toFile(convertedFilepath, cb);
+    } else {
+      sharp(_path) // resize image to given maxSize
+        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
+        .toFile(convertedFilepath, cb);
     }
   }
 

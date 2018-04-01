@@ -83,7 +83,8 @@ io.on('connection', function(socket){
 
 				var images = [];
 				for (var i = 0; i < files.length; i++) {
-					if (!files[i].includes('large')){  // filter unconverted photos
+					var isJpeg = files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG");
+					if (!files[i].includes('large') && isJpeg){  // filter unconverted photos
 						images.push('photos/'+files[i]);
 					}
 				}
@@ -163,6 +164,17 @@ io.on('connection', function(socket){
 			console.log('webapp: password wrong');
 		}
 
+	});
+
+
+	socket.on('get_download_image', function(path, grayscale){
+
+		var filename = path.substr(path.indexOf("/")+1);
+		utils.convertImageForDownload(filename, grayscale, function(res, path, err) {
+			if (res) {
+				io.to(socket.id).emit('get_download_image', path);
+			}
+		});
 	});
 
 });

@@ -1,6 +1,6 @@
 {
   "name": "photo-booth",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A Photo Booth Software using Electron, gPhoto2, Python and your Camera",
   "main": "main.js",
   "author": "Philipp Trenz",

@@ -10,7 +10,7 @@ class Camera {
 		this.GPhoto = new gphoto2.GPhoto2();
 
 		// Negative value or undefined will disable logging, levels 0-4 enable it.
-		this.GPhoto.setLogLevel(1);
+		this.GPhoto.setLogLevel(-1);
 		this.GPhoto.on('log', function (level, domain, message) {
 		  console.log(domain, message);
 		});

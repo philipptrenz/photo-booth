@@ -7,10 +7,10 @@ import sharp from 'sharp';
 import 'popper.js';
 import 'bootstrap';
 
-import webApp from './webapp_server.js';
-
 import { utils } from "./utils.js";
 import { camera } from "./camera.js";
+
+import webApp from './webapp_server.js';
 
 camera.initialize(function( res, msg, err) {
   if (!res) {
@@ -31,32 +31,6 @@ $( "body" ).click(function() {
 
 /* Listen for pushbutton on GPIO 3 (PIN 5)
  * Activate the use of GPIOs by setting useGPIO in config.json to true.
- *
- * NOTE: To use GPIO's this application has to
- * run as root (sudo npm start)!
- *
- * For Raspberry Pi (B Rev2 / B+ / 2 / 3):
- * Connect the first port of the switchbutton to ground,
- * second to GPIO 3 (PIN 5) and to an resistor of about 10k-100kΩ,
- * the other end of the resistor to 3.3V (e.g. PIN 1)
- *
- * _______RASPBERRY PI_______
- *                          |
- *          |----3.3V---●o  |
- * ~50kΩ →  ▯           oo  |
- *          |----GPIO3--●o  |
- *      [-\             oo  |
- *         \------GND---●o  |
- *                      oo  |
- *                      oo  |
- *                      oo  |
- *                      oo  |
- *                      oo  |
- *                      oo  |
- *                      oo  |
- *                      oo  |
- *                          |
- *                          |
  */
 if (utils.getConfig().init.useGPIO !== undefined ? utils.getConfig().init.useGPIO : true) {
   console.log('GPIO usage activated');

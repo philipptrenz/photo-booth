@@ -3,72 +3,108 @@ import fs from 'fs';
 import $ from 'jquery';
 import path from 'path';
 
-import config from './config.json';
 
 class Utils {
 
   constructor() {
-    this.getContentDirectoryInitialized = false;
-    this.getPhotosDirectoryInitialized = false;
-    this.getPhotoWebDirectoryInitialized = false;
+    this.config_path = path.join(__dirname, '../', './config.json');
+    this.defaultContentDirectory = path.join(__dirname, '../', '/content');
+    this.webappSymlink = path.join(__dirname, "../", "./webapp/photos");
 
+    this.getConfig();
     this.checkGrayscaleMode();
     this.getContentDirectory();
+
     this.initializeBranding();
     this.loadRecentImagesAfterStart();
     this.printIpAddresses();
   }
 
+  getConfig(force = false) {
+    if (!this.config || force) {   
+      this.config = require(this.config_path);
+      return this.config;
+    }
+    return this.config;
+  }
+
+  saveConfig(new_config, callback) {
+
+    // TODO: Add json-schema validation of config.json
+
+    if (!new_config) {
+      callback(false);
+      return;
+    }
+
+    var instance = this;
+    fs.writeFile(this.config_path, JSON.stringify(new_config, null, "\t"), function (err) {
+      if (err) {
+        console.error('utils: updating config.json failed', err);
+        callback(false, err);
+      } else {
+        // force config.json to be reloaded
+        const path = require.resolve(instance.config_path);
+        delete require.cache[path];
+
+        instance.config = require(instance.config_path); // should not be needed
+        //console.log('utils: config.json updated: \n'+JSON.stringify(instance.config, null, "\t"));
+        console.log('utils: config.json updated');
+        callback(true);
+      }
+    });
+  }
+
   getContentDirectory() {
-    if (!this.getContentDirectoryInitialized) {
-      var content_dir = path.resolve(__dirname, './content/');
-      try {
-        if (config.content_dir && config.content_dir.length > 0 && !fs.existsSync(config.content_dir)) {
-          fs.mkdirSync(config.content_dir);
-          content_dir = config.content_dir;
-          if(!content_dir.endsWith("/")) content_dir = content_dir + "/";
-          this.getContentDirectoryInitialized = true;
-          this.contentDirectory = content_dir
-          this.getPhotosDirectory();
-        } else {
-          this.getContentDirectoryInitialized = true;
-          this.contentDirectory = content_dir
-          if (!fs.existsSync(content_dir)) fs.mkdirSync(content_dir);
-          this.getPhotosDirectory();
+    if (this.contentDir === undefined) {
+      var newContentDir = this.config.content_dir;
+      if ( newContentDir !== null && typeof newContentDir === 'string' && newContentDir.length > 0) {  // if valid path in config
+        try {
+          if (!fs.existsSync(String(newContentDir))) fs.mkdirSync(String(newContentDir));
+          this.contentDir = newContentDir;
+        } catch (err) {
+          // fallback: default
+          console.error('Could not open or create content_dir \''+this.config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'',this.defaultContentDirectory,'\'');
+          if (!fs.existsSync(this.defaultContentDirectory)) fs.mkdirSync(this.defaultContentDirectory);
+          this.contentDir = this.defaultContentDirectory;
         }
-      } catch (err) {
-          console.log('Could not open or create content_dir \''+config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'./content\'');
-          this.getContentDirectoryInitialized = true;
-          this.contentDirectory = content_dir
-          if (!fs.existsSync(content_dir)) fs.mkdirSync(content_dir);
-          this.getPhotosDirectory();
+      } else {
+        // fallback: default
+        if (!fs.existsSync(this.defaultContentDirectory)) fs.mkdirSync(this.defaultContentDirectory);
+        this.contentDir = this.defaultContentDirectory;
       }
     }
-    return this.contentDirectory;
+
+    // initalized the depending directories
+    this.getPhotosDirectory();
+    this.getWebAppPhotosDirectory();
+
+    return this.contentDir;
   }
 
   getPhotosDirectory() {
-    if (!this.getPhotosDirectoryInitialized) {
-      const web_dir = path.resolve(this.getContentDirectory(), "./web/");
-      if (!fs.existsSync(web_dir)) fs.mkdirSync(web_dir);
-      self.photoDirectory = web_dir
-      this.getPhotosDirectoryInitialized = true;
-      this.getPhotoWebDirectory()
-      return web_dir;
+    if (this.photosDir === undefined) {
+      const photoDir = path.join(this.contentDir, "photos/");
+      if (!fs.existsSync(photoDir)) fs.mkdirSync(photoDir);
+      this.photosDir = photoDir;
+      return this.photosDir;
     }
-    return self.photoDirectory;
+    return this.photosDir;
   }
 
-  getPhotoWebDirectory() {
-
-    if (!this.getPhotoWebDirectoryInitialized) {
-      const web_dir = path.resolve(__dirname, "./webapp/photos/");
-      if (fs.existsSync(web_dir)) fs.unlinkSync(web_dir);
-      fs.symlinkSync(this.getPhotosDirectory(), web_dir);
-      this.getPhotoWebDirectoryInitialized = true;
+  getWebAppPhotosDirectory() {
+    if (this.webappSymlinkInitialized === undefined || !this.webappSymlinkInitialized) {
+      if (fs.existsSync(this.webappSymlink)) {
+        try {
+          fs.unlinkSync(this.webappSymlink);
+        } catch (err) {
+          console.error('utils: could not remove old symlink, probably a problem with access rights', err);
+        }
+      }
+      fs.symlinkSync(this.photosDir, this.webappSymlink);
+      this.webappSymlinkInitialized = true;
     }
-    
-    return 'photos/';
+    return './photos';
   }
 
   // ---------------------------------------------------- //
@@ -76,8 +112,8 @@ class Utils {
   loadRecentImagesAfterStart() {
 
     var photos_dir = this.getPhotosDirectory();
+    var instance = this;
     fs.readdir(photos_dir, function(err, files){
-      var utils = require('./utils.js').utils;
 
       if (files) {
         files.sort();
@@ -87,7 +123,7 @@ class Utils {
           var isImage =  files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG");
           if ( isImage && !files[i].includes('large')){  // filter unconverted photos
             // add image to collage
-            utils.prependImage(utils.getPhotosDirectory()+"/"+files[i]);
+            instance.prependImage(instance.getPhotosDirectory()+"/"+files[i]);
           }
         }
       }
@@ -104,19 +140,19 @@ class Utils {
   // ---------------------------------------------------- //
 
   initializeBranding() {
-    if (config.branding) {
+    if (this.config.branding) {
 
-      var type = config.branding.type
+      var type = this.config.branding.type
       if (type) {
         if (type == 'text') {
-          $('#front').html(config.branding.content);
+          $('#front').html(this.config.branding.content);
         } else if (type == 'image') {
           $('#front').html("Not yet implemented");
         }
       }
       
 
-      var position = config.branding.position
+      var position = this.config.branding.position
       if (position) {
         if (position == 'center') {
           $('#front').css('align-items','center');
@@ -167,10 +203,10 @@ class Utils {
 
         if (alias >= 1) {
           // this single interface has multiple ipv4 addresses
-          console.log("ipaddress: "+ifname + ':' + alias, iface.address);
+          console.log("utils: interface", ifname + ':' + alias, iface.address);
         } else {
           // this interface has only one ipv4 adress
-          console.log("ipaddress: "+ifname, iface.address);
+          console.log("utils: interface", ifname, iface.address);
         }
         ++alias;
       });
@@ -178,8 +214,8 @@ class Utils {
   }
 
   checkGrayscaleMode() {
-    if (config.init.grayscaleMode) {
-      console.log("using grayscale mode");
+    if (this.getConfig().init.grayscaleMode) {
+      console.log("utils: using grayscale mode");
       $('head').append('<link rel="stylesheet" type="text/css" href="css/grayscale.css">');
     }
   }

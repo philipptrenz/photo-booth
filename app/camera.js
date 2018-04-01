@@ -1,7 +1,7 @@
 import sharp from 'sharp';
 import gphoto2 from 'gphoto2';
 
-import config from './config.json';
+import { utils } from "./utils.js";
 
 class Camera {
 
@@ -31,8 +31,8 @@ class Camera {
 
 			console.log('gphoto2: Found', instance.camera.model);
 
-			if (config.gphoto2.capturetarget) {
-				instance.camera.setConfigValue('capturetarget', config.gphoto2.capturetarget, function (err) {
+			if (utils.getConfig().gphoto2.capturetarget) {
+				instance.camera.setConfigValue('capturetarget', utils.getConfig().gphoto2.capturetarget, function (err) {
 					if (err){
 						callback(false, 'setting config failed', err);
 					} else {
@@ -68,7 +68,7 @@ class Camera {
 		}
 
 		var instance = this;
-		const maxImageSize = config.maxImageSize ? config.maxImageSize : 1500;
+		const maxImageSize = utils.getConfig().maxImageSize ? utils.getConfig().maxImageSize : 1500;
 
 		this.camera.takePicture({ download: true, keep: keep }, function (err, data) {
 

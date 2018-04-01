@@ -6,7 +6,6 @@
 import fs from 'fs';
 import path from 'path';
 
-import config from './config.json';
 import { utils } from "./utils.js";
 
 var express = require('express');
@@ -18,11 +17,11 @@ var port = process.env.PORT || 80;
 var remote = require('electron').remote; 
 
 server.listen(port, function () {
-	console.log('Server listening at port %d', port);
+	console.log('webapp: listening at port %d', port);
 });
 
 // Routing
-const currentDirectory = __dirname + '/webapp';
+const currentDirectory = path.join(__dirname, '../', 'webapp');
 app.use(express.static(currentDirectory));
 
 // Connect event
@@ -39,9 +38,9 @@ io.on('connection', function(socket){
 		
 		fs.appendFile(mycontentdir+'/email-addresses.txt', msg+",\n", function (err) {
 			if (err) {
-				console.log('writing mail address to file failed: '+err);
+				console.log('webapp: writing mail address to file failed: '+err);
 			} else {
-				console.log(msg+' successfully added to email-addresses.txt');
+				console.log('webapp:', '\''+msg+'\'', 'added to email-addresses.txt');
 			}
 		});
 	});
@@ -56,7 +55,7 @@ io.on('connection', function(socket){
 	// send photo urls to requesting client
 	socket.on('get latest photos', function(){
 
-		console.log("requested latest photos by webapp");
+		console.log("webapp: requested latest photos by webapp");
 
 		fs.readdir(currentDirectory+'/photos', function(err, files){
 
@@ -70,11 +69,11 @@ io.on('connection', function(socket){
 					}
 				}
 
-				console.log("sending "+files.length+" latest photos to webapp");
+				console.log("webapp: sending "+files.length+" latest photos to webapp");
 
 				io.to(socket.id).emit('new photos', images);
 			} else {
-				console.log("no files to get sent, something went wrong! files="+files);
+				console.log("webapp: no files to send");
 			}			
 		});
 	});
@@ -83,10 +82,7 @@ io.on('connection', function(socket){
 	socket.on('get_config', function(password){
 
 		if (passwordIsValid(password)) {
-			/*configHelper.get(function(config) {
-				io.to(socket.id).emit('get_config', config);
-			});*/
-			io.to(socket.id).emit('get_config', require('./config.json'));
+			io.to(socket.id).emit('get_config', utils.getConfig() );
 		} else {
 			io.to(socket.id).emit('get_config', false);
 		}
@@ -97,43 +93,28 @@ io.on('connection', function(socket){
 
 		if (passwordIsValid(json['password'])) {
 
-			if (json['config']) {
+			utils.saveConfig(json['config'], function (res) {
+				if (res) {
+					const newDevToolState = json['config'].init.showDevTools;
+					const oldDevToolState = utils.getConfig().init.showDevTools;
+					if (newDevToolState != undefined) {
 
-				fs.writeFile(__dirname+'/config.json', JSON.stringify(json['config'], null, "\t"), function (err) {
-					if (err) {
-						console.log('updating config failed: '+err);
-					} else {
-						// force require('./config.json') to be reloaded
-						delete require.cache[require.resolve(__dirname+'/config.json')];
+						if (newDevToolState) {
+							remote.getGlobal('sharedObj').mainWindow.openDevTools();
+						} else {
+							remote.getGlobal('sharedObj').mainWindow.closeDevTools();
+						}
 
-						console.log('config updated: \n'+JSON.stringify(config, null, "\t"));
 					}
-				});
+				} 
+			});
 
-				const newDevToolState = json['config'].init.showDevTools;
-				const oldDevToolState = config.init.showDevTools;
-				if (newDevToolState != undefined) {
-					/*
-					console.log("send ipcRenderer message");
-					var ipcRenderer = require('electron').ipcRenderer;     
-     				ipcRenderer.send('toggle-devTools');*/
-					// toggleDevTools()
-					//mainWindow.webcontents.openDevTools();
-
-					if (newDevToolState) {
-						remote.getGlobal('sharedObj').mainWindow.openDevTools();
-					} else {
-						remote.getGlobal('sharedObj').mainWindow.closeDevTools();
-					}
-
-				}
-			}
 			if (json['option']) {
 
 				if (json['option'] == 'shutdown'){
 					var exec = require('child_process').exec;
 					exec("shutdown now", function (error, stdout, stderr) {
-						console.log(stdout);
+						console.log('webapp: ', stdout);
 					});
 
 				} else if (json['option'] == 'reboot') {
@@ -141,7 +122,7 @@ io.on('connection', function(socket){
 
 					var exec = require('child_process').exec;
 					exec("reboot", function (error, stdout, stderr) {
-						console.log(stdout);
+						console.log('webapp: ', stdout);
 					});
 
 				} else if (json['option'] == 'exit'){
@@ -151,16 +132,16 @@ io.on('connection', function(socket){
 					app.exit();
 				} else if (json['option'] == 'git-pull'){
 
-					console.log("pulling from git repo");
+					console.log("webapp: pulling from git repo");
 					var exec = require('child_process').exec;
 					exec("cd "+__dirname+" && git pull", function (error, stdout, stderr) {
-						console.log("execute 'git pull', stdout: "+stdout);
+						console.log("webapp: execute 'git pull', stdout: "+stdout);
 					});
 				}
 			}
 
 		} else {
-			console.log('password wrong');
+			console.log('webapp: password wrong');
 		}
 
 	});
@@ -168,10 +149,10 @@ io.on('connection', function(socket){
 });
 
 function passwordIsValid(password) {
-	if (config && config.webapp.password) {
-		return (password && password == config.webapp.password);
+	if (utils.getConfig() && utils.getConfig().webapp.password) {
+		return (password && password == utils.getConfig().webapp.password);
 	}
-	console.log('getting password from config.json failed');
+	console.log('webapp: getting password from config.json failed');
 	return false;
 }
 
@@ -179,8 +160,10 @@ function passwordIsValid(password) {
  * Module exports for connection
  */
 module.exports = {
-    sendNewPhoto: function(imgUrlArray){
+    sendNewPhoto: function(filename){
+
+    	var path = path.join(utils.getWebAppPhotosDirectory(), filename);
     	// send new image url to all
-		io.emit('new photos', imgUrlArray);
+		io.emit('new photos', path);
 	}
 };

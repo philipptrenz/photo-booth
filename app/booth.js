@@ -7,16 +7,10 @@ import sharp from 'sharp';
 import 'popper.js';
 import 'bootstrap';
 
-import config from './config.json';
 import webApp from './webapp_server.js';
 
 import { utils } from "./utils.js";
 import { camera } from "./camera.js";
-
-/*
-var utils = require('./utils.js').utils;
-var camera = require('./camera.js').camera;
-*/
 
 camera.initialize(function( res, msg, err) {
   if (!res) {
@@ -64,7 +58,7 @@ $( "body" ).click(function() {
  *                          |
  *                          |
  */
-if (config.init.useGPIO !== undefined ? config.init.useGPIO : true) {
+if (utils.getConfig().init.useGPIO !== undefined ? utils.getConfig().init.useGPIO : true) {
   console.log('GPIO usage activated');
   var gpio = require('rpi-gpio');
   gpio.setMode(gpio.MODE_BCM);
@@ -104,23 +98,21 @@ function takePhoto() {
 
     if (duration == 1) {
 
-      var filename = 'img_'+ utils.getTimestamp(new Date());
-      var filepath = utils.getPhotosDirectory()+'/'+filename+'.jpg';
-      var webFilepath = utils.getPhotoWebDirectory()+filename+'.jpg';
-      var keepImagesOnCamera = config.gphoto2.keep ? config.gphoto2.keep : false;
+      var filename = 'img_'+ utils.getTimestamp(new Date())+'.jpg';
+      var filepath = utils.getPhotosDirectory()+'/'+filename;
+      var keepImagesOnCamera = utils.getConfig().gphoto2.keep ? utils.getConfig().gphoto2.keep : false;
 
-      
       camera.takePicture(filepath, keepImagesOnCamera, function(res, msg, err) {
         if (res) {
           $("#countdown").html( '<div id=\'preview\' style=\'background-image: url(\"'+filepath+'\");\'></div>' );
           utils.prependImage(filepath)        // add image to collage
-          webApp.sendNewPhoto([webFilepath]); // send to web apps
+          webApp.sendNewPhoto([filename]); // send to web apps
           hideCountdown(5); // show picture for 5 seconds then hide
         } else {
             console.error(msg, err);
 
             // TODO: handle error
-            hideCountdown(0)
+            hideCountdown(0);
         }
       });
 

@@ -21,7 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { utils } from "./utils.js";
+import utils from "./utils.js";
 
 var express = require('express');
 var app = express();

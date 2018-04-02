@@ -282,4 +282,5 @@ class Utils {
 /*
  * Module exports for connection
  */
-export let utils = new Utils();
+ let utils = new Utils() 
+export { utils as default };

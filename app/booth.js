@@ -27,8 +27,9 @@ import sharp from 'sharp';
 import 'popper.js';
 import 'bootstrap';
 
-import { utils } from "./utils.js";
-import { camera } from "./camera.js";
+import utils from "./utils.js";
+import camera from "./camera.js";
+import { SpinnerPrompt, CountdownPrompt, PreviewPrompt, CameraErrorPrompt} from "./prompt.js";
 
 import webApp from './webapp_server.js';
 
@@ -45,7 +46,7 @@ camera.initialize(function( res, msg, err) {
  * Trigger photo when clicking / touching anywhere at the screen
  */
 $( "body" ).click(function() {
-  takePhoto();
+  trigger();
 });
 
 
@@ -58,79 +59,86 @@ if (utils.getConfig().init.useGPIO !== undefined ? utils.getConfig().init.useGPI
   gpio.setMode(gpio.MODE_BCM);
   gpio.setup(3, gpio.DIR_IN, gpio.EDGE_BOTH);
   gpio.on('change', function(channel, value) {
-    if (channel == 3 && !value) takePhoto();
+    if (channel == 3 && !value) trigger();
     // NOTE: takePhoto() is secure to don't run twice 
     // at the same time, make sure this is also so for
     // your code.
   });
 }
 
-var isTakingPhoto = false;
-var counter;
-function takePhoto() {
-  // prevent two tasks at the same time!
-  if (isTakingPhoto) return;
-  if (!camera.isInitialized()) {
+var executing = false;
+function trigger() {
 
-    // TODO: notify user 
-    console.error('gphoto2: camera not initialized');
+  if (executing) return;
 
-    return;
-  }
+  executing = true;
 
-  isTakingPhoto = true;
-  var duration = 5;
-  
-  $("#countdown").fadeIn(250);
-  $("#countdown").html('<span class="fadeout">'+duration+'</span>');
+  if (camera.isInitialized()) {
 
-  // event loop
-  counter = setInterval(function () {
-    duration--;
+    
 
-    if (duration > 0)  $("#countdown").html('<span class="fadeout">'+duration+'</span>');
+    var countdownLength = 5; // in seconds
+    var triggerPhotoOffsetBeforeZero = 0.5; // in seconds
 
-    if (duration == 1) {
+    // start countdown and show spinner afterwards
+    var prompt = new CountdownPrompt(countdownLength).start( true, false, function() {
+      prompt = new SpinnerPrompt();
+      // wait a sec for spinner to start
+      setTimeout(function() {
+        prompt.start(true, false);
+      }, 1500);
+    });
 
-      var filename = 'img_'+ utils.getTimestamp(new Date())+'.jpg';
-      var filepath = utils.getPhotosDirectory()+'/'+filename;
-      var keepImagesOnCamera = utils.getConfig().gphoto2.keep ? utils.getConfig().gphoto2.keep : false;
+    // take picture after countdown
+    setTimeout(function() {
 
       camera.takePicture(filepath, keepImagesOnCamera, function(res, msg, err) {
-        if (res) {
-          $("#countdown").html( '<div id=\'preview\' style=\'background-image: url(\"'+filepath+'\");\'></div>' );
-          utils.prependImage(filepath)        // add image to collage
-          webApp.sendNewPhoto([filename]); // send to web apps
-          hideCountdown(5); // show picture for 5 seconds then hide
-        } else {
-            console.error(msg, err);
 
-            // TODO: handle error
-            hideCountdown(0);
-        }
+        prompt.stop(true, false, function() { // stop spinner if image is ready
+
+            if (res) {
+              // after that show preview
+              prompt = new PreviewPrompt(filepath, 8).start(false, false, function() {
+                // end photo task after preview ended
+                executing = false;
+              });
+
+              utils.prependImage(filepath);     // add image to collage
+              webApp.sendNewPhoto([filename]);  // send image to connected web clients
+
+            } else {
+
+              // TODO: Error handling
+
+            }
+
+        });
+
       });
 
-    }
+    }, (countdownLength-triggerPhotoOffsetBeforeZero)*1000);
 
-    if (duration == 0) $("#countdown").html('');
+  } else {
 
-    if (duration == -2) {
-      $("#countdown").html('<div class="loading"><i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i></div>');
-    }
-  }, 1000);
-}
+    // TODO: Handle uninitialized camera
 
-function hideCountdown(delay) {
-  clearInterval(counter);
-  var waiter = setInterval(function() {
-    $("#countdown").addClass("fadeout");
-    var wait = setInterval(function() {
-      $("#countdown").hide();
-      $("#countdown").removeClass("fadeout");
-      $("#countdown").html('');
-      isTakingPhoto = false;
-      clearInterval(wait);
-    }, 500);
-    clearInterval(waiter);
-  }, delay*1000);
+    camera.initialize(function( res, msg, err) {
+      if (res) {
+
+        executing = false;
+        trigger();
+
+      } else {
+
+        // TODO: handle error
+        new CameraErrorPrompt(5).start(false, false, function() {
+          executing = false;
+        })
+
+      }
+
+    });
+
+  }
+  
 }

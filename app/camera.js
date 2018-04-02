@@ -21,7 +21,7 @@
 import sharp from 'sharp';
 import gphoto2 from 'gphoto2';
 
-import { utils } from "./utils.js";
+import utils from "./utils.js";
 
 class Camera {
 
@@ -116,4 +116,5 @@ class Camera {
 /*
  * Module exports for connection
  */
-export let camera = new Camera();
+ let camera = new Camera();
+export { camera as default };

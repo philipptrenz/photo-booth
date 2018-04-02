@@ -116,8 +116,7 @@ button {
     -webkit-filter: brightness(80%);
 }
 
-#countdown {	
-	font-size: 25vw;
+#prompt {	
 	text-align: center;
 
 	position:fixed;
@@ -128,12 +127,12 @@ button {
     left:0;
 
     width: 100%;
-    /*height: 100%;*/
+    height: 100%;
 
     z-index: 1000;
     display: none;
 
-    background: black;
+    background: rgba(0,0,0,0.8);
     background-size: cover;
     background-repeat: no-repeat;
 
@@ -142,7 +141,7 @@ button {
   	justify-content: center;
 }
 
-#countdown #preview {
+#prompt #preview {
 	position: fixed;
     padding:0;
     margin:0;
@@ -161,35 +160,32 @@ button {
 	animation-timing-function: ease-in;
 }
 
-#countdown.fadeout {
+#prompt.fadeout {
 	animation: fadeout 0.5s;
 	animation-timing-function: ease-out;
 }
 
-#countdown span {
+#prompt span {
+    font-size: 25vw;
 	position:absolute;
 	display: block;
 }
 
-#countdown span.fadeout {
-	animation: fadeout 1s;
-	animation-timing-function: ease-out;
-}
-#countdown span.fadein {
-	font-size: 5vw;
-	animation: fadein 1s;
-	animation-timing-function: ease-in;
-}
-
-#countdown .loading {
-	animation: fadein 1s;
-	animation-timing-function: ease-out;
+#prompt .loading {
 	position:absolute;
 }
 
-#countdown .loading i {
+#prompt .loading i {
 	text-align: center;
 	display: inline-block;
+}
+
+#prompt .error {
+    font-size: 10vw;
+}
+
+#prompt .error p {
+    font-size: 5vw;
 }
 
 .fa {

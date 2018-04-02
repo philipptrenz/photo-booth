@@ -29,7 +29,7 @@ import 'bootstrap';
 
 import utils from "./utils.js";
 import camera from "./camera.js";
-import { SpinnerPrompt, CountdownPrompt, PreviewPrompt, CameraErrorPrompt} from "./prompt.js";
+import { SpinnerPrompt, CountdownPrompt, PreviewPrompt, CameraErrorPrompt, CameraErrorOnStartupPrompt} from "./prompt.js";
 
 import webApp from './webapp_server.js';
 
@@ -38,6 +38,7 @@ camera.initialize(function( res, msg, err) {
     console.error('camera:', msg, err);
 
     // TODO: handle error
+    new CameraErrorOnStartupPrompt(-1).start(false, false);
 
   }
 });

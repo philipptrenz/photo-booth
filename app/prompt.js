@@ -97,12 +97,16 @@ class PreviewPrompt extends Prompt {
 class CameraErrorPrompt extends Prompt {
 
 	constructor(duration) {
-		super('<div class="error"><i class="fa fa-camera" aria-hidden="true"></i>  Whoops ...<br /><p>Something went wrong, please<br />check the camera and try again</p></div>', duration);
+		super('<div class="error"><i class="fa fa-camera" aria-hidden="true"></i>  Whoops ...<br /><p>Something went wrong, please check the camera and try again</p></div>', duration);
 	}
 }
 
+class CameraErrorOnStartupPrompt extends Prompt {
 
-
+	constructor(duration) {
+		super('<div class="error"><i class="fa fa-camera" aria-hidden="true"></i>  Whoops ...<br /><p>No camera could be found. Please check the connection and test it by triggering a photo</p></div>', duration);
+	}
+}
 
 
 class CountdownPrompt {
@@ -176,4 +180,4 @@ class CountdownPrompt {
 /*
  * Module exports for connection
  */
-export { Prompt as default, SpinnerPrompt, CountdownPrompt, PreviewPrompt, CameraErrorPrompt };
+export { Prompt as default, SpinnerPrompt, CountdownPrompt, PreviewPrompt, CameraErrorPrompt, CameraErrorOnStartupPrompt };

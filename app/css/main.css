@@ -182,6 +182,7 @@ button {
 
 #prompt .error {
     font-size: 10vw;
+    padding: 0 7vw;
 }
 
 #prompt .error p {

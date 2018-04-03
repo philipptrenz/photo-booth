@@ -40,7 +40,7 @@ class Camera {
 		var self = this;
 		this.GPhoto.list(function (list) {
 			if (list.length === 0) {
-				callback(false, 'camera not found', null);
+				callback(false, 'No camera found', null);
 				return;
 			}
 			self.camera = list[0];
@@ -76,23 +76,20 @@ class Camera {
 	}
 
 	takePicture(filepath, keep, callback) {
+		var self = this;
 
-		if (this.camera === undefined) {
-			callback(false, 'camera not initialized', null);
+		if (self.camera === undefined) {
+			callback(-1, 'camera not initialized', null);
 			return;
 		}
 
-		var self = this;
 		const maxImageSize = utils.getConfig().maxImageSize ? utils.getConfig().maxImageSize : 1500;
 
-		this.camera.takePicture({ download: true, keep: keep }, function (err, data) {
+		self.camera.takePicture({ download: true, keep: keep }, function (err, data) {
 
 			if (err) {
-				if (err == -7) {
-					callback(false, 'connecting to camera failed, PTP I/O Error', err);
-				} else {
-					callback(false, 'connecting to camera failed', err);
-				}
+				self.camera == undefined;	// needs to be reinitialized
+				callback(-2, 'connection to camera failed', err);
 				return;
 			} 
 
@@ -101,9 +98,9 @@ class Camera {
 				.toFile(filepath, function(err) {
 					
 				if (err) {
-					callback(false, 'resizing image failed', err)
+					callback(-3, 'resizing image failed', err)
 				} else {
-					callback(true);
+					callback(0);
 				}
 			});
 

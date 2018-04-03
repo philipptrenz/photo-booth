@@ -29,7 +29,14 @@ import 'bootstrap';
 
 import utils from "./utils.js";
 import camera from "./camera.js";
-import { SpinnerPrompt, CountdownPrompt, PreviewPrompt, CameraErrorPrompt, CameraErrorOnStartupPrompt} from "./prompt.js";
+import { 
+  SpinnerPrompt, 
+  CountdownPrompt, 
+  PreviewPrompt, 
+  CameraErrorPrompt, 
+  CameraErrorOnStartupPrompt, 
+  SharpErrorPrompt
+} from "./prompt.js";
 
 import webApp from './webapp_server.js';
 
@@ -97,7 +104,7 @@ function trigger() {
 
         prompt.stop(true, false, function() { // stop spinner if image is ready
 
-            if (res) {
+            if (res == 0) {
               // after that show preview
               prompt = new PreviewPrompt(filepath, 8).start(false, false, function() {
                 // end photo task after preview ended
@@ -109,8 +116,15 @@ function trigger() {
 
             } else {
 
-              // TODO: Error handling
+              console.error(mgs, '\n', err);
 
+              if (res == -1 ) {  // camera not initialized
+                new CameraErrorPrompt(5).start(false, false, function() { executing = false; });
+              } else if (res == -2) { // gphoto2 error
+                new CameraErrorPrompt(5).start(false, false, function() { executing = false; });
+              } else if (res == -3) { // sharp error
+                 new SharpErrorPrompt(5).start(false, false, function() { executing = false; });
+              }
             }
 
         });

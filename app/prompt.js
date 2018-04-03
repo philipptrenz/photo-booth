@@ -104,7 +104,14 @@ class CameraErrorPrompt extends Prompt {
 class CameraErrorOnStartupPrompt extends Prompt {
 
 	constructor(duration) {
-		super('<div class="error"><i class="fa fa-camera" aria-hidden="true"></i>  Whoops ...<br /><p>No camera could be found. Please check the connection and test it by triggering a photo</p></div>', duration);
+		super('<div class="error"><i class="fa fa-camera" aria-hidden="true"></i>  Whoops ...<br /><p>No camera found. Please check the connection and test it by triggering a photo</p></div>', duration);
+	}
+}
+
+class SharpErrorPrompt extends Prompt {
+
+	constructor(duration) {
+		super('<div class="error"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  Whoops ...<br /><p>Something went wrong when saving the photo, please try again</p></div>', duration);
 	}
 }
 
@@ -127,7 +134,7 @@ class CountdownPrompt {
 			self.active = true;
 			$(self.container).fadeIn(250);
 
-			// first run immediatly	
+			// first time run immediatly	
 			self.html = self.htmlPre + self.duration + self.htmlPost;
 			$(self.container).html(self.html);
 			$(self.container).children().fadeOut(900);
@@ -180,4 +187,4 @@ class CountdownPrompt {
 /*
  * Module exports for connection
  */
-export { Prompt as default, SpinnerPrompt, CountdownPrompt, PreviewPrompt, CameraErrorPrompt, CameraErrorOnStartupPrompt };
+export { Prompt as default, SpinnerPrompt, CountdownPrompt, PreviewPrompt, CameraErrorPrompt, CameraErrorOnStartupPrompt, SharpErrorPrompt };

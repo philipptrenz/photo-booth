@@ -1,13 +1,14 @@
 {
   "name": "photo-booth",
   "version": "1.0.0",
-  "description": "A multi-platform photo booth software using Electron, gPhoto2 and your camera",
+  "description": "A multi-platform photo booth software using Electron and your camera",
   "main": "main.js",
   "author": "Philipp Trenz",
   "license": "GPL-3.0",
   "repository": "https://github.com/philipptrenz/photo-booth",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "rebuild": "electron-rebuild"
   },
   "keywords": [
     "Photo Booth",
@@ -19,9 +20,9 @@
   ],
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",
-    "electron": "^1.8.4",
-    "electron-prebuilt-compile": "^1.8.4",
-    "electron-rebuild": "^1.7.2"
+    "electron": "1.7.13",
+    "electron-prebuilt-compile": "1.7.13",
+    "electron-rebuild": "1.7.3"
   },
   "dependencies": {
     "babel-preset-env": "^1.6.1",

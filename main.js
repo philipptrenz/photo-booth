@@ -1,20 +1,20 @@
 /* 
- * This file is part of "photo booth" 
+ * This file is part of "photo-booth"
  * Copyright (c) 2018 Philipp Trenz
  *
  * For more information on the project go to
  * <https://github.com/philipptrenz/photo-booth>
- * 
- * This program is free software: you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -34,7 +34,7 @@ var config = require('./config.json');
 function createWindow () {
 
   var fullscreen = config.init.fullscreen !== undefined ? config.init.fullscreen:true;
-  
+
   var width;
   var height;
   try {
@@ -44,14 +44,14 @@ function createWindow () {
     width = 800;
     height = 600;
     console.log('loading width and height from config.json failed, fallback to 1440x900 \n'+err)
-  } 
+  }
 
   var windowSettings = {
     fullscreen: fullscreen,
-    width: width, 
-    height: height, 
+    width: width,
+    height: height,
     backgroundColor: '#000000'
-  }; 
+  };
 
   console.log('window settings: '+JSON.stringify(windowSettings));
 

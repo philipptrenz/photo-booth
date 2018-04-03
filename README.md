@@ -17,13 +17,14 @@ Because of the use of gphoto2 it works with nearly any camera like plug and play
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) and [gphoto2](http://gphoto.sourceforge.net/) installed on your computer. 
 
-I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). It will probably not work on Windows, but please try it out. Anyway, the documentation here will be focused on Linux based systems. 
+I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). It will probably not work on Windows. Anyway, the documentation here will be focused on Linux based systems. 
 
 **For Raspbian JESSIE:**
 
 ```bash
 # Install needed dependencies
-sudo apt-get install git npm libxss-dev libgconf-2-4 libnss3
+sudo apt update
+sudo apt install git libxss-dev libgconf-2-4 libnss3 npm
 
 # Install latest version of libgphoto2
 sudo wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh 
@@ -34,12 +35,11 @@ sudo apt-get install libgl1-mesa-dri
 sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
 # Clone this repository
-git clone https://github.com/philipptrenz/photo-booth
+git clone https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth
 # Install dependencies and run the app
 npm install && ./node_modules/.bin/electron-rebuild
-sudo npm start
 ```
 
 
@@ -47,9 +47,11 @@ sudo npm start
 
 ```bash
 # Install needed dependencies
-sudo apt-get install git libxss-dev libgconf-2-4 libnss3
-git clone https://github.com/audstanley/NodeJs-Raspberry-Pi-Arm7 && cd NodeJs-Raspberry-Pi-Arm7 
-sudo chmod +x Install-Node.sh && sudo ./Install-Node.sh
+sudo apt update
+sudo apt install git libxss-dev libgconf-2-4 libnss3
+
+# Install node
+sudo wget -O - https://raw.githubusercontent.com/audstanley/NodeJs-Raspberry-Pi/master/Install-Node.sh | sudo bash;
 
 # Install latest version of libgphoto2
 sudo wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh 
@@ -60,19 +62,33 @@ sudo apt-get install libgl1-mesa-dri
 sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
 # Clone this repository
-git clone https://github.com/philipptrenz/photo-booth
+git clone https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth
 # Install dependencies and run the app
 npm install && ./node_modules/.bin/electron-rebuild
+```
+
+
+## Run photo-booth
+
+To run photo-booth the following command should do it for systems with GUI:
+
+```
+npm start
+```
+
+
+If you want to use the webapp or a hardware button to trigger photos connected to the GPIOs of your Pi, photo-booth has to run with root privileges:
+
+```
 sudo npm start
 ```
 
-**NOTE:** For using GPIOs and the web server the application has to run as root (use `sudo`)!
-
 **HINT:** The little linux tool `unclutter` can hide the cursor.
 
-If you run into any problems feel free to report an issue, I'll try to help!
+
+I personally run photo-booth on a `Raspbian Lite` image directly on X, for this case you can use the `start.sh` script to run photo-booth at boot as described below.
 
  
 ## Configure it

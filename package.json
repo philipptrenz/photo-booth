@@ -1,7 +1,7 @@
 {
   "name": "photo-booth",
   "version": "1.0.0",
-  "description": "A Photo Booth Software using Electron, gPhoto2, Python and your Camera",
+  "description": "A multi-platform photo booth software using Electron, gPhoto2 and your camera",
   "main": "main.js",
   "author": "Philipp Trenz",
   "license": "GPL-3.0",
@@ -13,7 +13,9 @@
     "Photo Booth",
     "photo-booth",
     "gphoto2",
-    "Electron"
+    "Electron",
+    "photography",
+    "Raspberry-Pi"
   ],
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",

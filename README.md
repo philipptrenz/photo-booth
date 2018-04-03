@@ -1,15 +1,15 @@
-# photo booth
+# photo-booth
 
 **A multi-platform Photo Booth Software using Electron, gphoto2 and your camera**
 
-![photo booth image from The Verge](https://cdn.vox-cdn.com/thumbor/gkbHIytNYvEPwbLLVxmVuTA5cjM=/1600x0/filters:no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/9062729/akrales_170815_1889_0006.jpg)
+![photo-booth image from The Verge](https://cdn.vox-cdn.com/thumbor/gkbHIytNYvEPwbLLVxmVuTA5cjM=/1600x0/filters:no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/9062729/akrales_170815_1889_0006.jpg)
 (Source: [The Verge](https://www.theverge.com/circuitbreaker/2017/8/24/16193418/diy-photo-booth-party-wedding-dlsr-camera-how-to-build-raspberry-pi), accessed 08 March 2018)
 
 ## How it works
 
 Simply connect your camera (e.g. I have a Nikon D5300) via USB or even via wifi to the computer running this application. The app shows a countdown by clicking at the screen (or tapping at a touchscreen), triggers your camera to take a photo, downloads it from your camera, shrinks it to a smaller size and displays it on the screen. First in fullscreen, then added to a gallery of previous taken photos.
 
-photo booth also provides a web application by running a webserver. Every newly taken photo gets pushed to the website and displayed. From there it's easy to download all images. There's also the option to leave a e-mail address for sending the photos afterwards.
+photo-booth also provides a web application by running a webserver. Every newly taken photo gets pushed to the website and displayed. From there it's easy to download all images. There's also the option to leave a e-mail address for sending the photos afterwards.
 
 Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices you can found [here](http://gphoto.org/proj/libgphoto2/support.php).
 
@@ -119,9 +119,9 @@ Some notes to this:
 
 ## Let everyone download their photos via wifi
 
-As mentioned above photo booth has a built in web page where images can be downloaded. 
+As mentioned above photo-booth has a built in web page where images can be downloaded. 
 
-For an easy way to use it, start a open wifi hotspot on the computer photo booth runs on. If you use a Raspberry Pi, there're enough tutorials out there to figure it out (i.e. [here](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md). Then connect your device, e.g. a smartphone, with the wifi, open your browser and type in the ip address of the Pi. More elegant is it to configure a DNS redirect so the users can type in a web address like "photo.booth", therefor I use dnsmasq which is also configured as DHCP server.
+For an easy way to use it, start a open wifi hotspot on the computer photo-booth runs on. If you use a Raspberry Pi, there're enough tutorials out there to figure it out (i.e. [here](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md). Then connect your device, e.g. a smartphone, with the wifi, open your browser and type in the ip address of the Pi. More elegant is it to configure a DNS redirect so the users can type in a web address like "photo.booth", therefor I use dnsmasq which is also configured as DHCP server.
 
 ## Use a push button to trigger photos
 
@@ -151,7 +151,7 @@ Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then c
                           |
 ```
 
-## Run photo booth on boot of your Raspberry Pi
+## Run photo-booth on boot of your Raspberry Pi
 
 It's as easy as this:
 ```
@@ -170,7 +170,7 @@ If you have any problems, start reading here. If you do not find anything, check
 
 Go to `config.json` and change `grayscaleMode` to `false`.
 
-### photo booth is starting up, but I have just a black screen and the console says `module version mismatch expected 50, got ...`
+### photo-booth is starting up, but I have just a black screen and the console says `module version mismatch expected 50, got ...`
 
 Just run `./node_modules/.bin/electron-rebuild` again.
 

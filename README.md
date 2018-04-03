@@ -19,31 +19,7 @@ To clone and run this repository you'll need [Git](https://git-scm.com), [Node.j
 
 I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). It will probably not work on Windows. Anyway, the documentation here will be focused on Linux based systems. 
 
-**For Raspbian JESSIE:**
-
-```bash
-# Install needed dependencies
-sudo apt update
-sudo apt install git libxss-dev libgconf-2-4 libnss3 npm
-
-# Install latest version of libgphoto2
-sudo wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh 
-sudo chmod +x gphoto2-updater.sh && sudo ./gphoto2-updater.sh
-
-# If you want to use a Raspberry Pi > 1: Activate hardware acceleration
-sudo apt-get install libgl1-mesa-dri
-sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
-
-# Clone this repository
-git clone https://github.com/philipptrenz/photo-booth.git
-# Go into the repository
-cd photo-booth
-# Install dependencies and run the app
-npm install && ./node_modules/.bin/electron-rebuild
-```
-
-
-**For Raspbian STRETCH:**
+**Raspbian STRETCH:**
 
 ```bash
 # Install needed dependencies
@@ -66,7 +42,7 @@ git clone https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth
 # Install dependencies and run the app
-npm install && ./node_modules/.bin/electron-rebuild
+npm install && npm run rebuild
 ```
 
 

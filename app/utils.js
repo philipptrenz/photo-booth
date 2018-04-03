@@ -28,7 +28,11 @@ import sharp from 'sharp';
 class Utils {
 
   constructor() {
-    this.config_path = path.join(__dirname, '../', './config.json');
+
+    var defaultConfig = path.join(__dirname, '../', './config.json');
+    var ownConfig = path.join(__dirname, '../', './my.config.json');
+    this.config_path = fs.existsSync(ownConfig) ? ownConfig : defaultConfig;
+
     this.defaultContentDirectory = path.join(__dirname, '../', '/content');
     this.webappSymlink = path.join(__dirname, "../", "./webapp/photos");
 

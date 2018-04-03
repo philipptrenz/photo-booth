@@ -29,7 +29,14 @@ const ipcMain = electron.ipcMain;
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-var config = require('./config.json');
+var fs = require('fs')
+var path = require('path')
+
+var defaultConfig = path.join(__dirname, './config.json')
+var ownConfig = path.join(__dirname, './my.config.json')
+var config = fs.existsSync(ownConfig) ? require(ownConfig) : require(defaultConfig)
+
+console.log('using', (fs.existsSync(ownConfig) ? 'own' : 'default'), 'config.json')
 
 function createWindow () {
 

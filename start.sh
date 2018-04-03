@@ -11,4 +11,4 @@
 ### END INIT INFO
 
 # run photo-booth
-sudo startx /home/pi/photo-booth/node_modules/.bin/electron /home/pi/photo-booth/ -- -nocursor &
+sudo startx /home/pi/photo-booth/node_modules/.bin/electron /home/pi/photo-booth/ -- -nocursor

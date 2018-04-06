@@ -84,15 +84,16 @@ It looks like this:
 		"grayscaleMode": true,
 		"preventScreensaver": false
 	},
-	"maxImageSize": "1500",
+	"maxImageSize": 1500,
 	"gphoto2": {
 		"capturetarget": 1,
-		"keep": true
+		"keep": true,
+		"keepImagesOnCamera": false
 	},
-	"errorMessage": "<i class='fa fa-exclamation-circle' aria-hidden='true' style='font-size: 1em; padding-right: 10px;'></i> Oh shit ...",
-	"content_dir": "",
+	"content_dir": null,
 	"webapp": {
-		"password": "test"
+		"password": "test",
+		"maxDownloadImageSize": 1000
 	},
 	"branding": {
 		"type": "text",

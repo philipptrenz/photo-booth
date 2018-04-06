@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/philipptrenz/photo-booth.svg?branch=dev)](https://travis-ci.org/philipptrenz/photo-booth)
 
-**DEV branch**
+A multi-platform Photo Booth Software using Electron, gphoto2 and your camera
 
 
 ## How it works

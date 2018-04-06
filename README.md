@@ -153,17 +153,6 @@ Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then c
                           |
 ```
 
-## Run photo-booth on boot of your Raspberry Pi
-
-It's as easy as this:
-```
-sudo cp start.sh /etc/init.d/photo-booth
-sudo chmod 755 /etc/init.d/photo-booth
-sudo update-rc.d photo-booth defaults
-```
-
-Now start the service via `sudo service photo-booth start` and check its status with `sudo service photo-booth status`.
-
 ## Common issues
 
 If you have any problems, start reading here. If you do not find anything, check under [Issues](https://github.com/philipptrenz/photo-booth/issues), if someone else already had a similar problem. If you still have no solution, open a new issue.

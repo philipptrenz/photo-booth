@@ -1,4 +1,4 @@
-# photo-booth
+# photo-booth – DEV branch
 
 [![Build Status](https://travis-ci.org/philipptrenz/photo-booth.svg?branch=dev)](https://travis-ci.org/philipptrenz/photo-booth)
 

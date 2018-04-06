@@ -11,7 +11,7 @@ Simply connect your camera (e.g. I have a Nikon D5300) via USB or even via wifi 
 
 photo-booth also provides a web application by running a webserver. Every newly taken photo gets pushed to the website and displayed. From there it's easy to download all images. There's also the option to leave a e-mail address for sending the photos afterwards.
 
-Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices you can found [here](http://gphoto.org/proj/libgphoto2/support.php).
+Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices can be found [here](http://gphoto.org/proj/libgphoto2/support.php).
 
 ## Installation
 

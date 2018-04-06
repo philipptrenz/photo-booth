@@ -104,7 +104,7 @@ class CameraErrorPrompt extends Prompt {
 class CameraErrorOnStartupPrompt extends Prompt {
 
 	constructor(duration) {
-		super('<div class="error"><i class="fa fa-camera" aria-hidden="true"></i>  Whoops ...<br /><p>No camera found. Please check the connection and test by triggering a photo</p></div>', duration);
+		super('<div class="error"><i class="fa fa-camera" aria-hidden="true"></i>  Oh no ...<br /><p>No camera found. Please check the connection and test by triggering a photo</p></div>', duration);
 	}
 }
 

@@ -101,19 +101,25 @@ It looks like this:
 	}
 }
 ```
-Some notes to this:
 
-* Booleans are always `true` or `false`
+Best way to modify the `config.json` is by copying it to `my.config.json`, photo-booth will prefer the latter one:
+```
+cp config.json my.config.json
+```
+
+
+Some notes:
+
 * Images get shrinked after got downloaded from the camera, set the size with maxImageWidth
 * You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned off. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so. This should be your first try if a photo gets taken, but it won't show up at the screen.
 * If you want to keep images on camera, set `keep` to `true`
 * The errorMessage is pure HTML, just fill in whatever you want
 
-## Let everyone download their photos via wifi
+## How to use the integrated Webapp
 
 As mentioned above photo-booth has a built in web page where images can be downloaded. 
 
-For an easy way to use it, start a open wifi hotspot on the computer photo-booth runs on. If you use a Raspberry Pi, there're enough tutorials out there to figure it out (i.e. [here](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md). Then connect your device, e.g. a smartphone, with the wifi, open your browser and type in the ip address of the Pi. More elegant is it to configure a DNS redirect so the users can type in a web address like "photo.booth", therefor I use dnsmasq which is also configured as DHCP server.
+For an easy way to use it, start a open wifi hotspot on the computer photo-booth runs on. If you use a Raspberry Pi, there're enough tutorials out there to figure it out (i.e. [here](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md). Then connect your device, e.g. a smartphone, with the wifi, open your browser and type in the ip address of the Pi. More elegant is it to configure a DNS redirect so the users can type in a web address like "photo.app", therefore I use `dnsmasq` which is also configured as DHCP server.
 
 ## Use a push button to trigger photos
 

@@ -11,7 +11,7 @@ Simply connect your camera (e.g. I have a Nikon D5300) via USB or even via wifi 
 
 photo-booth also provides a web application by running a webserver. Every newly taken photo gets pushed to the website and displayed. From there it's easy to download all images. There's also the option to leave a e-mail address for sending the photos afterwards.
 
-Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices you can found [here](http://gphoto.org/proj/libgphoto2/support.php).
+Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices can be found [here](http://gphoto.org/proj/libgphoto2/support.php).
 
 ## Installation
 
@@ -34,14 +34,14 @@ sudo wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphot
 sudo chmod +x gphoto2-updater.sh && sudo ./gphoto2-updater.sh
 
 # If you want to use a Raspberry Pi > 1: Activate hardware acceleration
-sudo apt-get install libgl1-mesa-dri
+sudo apt install libgl1-mesa-dri
 sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
 # Clone this repository
-git clone https://github.com/philipptrenz/photo-booth.git
+git clone -b dev https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth
-# Install dependencies and run the app
+# Install dependencies
 npm install && npm run rebuild
 ```
 

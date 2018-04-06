@@ -37,7 +37,7 @@ sudo chmod +x gphoto2-updater.sh && sudo ./gphoto2-updater.sh
 sudo apt install libgl1-mesa-dri
 sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
-# Clone this repository
+# Clone the dev branch of this repository
 git clone -b dev https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth

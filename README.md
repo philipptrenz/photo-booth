@@ -42,7 +42,8 @@ git clone -b dev https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth
 # Install dependencies
-npm install && npm run rebuild
+npm install
+npm run rebuild
 ```
 
 

@@ -38,7 +38,7 @@ sudo apt-get install libgl1-mesa-dri
 sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
 # Clone this repository
-git clone https://github.com/philipptrenz/photo-booth.git
+git clone -b dev https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth
 # Install dependencies and run the app

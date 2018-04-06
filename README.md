@@ -34,7 +34,7 @@ sudo wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphot
 sudo chmod +x gphoto2-updater.sh && sudo ./gphoto2-updater.sh
 
 # If you want to use a Raspberry Pi > 1: Activate hardware acceleration
-sudo apt-get install libgl1-mesa-dri
+sudo apt install libgl1-mesa-dri
 sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
 # Clone this repository

@@ -171,7 +171,7 @@ Go to `config.json` and change `grayscaleMode` to `false`.
 
 ### photo-booth is starting up, but I have just a black screen and the console says `module version mismatch expected 50, got ...`
 
-Just run `./node_modules/.bin/electron-rebuild` again.
+Just run `npm run rebuild` again.
 
 ### My camera takes a photo, but it does not show up
 

@@ -113,8 +113,10 @@ function trigger() {
                 executing = false;
               });
 
-              utils.prependImage(message1);     // add image to collage
-              webApp.sendNewPhoto(message2);  // send image to connected web clients
+              setTimeout(function() {
+                utils.prependImage(message1);     // add image to collage
+                webApp.sendNewPhoto(message2);  // send image to connected web clients
+              }, 1000);
 
             } else {
 

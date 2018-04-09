@@ -193,8 +193,8 @@ function passwordIsValid(password) {
 module.exports = {
     sendNewPhoto: function(filename){
 
-    	var path = path.join(utils.getWebAppPhotosDirectory(), filename);
+    	var new_image_path = path.join(utils.getWebAppPhotosDirectory(), filename);
     	// send new image url to all
-		io.emit('new photos', path);
+		io.emit('new photos', new_image_path);
 	}
 };

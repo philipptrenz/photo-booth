@@ -200,7 +200,7 @@ class Utils {
     }
   }
 
-  getTimestamp(now) {
+  getTimestamp(now = new Date()) {
     var secs = now.getSeconds() < 10 ? '0'+now.getSeconds() : now.getSeconds();
     var mins = now.getMinutes() < 10 ? '0'+now.getMinutes() : now.getMinutes();
     var hours = now.getHours() < 10 ? '0'+now.getHours() : now.getHours();

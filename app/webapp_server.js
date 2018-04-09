@@ -191,10 +191,8 @@ function passwordIsValid(password) {
  * Module exports for connection
  */
 module.exports = {
-    sendNewPhoto: function(filename){
-
-    	var new_image_path = path.join(utils.getWebAppPhotosDirectory(), filename);
+    sendNewPhoto: function(webFilePath){
     	// send new image url to all
-		io.emit('new photos', new_image_path);
+		io.emit('new photos', [webFilePath]);
 	}
 };

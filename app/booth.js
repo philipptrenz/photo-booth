@@ -99,23 +99,26 @@ function trigger() {
     // take picture after countdown
     setTimeout(function() {
 
-      camera.takePicture(function(res, msg, err) {
+      camera.takePicture(function(res, msg1, msg2) {
+
+        const message1 = msg1;
+        const message2 = msg2
 
         prompt.stop(true, false, function() { // stop spinner if image is ready
 
             if (res == 0) {
               // after that show preview
-              prompt = new PreviewPrompt(msg, 8).start(false, false, function() {
+              prompt = new PreviewPrompt(message1, 8).start(false, false, function() {
                 // end photo task after preview ended
                 executing = false;
               });
 
-              utils.prependImage(msg);     // add image to collage
-              webApp.sendNewPhoto(msg);  // send image to connected web clients
+              utils.prependImage(message1);     // add image to collage
+              webApp.sendNewPhoto(message2);  // send image to connected web clients
 
             } else {
 
-              console.error(mgs, '\n', err);
+              console.error(message1, '\n', message2);
 
               if (res == -1 ) {  // camera not initialized
                 new CameraErrorPrompt(5).start(false, false, function() { executing = false; });

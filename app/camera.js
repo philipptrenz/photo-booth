@@ -83,8 +83,8 @@ class Camera {
 			return;
 		}
 
-		var filepath = utils.getPhotosDirectory() + "img_" + utils.getTimestamp() + ".jpg";
-
+		const filepath = utils.getPhotosDirectory() + "img_" + utils.getTimestamp() + ".jpg";
+		const webFilepath = utils.getWebAppPhotosDirectory() + "img_" + utils.getTimestamp() + ".jpg";
 		const maxImageSize = utils.getConfig().maxImageSize ? utils.getConfig().maxImageSize : 1500;
 		const keep = utils.getConfig().gphoto2.keep === true ?  true : false;
 
@@ -103,7 +103,7 @@ class Camera {
 				if (err) {
 					callback(-3, 'resizing image failed', err)
 				} else {
-					callback(0, filepath);
+					callback(0, filepath, webFilepath);
 				}
 			});
 

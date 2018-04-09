@@ -131,7 +131,7 @@ class Utils {
       fs.symlinkSync(this.photosDir, this.webappSymlink);
       this.webappSymlinkInitialized = true;
     }
-    return './photos';
+    return 'photos/';
   }
 
   // ---------------------------------------------------- //

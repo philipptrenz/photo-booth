@@ -105,13 +105,13 @@ function trigger() {
 
             if (res == 0) {
               // after that show preview
-              prompt = new PreviewPrompt(filepath, 8).start(false, false, function() {
+              prompt = new PreviewPrompt(msg, 8).start(false, false, function() {
                 // end photo task after preview ended
                 executing = false;
               });
 
-              utils.prependImage(filepath);     // add image to collage
-              webApp.sendNewPhoto([filename]);  // send image to connected web clients
+              utils.prependImage(msg);     // add image to collage
+              webApp.sendNewPhoto([msg]);  // send image to connected web clients
 
             } else {
 

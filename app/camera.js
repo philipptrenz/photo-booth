@@ -103,7 +103,7 @@ class Camera {
 				if (err) {
 					callback(-3, 'resizing image failed', err)
 				} else {
-					callback(0);
+					callback(0, filepath);
 				}
 			});
 

@@ -75,7 +75,7 @@ class Camera {
 		});
 	}
 
-	takePicture(filepath, keep, callback) {
+	takePicture(callback) {
 		var self = this;
 
 		if (self.camera === undefined) {
@@ -83,7 +83,10 @@ class Camera {
 			return;
 		}
 
+		var filepath = utils.getPhotosDirectory() + "img_" + utils.getTimestamp() + ".jpg";
+
 		const maxImageSize = utils.getConfig().maxImageSize ? utils.getConfig().maxImageSize : 1500;
+		const keep = utils.getConfig().gphoto2.keep === true ?  true : false;
 
 		self.camera.takePicture({ download: true, keep: keep }, function (err, data) {
 

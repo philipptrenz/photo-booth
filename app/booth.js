@@ -22,7 +22,6 @@
 import 'util';
 
 import $ from 'jquery';
-import sharp from 'sharp';
 
 import 'popper.js';
 import 'bootstrap';
@@ -100,10 +99,7 @@ function trigger() {
     // take picture after countdown
     setTimeout(function() {
 
-      var filepath = utils.getPhotosDirectory() + "img_" + utils.getTimestamp() + ".jpg";
-      console.log(filepath);
-
-      camera.takePicture(filepath, keepImagesOnCamera, function(res, msg, err) {
+      camera.takePicture(function(res, msg, err) {
 
         prompt.stop(true, false, function() { // stop spinner if image is ready
 

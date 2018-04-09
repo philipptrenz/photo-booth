@@ -111,13 +111,14 @@ function trigger() {
               // after that show preview
               prompt = new PreviewPrompt(message1, previewDuration).start(false, false, function() {
                 // end photo task after preview ended
+                setTimeout(function() {
+                  utils.prependImage(message1);     // add image to collage
+                }, 500);
+                
                 executing = false;
               });
 
-              setTimeout(function() {
-                utils.prependImage(message1);     // add image to collage
-                webApp.sendNewPhoto(message2);  // send image to connected web clients
-              }, (previewDuration+1)*1000);
+              webApp.sendNewPhoto(message2);  // send image to connected web clients
 
             } else {
 

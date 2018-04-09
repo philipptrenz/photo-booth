@@ -111,7 +111,7 @@ function trigger() {
               });
 
               utils.prependImage(msg);     // add image to collage
-              webApp.sendNewPhoto([msg]);  // send image to connected web clients
+              webApp.sendNewPhoto(msg);  // send image to connected web clients
 
             } else {
 

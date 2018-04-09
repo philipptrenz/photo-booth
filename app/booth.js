@@ -107,8 +107,9 @@ function trigger() {
         prompt.stop(true, false, function() { // stop spinner if image is ready
 
             if (res == 0) {
+              const previewDuration = 8;
               // after that show preview
-              prompt = new PreviewPrompt(message1, 8).start(false, false, function() {
+              prompt = new PreviewPrompt(message1, previewDuration).start(false, false, function() {
                 // end photo task after preview ended
                 executing = false;
               });
@@ -116,7 +117,7 @@ function trigger() {
               setTimeout(function() {
                 utils.prependImage(message1);     // add image to collage
                 webApp.sendNewPhoto(message2);  // send image to connected web clients
-              }, 1000);
+              }, (previewDuration+1)*1000);
 
             } else {
 

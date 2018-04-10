@@ -35,12 +35,11 @@
     "wedding"
   ],
   "preferGlobal": true,
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "electron-prebuilt-compile": "1.7.13",
-    "electron-rebuild": "1.7.3"
-  },
-  "dependencies": {
+    "electron-rebuild": "1.7.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",

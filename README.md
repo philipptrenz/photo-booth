@@ -41,14 +41,14 @@ wget -O - https://raw.githubusercontent.com/audstanley/NodeJs-Raspberry-Pi/maste
 # Install latest version of libgphoto2, choose last stable release
 wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh && sudo bash gphoto2-updater.sh
 
-# If you want to use a Raspberry Pi > 1: Activate hardware acceleration
+# If you are using a Raspberry Pi > 1: Activate hardware acceleration
 sudo apt install libgl1-mesa-dri
 sudo su -c 'grep -q -F "dtoverlay=vc4-kms-v3d" /boot/config.txt || echo "dtoverlay=vc4-kms-v3d" >> /boot/config.txt'
 
-# Clone the dev branch of this repository
+# Clone the repository
 git clone https://github.com/philipptrenz/photo-booth.git && cd photo-booth
 
-# Install dependencies via npm
+# Install
 npm install
 ```
 

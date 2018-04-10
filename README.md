@@ -36,20 +36,18 @@ sudo apt update
 sudo apt install git libxss-dev libgconf-2-4 libnss3
 
 # Install node
-sudo wget -O - https://raw.githubusercontent.com/audstanley/NodeJs-Raspberry-Pi/master/Install-Node.sh | sudo bash;
+wget -O - https://raw.githubusercontent.com/audstanley/NodeJs-Raspberry-Pi/master/Install-Node.sh | sudo bash;
 
-# Install latest version of libgphoto2
-sudo wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh 
-sudo chmod +x gphoto2-updater.sh && sudo ./gphoto2-updater.sh
+# Install latest version of libgphoto2, choose last stable release
+wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh && sudo bash gphoto2-updater.sh
 
 # If you want to use a Raspberry Pi > 1: Activate hardware acceleration
 sudo apt install libgl1-mesa-dri
-sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
+sudo su -c 'grep -q -F "dtoverlay=vc4-kms-v3d" /boot/config.txt || echo "dtoverlay=vc4-kms-v3d" >> /boot/config.txt'
 
 # Clone the dev branch of this repository
-git clone https://github.com/philipptrenz/photo-booth.git
-# Go into the repository
-cd photo-booth
+git clone https://github.com/philipptrenz/photo-booth.git && cd photo-booth
+
 # Install dependencies via npm
 npm install
 ```

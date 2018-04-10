@@ -1,17 +1,20 @@
+[![Build Status](https://travis-ci.org/philipptrenz/photo-booth.svg?branch=master)](https://travis-ci.org/philipptrenz/photo-booth)
+
 # photo-booth
 
-[![Build Status](https://travis-ci.org/philipptrenz/photo-booth.svg?branch=dev)](https://travis-ci.org/philipptrenz/photo-booth)
+A photo booth software using Electron and your camera
 
-A multi-platform Photo Booth Software using Electron, gphoto2 and your camera
+## Community
 
-**CAUTION: DEV BRANCH – UNDER DEVELOPMENT**
+If you want to stay up to date, sign up for the mailing list. You'll get notified about updates and it's the place to get in touch with other users. From time to time I also need a few testers.
 
+Write an empty email to [photo-booth-subscribe@philipptrenz.de](mailto:photo-booth-subscribe@philipptrenz.de) to join the list.
 
 ## How it works
 
-Simply connect your camera (e.g. I have a Nikon D5300) via USB or even via wifi to the computer running this application. The app shows a countdown by clicking at the screen (or tapping at a touchscreen), triggers your camera to take a photo, downloads it from your camera, shrinks it to a smaller size and displays it on the screen. First in fullscreen, then added to a gallery of previous taken photos.
+Simply connect your camera (e.g. I have a Nikon D5300) via USB or even via wifi to the computer running this application, for example a **Raspberry Pi**. The app shows a countdown by clicking at the screen (or tapping at a touchscreen), triggers your camera to take a photo, downloads it from your camera, shrinks it to a smaller size and displays it on the screen. First in fullscreen, then added to a gallery of previous taken photos.
 
-photo-booth also provides a web application by running a webserver. Every newly taken photo gets pushed to the website and displayed. From there it's easy to download all images. There's also the option to leave a e-mail address for sending the photos afterwards.
+photo-booth also provides a web application by running a webserver. Every newly taken photo gets immediately pushed to the webapp. From there it's easy for your guests to download their photos. There's also the option to leave a e-mail address for sending the photos afterwards. You only have to provide a Wi-Fi hotspot.
 
 Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices can be found [here](http://gphoto.org/proj/libgphoto2/support.php).
 
@@ -40,7 +43,7 @@ sudo apt install libgl1-mesa-dri
 sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 
 # Clone the dev branch of this repository
-git clone -b dev https://github.com/philipptrenz/photo-booth.git
+git clone https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth
 # Install dependencies
@@ -51,14 +54,7 @@ npm run rebuild
 
 ## Run photo-booth
 
-To run photo-booth the following command should do it for systems with GUI:
-
-```
-npm start
-```
-
-
-If you want to use the webapp or a hardware button to trigger photos connected to the GPIOs of your Pi, photo-booth has to run with root privileges:
+To run photo-booth the following command should do it for systems with GUI. We need root privileges to run the webapp or a hardware button to trigger photos connected to the GPIOs of your Pi.
 
 ```
 sudo npm start
@@ -72,6 +68,11 @@ I personally run photo-booth on a `Raspbian Lite` image directly on X, for this 
  
 ## Configure it
 
+There are a few settings and options that you should take a look at.
+
+
+### The `config.json`
+
 The project includes a config.json file. There you can set several parameters, e.g. to start in fullscreen or not or if you want to keep your taken photos on your camera.
 
 It looks like this:
@@ -79,10 +80,10 @@ It looks like this:
 ```json
 {
 	"init": {
-		"fullscreen": false,
+		"fullscreen": true,
 		"width": "1440",
 		"height": "900",
-		"showDevTools": true,
+		"showDevTools": false,
 		"useGPIO": false,
 		"grayscaleMode": true,
 		"preventScreensaver": false
@@ -90,8 +91,7 @@ It looks like this:
 	"maxImageSize": 1500,
 	"gphoto2": {
 		"capturetarget": 1,
-		"keep": true,
-		"keepImagesOnCamera": false
+		"keep": true
 	},
 	"content_dir": null,
 	"webapp": {
@@ -119,7 +119,7 @@ Some notes:
 * If you want to keep images on camera, set `keep` to `true`
 * The errorMessage is pure HTML, just fill in whatever you want
 
-## How to use the integrated Webapp
+### How to use the integrated webapp
 
 As mentioned above photo-booth has a built in web page where images can be downloaded. 
 
@@ -161,9 +161,9 @@ If you have any problems, start reading here. If you do not find anything, check
 
 Go to `config.json` and change `grayscaleMode` to `false`.
 
-### photo-booth is starting up, but I have just a black screen and the console says `module version mismatch expected 50, got ...`
+### photo-booth is starting up, but I have just a black screen
 
-Just run `npm run rebuild` again.
+Try to run `npm run rebuild` again.
 
 ### My camera takes a photo, but it does not show up
 

@@ -49,9 +49,8 @@ sudo nano /boot/config.txt 	# Add `dtoverlay=vc4-kms-v3d`
 git clone https://github.com/philipptrenz/photo-booth.git
 # Go into the repository
 cd photo-booth
-# Install dependencies
+# Install dependencies via npm
 npm install
-npm run rebuild
 ```
 
 

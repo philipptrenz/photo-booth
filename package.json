@@ -15,6 +15,7 @@
     "type": "git",
     "url": "https://github.com/philipptrenz/photo-booth.git"
   },
+  "homepage": "https://github.com/philipptrenz/photo-booth",
   "engines": {
     "node": ">=8.1.0"
   },

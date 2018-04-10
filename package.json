@@ -1,6 +1,6 @@
 {
   "name": "@philipptrenz/photo-booth",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A multi-platform photo booth software using Electron and your camera",
   "main": "main.js",
   "author": {

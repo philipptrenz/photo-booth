@@ -8,7 +8,7 @@
   },
   "license": "GPL-3.0",
   "scripts": {
-    "start": "electron .",
+    "start": "electron main.js",
     "postinstall": "electron-rebuild"
   },
   "repository": {
@@ -19,7 +19,7 @@
     "node": ">=8.1.0"
   },
   "bin": {
-    "photo-booth": "electron ."
+    "photo-booth": "./scripts/cli.js"
   },
   "bugs": {
     "url": "https://github.com/philipptrenz/photo-booth/issues"

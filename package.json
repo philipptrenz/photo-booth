@@ -5,18 +5,23 @@
   "main": "main.js",
   "author": "Philipp Trenz",
   "license": "GPL-3.0",
-  "repository": "https://github.com/philipptrenz/photo-booth",
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/philipptrenz/photo-booth.git"
+  },
   "keywords": [
-    "Photo Booth",
+    "photo booth",
     "photo-booth",
     "gphoto2",
-    "Electron",
+    "camera",
+    "electron",
     "photography",
-    "Raspberry-Pi"
+    "raspberry pi",
+    "wedding"
   ],
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",

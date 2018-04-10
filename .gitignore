@@ -16,5 +16,4 @@ email-addresses.txt
 content/*
 content
 tmpfile*
-package-lock.json
 my.config.json

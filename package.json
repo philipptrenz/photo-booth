@@ -1,6 +1,6 @@
 {
   "name": "@philipptrenz/photo-booth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A multi-platform photo booth software using Electron and your camera",
   "main": "main.js",
   "author": "Philipp Trenz",
@@ -25,8 +25,7 @@
   "bugs": {
     "url": "https://github.com/philipptrenz/photo-booth/issues"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "electron": "1.7.13",
     "electron-prebuilt-compile": "1.7.13",

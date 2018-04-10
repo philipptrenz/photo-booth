@@ -3,7 +3,9 @@
   "version": "1.0.1",
   "description": "A multi-platform photo booth software using Electron and your camera",
   "main": "main.js",
-  "author": "Philipp Trenz",
+  "author": {
+    "name": "Philipp Trenz"
+  },
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron .",
@@ -12,6 +14,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/philipptrenz/photo-booth.git"
+  },
+  "engines": {
+    "node": ">=8.1.0"
+  },
+  "bin": {
+    "photo-booth": "electron ."
   },
   "keywords": [
     "photo booth",
@@ -22,15 +30,13 @@
     "raspberry pi",
     "wedding"
   ],
-  "bugs": {
-    "url": "https://github.com/philipptrenz/photo-booth/issues"
-  },
-  "devDependencies": {},
-  "dependencies": {
+  "devDependencies": {
+    "babel-preset-stage-0": "^6.24.1",
     "electron": "1.7.13",
     "electron-prebuilt-compile": "1.7.13",
-    "electron-rebuild": "1.7.3",
-    "babel-preset-stage-0": "^6.24.1",
+    "electron-rebuild": "1.7.3"
+  },
+  "dependencies": {
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",

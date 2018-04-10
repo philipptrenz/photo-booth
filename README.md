@@ -1,6 +1,6 @@
-# photo-booth
+[![Build Status](https://travis-ci.org/philipptrenz/photo-booth.svg?branch=master)](https://travis-ci.org/philipptrenz/photo-booth)
 
-[![Build Status](https://travis-ci.org/philipptrenz/photo-booth.svg?branch=master)](https://travis-ci.org/philipptrenz/photo-booth) [![npm version](https://badge.fury.io/js/%40philipptrenz%2Fphoto-booth.svg)](https://badge.fury.io/js/%40philipptrenz%2Fphoto-booth)
+# photo-booth
 
 A multi-platform photo booth software using Electron and your camera
 
@@ -63,9 +63,6 @@ sudo npm start
 ```
 
 **HINT:** The little linux tool `unclutter` can hide the cursor.
-
-
-I personally run photo-booth on a `Raspbian Lite` image directly on X, for this case you can use the `start.sh` script to run photo-booth at boot as described below.
 
  
 ## Configure it

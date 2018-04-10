@@ -22,6 +22,9 @@
     "raspberry pi",
     "wedding"
   ],
+  "bugs": {
+    "url": "https://github.com/philipptrenz/photo-booth/issues"
+  },
   "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "electron": "1.7.13",

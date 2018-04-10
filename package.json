@@ -21,8 +21,11 @@
   "bin": {
     "photo-booth": "electron ."
   },
+  "bugs": {
+    "url": "https://github.com/philipptrenz/photo-booth/issues"
+  },
   "keywords": [
-    "photo booth",
+    "photobooth",
     "gphoto2",
     "camera",
     "electron",
@@ -30,23 +33,24 @@
     "raspberry pi",
     "wedding"
   ],
+  "preferGlobal": true,
   "devDependencies": {
+  },
+  "dependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "electron": "1.7.13",
     "electron-prebuilt-compile": "1.7.13",
-    "electron-rebuild": "1.7.3"
-  },
-  "dependencies": {
+    "electron-rebuild": "1.7.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-    "express": "^4.16.3",
-    "jquery": "^3.3.1",
     "bootstrap": "^4.0.0",
+    "express": "^4.16.3",
+    "gphoto2": "^0.3.0",
+    "jquery": "^3.3.1",
     "popper.js": "^1.14.1",
     "rpi-gpio": "^0.9.1",
     "sharp": "^0.20.1",
-    "socket.io": "^1.7.0",
-    "gphoto2": "^0.3.0"
+    "socket.io": "^1.7.0"
   }
 }

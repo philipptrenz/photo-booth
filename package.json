@@ -1,5 +1,5 @@
 {
-  "name": "photo-booth",
+  "name": "@philipptrenz/photo-booth",
   "version": "1.0.0",
   "description": "A multi-platform photo booth software using Electron and your camera",
   "main": "main.js",
@@ -15,7 +15,6 @@
   },
   "keywords": [
     "photo booth",
-    "photo-booth",
     "gphoto2",
     "camera",
     "electron",

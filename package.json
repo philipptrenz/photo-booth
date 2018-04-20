@@ -8,7 +8,7 @@
   },
   "license": "GPL-3.0",
   "scripts": {
-    "start": "electron main.js",
+    "start": "electron .",
     "postinstall": "electron-rebuild"
   },
   "repository": {
@@ -35,11 +35,12 @@
     "wedding"
   ],
   "preferGlobal": true,
-  "devDependencies": {},
-  "dependencies": {
+  "devDependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "electron-prebuilt-compile": "1.7.13",
-    "electron-rebuild": "1.7.3",
+    "electron-rebuild": "1.7.3"
+  },
+  "dependencies": {
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",

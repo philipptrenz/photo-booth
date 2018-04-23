@@ -99,9 +99,14 @@ function showSettings() {
 				$('#passwd').focus();
 			}
 	}
-	}
+}
 
-	$('#auth-form').submit(function(){
+function triggerPhoto() {
+	// request edited image from server
+	socket.emit('trigger_photo');
+}
+
+$('#auth-form').submit(function(){
 		console.log('send password to server for validation');
 	// send to server
 	socket.emit('authenticate', $('#passwd').val());
@@ -131,6 +136,11 @@ socket.on('use grayscale', function() {
 	useGrayscale = true;
 });
 
+socket.on('enable remote release', function() {
+	$('#trigger-button').removeClass('hide');
+	$('.my-trigger-button').removeClass('hidden-xs')
+	$('.my-brand').addClass('hidden-xs');
+});
 
 socket.on('new photos', function(imgUrlArray){
 	for (i = 0; i < imgUrlArray.length; i++) {

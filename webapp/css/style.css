@@ -35,13 +35,13 @@ body {
 /* -------------------- */
 
 nav {
+	padding: 0 30px;
 	height: 64px;
 	line-height: 64px;
 	width: 100%;
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 1px 5px 0 rgba(0,0,0,0.12),0 3px 1px -2px rgba(0,0,0,0.2);
-	display: block;
 	font-size: 17px;
-
+	display: block;
 	color: #ebebeb;
 	/*background-color: #4e5d6c;*/
 	background: rgba(255, 255, 255, .1);
@@ -49,23 +49,37 @@ nav {
 }
 
 nav .my-navbar {
-	padding: 0 30px;
+	width: 100%;
+	text-align: center;
 }
 
+
 nav .my-navbar .my-brand {
-	float: left;
+	text-align: left;
 }
 
 nav .my-navbar .my-back-button {
-	float: right;
 	font-size: 24px;
-	-webkit-transition: all 0.3s ease;
-	-moz-transition: all 0.3s ease;
-	-o-transition: all 0.3s ease;
-	-ms-transition: all 0.3s ease;
+	text-align: right;
 }
 
 nav .my-navbar .my-back-button:hover {
+}
+
+
+nav .my-navbar .my-trigger-button {
+	font-size: 1.2em;
+	text-align: center;
+}
+
+@media (max-width: 767.98px) { 
+	nav .my-navbar .my-trigger-button {
+		text-align: left;
+	}
+}
+
+.hide{
+  display: none !important;
 }
 
 

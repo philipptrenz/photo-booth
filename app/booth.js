@@ -163,3 +163,8 @@ function trigger() {
   }
   
 }
+
+/*
+ * Module exports
+ */
+module.exports.triggerPhoto = trigger;

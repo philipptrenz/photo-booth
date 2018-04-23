@@ -30,10 +30,13 @@
 </head>
 <body style="display: none;">
 
-	<nav>
-		<div class="my-navbar">
-			<a class="my-brand" href="#"><b>photo-booth</b></a>
-			<a class="my-back-button" href="#" onclick="showSettings()">
+	<nav class="container-fluid">
+		<div class="my-navbar row-fluid">
+			<a class="my-brand col-sm-4 col-xs-6" href="#"><b>photo-booth</b></a>
+			<a class="my-trigger-button col-sm-4 col-xs-6 hidden-xs" href="#" onclick="triggerPhoto()">
+				<i class="fa fa-camera hide" aria-hidden="true" id="trigger-button"></i>
+			</a>
+			<a class="my-back-button col-sm-4 col-xs-6" href="#" onclick="showSettings()">
 				<i class="fa fa-cog" aria-hidden="true" id="settings-button"></i>
 			</a>
 		</div>

@@ -39,7 +39,7 @@ class Slideshow {
       if (this.duration < 4) this.duration = 4;
 
 
-      console.log('slideshow: enabled, activatesAfterSeconds: '+this.delay+'; secondsPerImage: '+this.duration);
+      console.log('slideshow: enabled');
 
       var self = this;
       $('body').mousemove(function() {

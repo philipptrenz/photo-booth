@@ -94,7 +94,8 @@ It looks like this:
 	"content_dir": null,
 	"webapp": {
 		"password": "test",
-		"maxDownloadImageSize": 1000
+		"maxDownloadImageSize": 800,
+		"enableRemoteRelease": true
 	},
 	"branding": {
 		"type": "text",

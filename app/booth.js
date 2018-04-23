@@ -36,6 +36,7 @@ import {
   CameraErrorOnStartupPrompt, 
   SharpErrorPrompt
 } from "./prompt.js";
+import slideshow from "./slideshow.js";
 
 import webApp from './webapp_server.js';
 
@@ -43,11 +44,11 @@ camera.initialize(function( res, msg, err) {
   if (!res) {
     console.error('camera:', msg, err);
 
-    // TODO: handle error
     new CameraErrorOnStartupPrompt(-1).start(false, false);
 
   }
 });
+
 
 /*
  * Trigger photo when clicking / touching anywhere at the screen
@@ -79,6 +80,8 @@ function trigger() {
   if (executing) return;
 
   executing = true;
+
+  slideshow.stopSlideshow();
 
   if (camera.isInitialized()) {
 
@@ -119,6 +122,9 @@ function trigger() {
               }, 1500);
 
               webApp.sendNewPhoto(message2);  // send image to connected web clients
+
+
+              slideshow.startSlideshow();
 
             } else {
 

@@ -87,6 +87,11 @@ It looks like this:
 		"preventScreensaver": false
 	},
 	"maxImageSize": 1500,
+	"slideshow": {
+		"enabled": true,
+		"activatesAfterSeconds": 30,
+		"secondsPerImages": 8
+	},
 	"gphoto2": {
 		"capturetarget": 1,
 		"keep": true

@@ -57,7 +57,8 @@ class Slideshow {
   }
 
   startSlideshow() {
-    if (this.enabled) {
+    var numImgs = $('#collage img').map(function() { return this.src; }).get().length;
+    if (this.enabled && numImgs > 2) {
       var self = this;
       self.slideshowDelay = setTimeout(function() {
         self.slideshow = setInterval(function() {

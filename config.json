@@ -1,14 +1,15 @@
 {
 	"init": {
 		"fullscreen": false,
-		"width": "1440",
-		"height": "900",
+		"width": 1440,
+		"height": 900,
 		"showDevTools": true,
 		"useGPIO": false,
 		"grayscaleMode": true,
 		"preventScreensaver": false
 	},
 	"maxImageSize": 1500,
+	"countdownLength": 5,
 	"slideshow": {
 		"enabled": true,
 		"activatesAfterSeconds": 30,

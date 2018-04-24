@@ -28,7 +28,7 @@ To clone and run this repository you'll need [Git](https://git-scm.com), [Node.j
 
 I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). It will probably not work on Windows. Anyway, the documentation here will be focused on Linux based systems. 
 
-**Raspbian STRETCH:**
+**Raspbian STRETCH (with desktop):**
 
 ```bash
 # Install needed dependencies
@@ -87,6 +87,7 @@ It looks like this:
 		"preventScreensaver": false
 	},
 	"maxImageSize": 1500,
+	"countdownLength": 5,
 	"slideshow": {
 		"enabled": true,
 		"activatesAfterSeconds": 30,

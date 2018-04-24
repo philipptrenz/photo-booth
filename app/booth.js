@@ -74,6 +74,8 @@ if (utils.getConfig().init.useGPIO !== undefined ? utils.getConfig().init.useGPI
   });
 }
 
+const countdownLength = (typeof utils.getConfig().countdownLength == 'number') ? utils.getConfig().countdownLength : 5;
+
 var executing = false;
 function trigger() {
 
@@ -85,9 +87,6 @@ function trigger() {
 
   if (camera.isInitialized()) {
 
-    
-
-    var countdownLength = 5; // in seconds
     var triggerPhotoOffsetBeforeZero = 0.5; // in seconds
 
     // start countdown and show spinner afterwards

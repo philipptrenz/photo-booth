@@ -32,8 +32,6 @@ class Slideshow {
 
       this.enabled = true;
 
-      $('#collage').append("<div id='slideshow'>");
-
       this.delay = (typeof params.activatesAfterSeconds == 'number') ? params.activatesAfterSeconds : 30;
       this.duration = (typeof params.secondsPerImages == 'number') ? params.secondsPerImages : 8;
       if (this.duration < 4) this.duration = 4;
@@ -57,6 +55,7 @@ class Slideshow {
   }
 
   start() {
+
     var numImgs = $('#collage img').map(function() { return this.src; }).get().length;
     if (this.enabled && numImgs > 2) {
       var self = this;
@@ -64,9 +63,22 @@ class Slideshow {
         self.slideshow = setInterval(function() {
           // get all image sources and choose one randomly
           var arr = $('#collage img').map(function() { return this.src; }).get();
-          var idx = Math.floor(Math.random() * arr.length) 
-          $('#slideshow').css('background-image', 'url("' + arr[idx] + '")');
-          if ($('#slideshow:hidden')) $('#slideshow').fadeIn(3000);
+          var idx = Math.floor(Math.random() * arr.length);
+          var clzz = "slideshow-"+idx;
+
+          if (self.prevImg == clzz) {
+            idx = (idx+1 < arr.length) ? idx+1 : idx-1;
+          }
+
+          $('#collage').append("<div id='slideshow-"+clzz+"' class='slideshow' style='background-image: url(" + arr[idx] + ");'>");
+          $('#slideshow-'+clzz).fadeIn(3000, function() {
+          
+          if (self.prevImg !== undefined)  $(self.prevImg).remove();
+          self.prevImg = '#slideshow-'+clzz;
+          });
+
+          //$('#slideshow').css('background-image', 'url("' + arr[idx] + '")');
+          //if ($('#slideshow:hidden')) $('#slideshow').fadeIn(3000);
 
         }, self.duration*1000);
       }, self.delay*1000);
@@ -78,13 +90,16 @@ class Slideshow {
     if (this.enabled) {
       clearTimeout(this.slideshowDelay);
       clearInterval(this.slideshow);
-      $('#slideshow').fadeOut(500, function() {
+      $('.slideshow').fadeOut(500, function() {
         if (callback) callback();
       });
     } else {
       if (callback) callback();
     }
   }
+
+
+
 }
 
 

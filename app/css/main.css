@@ -141,7 +141,7 @@ button {
   	justify-content: center;
 }
 
-#collage #slideshow {
+#collage .slideshow {
     position: absolute;
     width: 100vw;
     height: 100vh;
@@ -153,8 +153,11 @@ button {
     background-position: center; 
 
     overflow: hidden;
-    -webkit-transition: background-image 3s ease-in-out;
-    transition: background-image 3s ease-in-out;
+    
+    /*
+    transition: background-image 2s linear;
+    transform: rotateZ(360deg);
+    */
 
     display: none;
 }

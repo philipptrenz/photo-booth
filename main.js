@@ -21,6 +21,12 @@
 const electron = require('electron')
 // Module to control application life.
 const app = electron.app
+
+
+// enable live reload
+import {enableLiveReload} from 'electron-compile';
+enableLiveReload();
+
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 const ipcMain = electron.ipcMain;
@@ -29,8 +35,8 @@ const ipcMain = electron.ipcMain;
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-var fs = require('fs')
-var path = require('path')
+var fs = require('fs');
+var path = require('path');
 
 var defaultConfig = path.join(__dirname, './config.json')
 var ownConfig = path.join(__dirname, './my.config.json')

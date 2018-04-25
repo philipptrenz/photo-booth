@@ -26,17 +26,17 @@ import utils from "./utils.js";
 class Camera {
 
 	constructor() {
-
-		this.GPhoto = new gphoto2.GPhoto2();
-
-		// Negative value or undefined will disable logging, levels 0-4 enable it.
-		this.GPhoto.setLogLevel(-1);
 	}
 
 	/*
 	* Detect and configure camera
 	*/
 	initialize(callback) {
+		this.GPhoto = new gphoto2.GPhoto2();
+
+		// Negative value or undefined will disable logging, levels 0-4 enable it.
+		this.GPhoto.setLogLevel(-1);
+
 		var self = this;
 		this.GPhoto.list(function (list) {
 			if (list.length === 0) {
@@ -68,9 +68,10 @@ class Camera {
 	isConnected(callback) {
 		this.camera.getConfig(function (err, settings) {
 			if (err) {
-				callback(false, 'connection test failed', err);
+				if (callback) callback(false, 'connection test failed', err);
 			} else {
-				callback(true);
+				self.camera == undefined;	// needs to be reinitialized
+				if (callback) callback(true);
 			}
 		});
 	}
@@ -91,7 +92,7 @@ class Camera {
 		self.camera.takePicture({ download: true, keep: keep }, function (err, data) {
 
 			if (err) {
-				self.camera == undefined;	// needs to be reinitialized
+				self.camera = undefined;	// needs to be reinitialized
 				callback(-2, 'connection to camera failed', err);
 				return;
 			} 
@@ -116,5 +117,5 @@ class Camera {
 /*
  * Module exports for connection
  */
- let camera = new Camera();
+let camera = new Camera();
 export { camera as default };

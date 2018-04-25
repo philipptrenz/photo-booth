@@ -199,8 +199,8 @@ io.on('connection', function(socket){
 		});
 	});
 
-	socket.on('trigger_photo', function(){
-		if (utils.getConfig().webapp.enableRemoteRelease) {
+	socket.on('trigger_photo', function(password){
+		if (utils.getConfig().webapp.enableRemoteRelease || passwordIsValid(password)) {
 			booth.triggerPhoto();
 		}
 	});

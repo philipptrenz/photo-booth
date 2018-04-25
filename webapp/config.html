@@ -214,7 +214,7 @@
 
   		function triggerPhoto() {
 			// request edited image from server
-			socket.emit('trigger_photo');
+			socket.emit('trigger_photo', getCookie('password'));
 		}
 
   		// ------------------------------------------------- //

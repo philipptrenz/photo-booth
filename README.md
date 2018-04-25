@@ -45,14 +45,11 @@ wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-up
 sudo apt install libgl1-mesa-dri
 sudo su -c 'grep -q -F "dtoverlay=vc4-kms-v3d" /boot/config.txt || echo "dtoverlay=vc4-kms-v3d" >> /boot/config.txt'
 
-# Get yarn
-npm i -g yarn
-
 # Clone the repository
 git clone https://github.com/philipptrenz/photo-booth.git && cd photo-booth
 
 # Install
-yarn install
+npm install
 ```
 
 
@@ -61,13 +58,13 @@ yarn install
 To run photo-booth the following command should do it for systems with GUI. To run the webapp on port 80 and for the usage of GPIO pins at the Raspberry Pi root privileges are required.
 
 ```
-sudo yarn start
+sudo npm start
 ```
 
 Basically, it's not a good idea to run a web server as root, if you do not need GPIOs consider setting up a redirect from port 80 to 8080 on your system. That can be achieved by a iptables rule for example. Then you can start photo-booth with
 
 ```
-yarn start
+npm start
 ```
 
 **HINT:** The little linux tool `unclutter` can hide the cursor.
@@ -145,7 +142,7 @@ You can connect a physical push button to the GPIO Pins of your Pi to trigger ph
 
 Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then connect the first port of the push button to the ground pin of your Pi, second to GPIO 3 (PIN 5) and to a resistor of about 10k-100kΩ, the other end of the resistor to 3.3V (e.g. PIN 1). That's all!
 
-**Make sure you run the application as root (`sudo yarn start`), GPIOs need root privileges.**
+**Make sure you run the application as root (`sudo npm start`), GPIOs need root privileges.**
 
 ```
  _______RASPBERRY PI_______
@@ -174,10 +171,6 @@ If you have any problems, start reading here. If you do not find anything, check
 ### Why are all images in grayscale?
 
 Go to `config.json` and change `grayscaleMode` to `false`.
-
-### photo-booth is starting up, but I have just a black screen
-
-Try to run `yarn run rebuild` again.
 
 ### My camera takes a photo, but it does not show up
 

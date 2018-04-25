@@ -9,7 +9,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron .",
-    "postinstall": "electron-rebuild"
+    "postinstall": "electron-rebuild -v 2.0.0-beta.7"
   },
   "repository": {
     "type": "git",

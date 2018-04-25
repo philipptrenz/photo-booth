@@ -68,7 +68,7 @@
 			    <div class="cell">
 				    <div class="switch">
 						<label>
-							<input type="checkbox" id="keepImagesOnCamera">
+							<input type="checkbox" id="keep">
 							<span class="lever"></span>
 						</label>
 					</div>
@@ -183,7 +183,7 @@
 
 	  			console.log(config)
 
-				$('#keepImagesOnCamera').prop('checked', config.gphoto2.keep);
+				$('#keep').prop('checked', config.gphoto2.keep);
 
 				$('#showDevTools').prop('checked', config.init.showDevTools);
 				$('#useGPIO').prop('checked', config.init.useGPIO);
@@ -197,7 +197,7 @@
 
   		function save(option) {
   			if (!option && config) {
-				config.gphoto2.keep = $('#keepImagesOnCamera').prop('checked');
+				config.gphoto2.keep = $('#keep').prop('checked');
 
 				config.init.showDevTools = $('#showDevTools').prop('checked');
 				config.init.useGPIO = $('#useGPIO').prop('checked');

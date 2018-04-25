@@ -71,7 +71,6 @@ class Prompt {
 					$(self.container).html('');
 					self.active = false;
 					if (callback !== undefined) callback();
-					slideshow.start();
 				});
 			}
 
@@ -177,7 +176,6 @@ class CountdownPrompt {
 					$(self.container).html('');
 					self.active = false;
 					if (callback !== undefined) callback();
-					slideshow.start();
 				});
 			}
 

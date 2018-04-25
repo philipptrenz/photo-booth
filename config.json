@@ -20,7 +20,7 @@
 		"keep": true,
 		"keepImagesOnCamera": false
 	},
-	"content_dir": null,
+	"content_dir": "../content",
 	"webapp": {
 		"password": "test",
 		"maxDownloadImageSize": 800,

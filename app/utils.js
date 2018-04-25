@@ -88,7 +88,7 @@ class Utils {
       if ( newContentDir !== null && typeof newContentDir === 'string' && newContentDir.length > 0) {  // if valid path in config
         try {
           if (!fs.existsSync(String(newContentDir))) fs.mkdirSync(String(newContentDir));
-          this.contentDir = newContentDir;
+          this.contentDir = (newContentDir.startsWith('/')) ? newContentDir : path.join(__dirname, '../', newContentDir ); 
         } catch (err) {
           // fallback: default
           console.error('Could not open or create content_dir \''+this.config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'',this.defaultContentDirectory,'\'');

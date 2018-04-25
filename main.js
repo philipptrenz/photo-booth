@@ -22,11 +22,6 @@ const electron = require('electron')
 // Module to control application life.
 const app = electron.app
 
-
-// enable live reload
-import {enableLiveReload} from 'electron-compile';
-enableLiveReload();
-
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 const ipcMain = electron.ipcMain;
@@ -35,14 +30,31 @@ const ipcMain = electron.ipcMain;
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-var fs = require('fs');
-var path = require('path');
+import fs  from 'fs';
+import path from 'path';
+import {enableLiveReload} from 'electron-compile';
 
 var defaultConfig = path.join(__dirname, './config.json')
 var ownConfig = path.join(__dirname, './my.config.json')
 var config = fs.existsSync(ownConfig) ? require(ownConfig) : require(defaultConfig)
 
 console.log('using', (fs.existsSync(ownConfig) ? 'own' : 'default'), 'config.json')
+
+
+const showDevTools = config.init.showDevTools !== undefined ? config.init.showDevTools: false;
+
+if (showDevTools) {
+  // enable live reload
+  
+  enableLiveReload();
+}
+
+
+
+
+
+
+
 
 function createWindow () {
 
@@ -86,7 +98,6 @@ function createWindow () {
   });
 
   // Open the DevTools.
-  const showDevTools = config.init.showDevTools !== undefined ? config.init.showDevTools: false;
   if (showDevTools) mainWindow.webContents.openDevTools();
 
   // Prevent Screensaver / Display Sleep

@@ -9,10 +9,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron .",
-    "rebuild": "electron-builder install-app-deps",
-    "postinstall": "electron-builder install-app-deps",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "postinstall": "electron-rebuild"
   },
   "repository": {
     "type": "git",
@@ -39,8 +36,7 @@
   ],
   "preferGlobal": true,
   "devDependencies": {
-    "electron": "^1.8.4",
-    "electron-builder": "^20.10.0",
+    "electron": "^2.0.0-beta.7",
     "electron-compilers": "^5.9.0"
   },
   "dependencies": {
@@ -48,6 +44,7 @@
     "babel-register": "^6.26.0",
     "bootstrap": "^4.0.0",
     "electron-compile": "^6.4.2",
+    "electron-rebuild": "^1.7.3",
     "express": "^4.16.3",
     "gphoto2": "^0.3.0",
     "jquery": "^3.3.1",

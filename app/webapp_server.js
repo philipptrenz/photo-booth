@@ -24,11 +24,28 @@ import path from 'path';
 import booth from './booth.js';
 import utils from "./utils.js";
 
+
+
+var port = 80;
+
+process.on('uncaughtException', function(err) {
+    if (err.errno === 'EACCES') {
+		console.warn('webapp: photo-booth must be run as root to use port 80. '
+		+ 'Basically, it\'s not a good idea to run a web server as root, '
+		+ 'consider setting up a redirect from port 80 to 8080 on your system');
+		port = 8080;
+		server.listen(port);
+    } else
+		console.error(err);
+}); 
+
+
+
+// server stuff
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var port = process.env.PORT || 80;
 
 var remote = require('electron').remote; 
 

@@ -43,11 +43,11 @@ class Slideshow {
 
       var self = this;
       $('body').mousemove(function() {
-        self.stopSlideshow();
-        self.startSlideshow();
+        self.stop();
+        self.start();
       });
       
-      this.startSlideshow();
+      this.start();
 
     } else {
       this.enabled = false;
@@ -56,7 +56,7 @@ class Slideshow {
     
   }
 
-  startSlideshow() {
+  start() {
     var numImgs = $('#collage img').map(function() { return this.src; }).get().length;
     if (this.enabled && numImgs > 2) {
       var self = this;
@@ -74,7 +74,7 @@ class Slideshow {
     
   }
 
-  stopSlideshow(callback) {
+  stop(callback) {
     if (this.enabled) {
       clearTimeout(this.slideshowDelay);
       clearInterval(this.slideshow);

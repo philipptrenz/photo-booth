@@ -83,7 +83,7 @@ function trigger() {
 
   executing = true;
 
-  slideshow.stopSlideshow();
+  slideshow.stop();
 
   if (camera.isInitialized()) {
 
@@ -123,7 +123,7 @@ function trigger() {
               webApp.sendNewPhoto(message2);  // send image to connected web clients
 
 
-              slideshow.startSlideshow();
+              slideshow.start();
 
             } else {
 

@@ -20,6 +20,7 @@
 
 
 import $ from 'jquery';
+import slideshow from "./slideshow.js";
 
 class Prompt {
 
@@ -35,6 +36,7 @@ class Prompt {
 	}
 
 	start(stay=false, instant=false, callback) {
+		slideshow.stop(); // stop slideshow if running
 		var self = this;
 		if (self.activated && !self.active) {
 			self.active = true;
@@ -69,6 +71,7 @@ class Prompt {
 					$(self.container).html('');
 					self.active = false;
 					if (callback !== undefined) callback();
+					slideshow.start();
 				});
 			}
 
@@ -129,6 +132,7 @@ class CountdownPrompt {
 	}
 
 	start(stay=false, instant=false, callback) {
+		slideshow.stop();
 		var self = this;
 		if (self.activated && !self.active) {
 			self.active = true;
@@ -173,6 +177,7 @@ class CountdownPrompt {
 					$(self.container).html('');
 					self.active = false;
 					if (callback !== undefined) callback();
+					slideshow.start();
 				});
 			}
 

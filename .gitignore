@@ -17,3 +17,4 @@ content/*
 content
 tmpfile*
 my.config.json
+config.schema.json

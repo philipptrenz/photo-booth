@@ -16,7 +16,7 @@ Write an empty email to [photo-booth-subscribe@philipptrenz.de](mailto:photo-boo
 
 Please report technical questions, bugs and feature requests as an issue here. All other questions are welcome to be addressed to [photo-booth@philipptrenz.de](mailto:photo-booth@philipptrenz.de).
 
-If you like my project and you want to keep me motivated you can buy me a coffee:
+If you like my project and you want to keep me motivated:
 
 <a href='https://ko-fi.com/U7U6COXD' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi2.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 

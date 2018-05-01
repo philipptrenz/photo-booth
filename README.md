@@ -77,6 +77,14 @@ npm start
 
 **HINT:** The little linux tool `unclutter` can hide the cursor.
 
+## Start photo-booth on boot (for Raspberry Pi)
+
+To start photo-booth on boot add the following line at the end of `/home/pi/.config/lxsession/LXDE-pi/autostart`:
+
+```
+@sudo node /home/pi/photo-booth/scripts/cli.js
+```
+
  
 ## Configure it
 

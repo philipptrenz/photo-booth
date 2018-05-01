@@ -55,7 +55,9 @@ npm install
 
 ## Run photo-booth
 
-To run photo-booth the following command should do it for systems with GUI. To run the webapp on port 80 and for the usage of GPIO pins at the Raspberry Pi root privileges are required.
+To run photo-booth the following command should do it. To run the webapp on port 80 and for the usage of GPIO pins at the Raspberry Pi root privileges are required.
+
+**Important:** The command needs to be run from a terminal on the GUI, executing via SSH will most likely fail!
 
 ```
 sudo npm start

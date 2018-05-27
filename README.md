@@ -41,9 +41,6 @@ I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM)
 sudo apt update
 sudo apt install git libxss-dev libgconf-2-4 libnss3
 
-# Install node
-sudo ./scripts/install_node_v9.sh
-
 # Install latest version of libgphoto2, choose last stable release
 wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh && sudo bash gphoto2-updater.sh
 
@@ -53,6 +50,9 @@ sudo su -c 'grep -q -F "dtoverlay=vc4-kms-v3d" /boot/config.txt || echo "dtoverl
 
 # Clone the repository
 git clone https://github.com/philipptrenz/photo-booth.git && cd photo-booth
+
+# Install node
+sudo ./scripts/install_node_v9.sh
 
 # Install
 npm install

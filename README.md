@@ -28,6 +28,8 @@ photo-booth also provides a web application by running a webserver. Every newly 
 
 Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices can be found [here](http://gphoto.org/proj/libgphoto2/support.php).
 
+Note: photo-booth does **not** work with Raspberry Pi camera module!
+
 ## Installation
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) and [gphoto2](http://gphoto.sourceforge.net/) installed. 

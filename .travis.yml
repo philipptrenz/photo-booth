@@ -4,6 +4,8 @@ install:
 language: node_js
 node_js:
 - lts/*
+- "9"
+- "10"
 dist: trusty
 addons:
   apt:

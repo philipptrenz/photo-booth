@@ -52,7 +52,7 @@ sudo su -c 'grep -q -F "dtoverlay=vc4-kms-v3d" /boot/config.txt || echo "dtoverl
 git clone https://github.com/philipptrenz/photo-booth.git && cd photo-booth
 
 # Install node
-sudo ./scripts/install_node_v9.sh
+sudo ./scripts/install_node_v10.sh
 
 # Install
 npm install

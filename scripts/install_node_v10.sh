@@ -1,14 +1,15 @@
 #!/bin/bash
 # written by Richard Stanley (audstanley);
+# From: https://github.com/audstanley/NodeJs-Raspberry-Pi/blob/master/Install-Node.sh
 PICHIP=$(uname -m);
 if [ "$EUID" -ne 0 ]
         then echo "You need to install as root by using sudo ./Install-Node.sh";
         exit
-else LINKTONODE=$(curl -sG https://nodejs.org/dist/latest-v9.x/ | awk '{print $2}' | grep -P 'href=\"node-v9\.\d{1,}\.\d{1,}-linux-'$PICHIP'\.tar\.gz' | sed 's/href="//' | sed 's/<\/a>//' | sed 's/">.*//');
-# curl -G https://nodejs.org/dist/latest-v9.x/ | awk '{print $2}' | grep -P 'href=\"node-v9\.\d{1,}\.\d{1,}-linux-armv9l\.tar\.gz' | sed 's/href="//' | sed 's/<\/a>//' | sed 's/">.*//'
+else LINKTONODE=$(curl -sG https://nodejs.org/dist/latest-v10.x/ | awk '{print $2}' | grep -P 'href=\"node-v10\.\d{1,}\.\d{1,}-linux-'$PICHIP'\.tar\.gz' | sed 's/href="//' | sed 's/<\/a>//' | sed 's/">.*//');
+# curl -G https://nodejs.org/dist/latest-v10.x/ | awk '{print $2}' | grep -P 'href=\"node-v10\.\d{1,}\.\d{1,}-linux-armv10l\.tar\.gz' | sed 's/href="//' | sed 's/<\/a>//' | sed 's/">.*//'
 NODEFOLDER=$(echo $LINKTONODE | sed 's/.tar.gz/\//');
 #Next, Creates directory for downloads, and downloads node 8.x
-cd ~/ && mkdir tempNode && cd tempNode && wget https://nodejs.org/dist/latest-v9.x/$LINKTONODE;
+cd ~/ && mkdir tempNode && cd tempNode && wget https://nodejs.org/dist/latest-v10.x/$LINKTONODE;
 tar -xzf $LINKTONODE;
 #Remove the tar after extracing it.
 rm $LINKTONODE;
@@ -24,6 +25,11 @@ rm -R -f ~/tempNode/$LINKTONODE/;
 update-alternatives --install "/usr/bin/node" "node" "/opt/nodejs/bin/node" 1
 update-alternatives --install "/usr/bin/npm" "npm" "/opt/nodejs/bin/npm" 1
 rm -R -f /root/tempNode/;
-#su pi;
-#cd ~/ && rm -R NodeJs-Raspberry-Pi-Arm9/;
+
+# Get the python installer (for specific versions):
+cd /bin/;
+rm node-install;
+wget https://raw.githubusercontent.com/audstanley/NodeJs-Raspberry-Pi/master/node-install;
+chmod +x node-install;
+
 fi

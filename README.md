@@ -28,7 +28,9 @@ photo-booth also provides a web application by running a webserver. Every newly 
 
 Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices can be found [here](http://gphoto.org/proj/libgphoto2/support.php).
 
-Note: photo-booth does **not** work with Raspberry Pi camera module!
+#### Notable Unsupported Devices
+1. Does **not** work with Raspberry Pi camera module!
+2. Does **not** work with webcams (such as those built into your laptop or Logitech USB)
 
 ## Installation
 

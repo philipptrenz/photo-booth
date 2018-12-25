@@ -211,6 +211,10 @@ Choice: 1 Internal RAM
 ```
 Identify the number of the memory card and change the `captureTarget` property in `config.json`. 
 
+## Contributors
+
+* [blak3r](https://github.com/blak3r)
+
 ## Mentions
 
 The project got featured at **[The Verge](https://www.theverge.com/circuitbreaker/2017/8/24/16193418/diy-photo-booth-party-wedding-dlsr-camera-how-to-build-raspberry-pi)**, incredible!

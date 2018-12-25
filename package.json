@@ -7,6 +7,10 @@
     "name": "Philipp Trenz"
   },
   "license": "GPL-3.0",
+  "os": [
+    "linux",
+    "darwin"
+  ],
   "scripts": {
     "start": "electron .",
     "postinstall": "electron-rebuild"

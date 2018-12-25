@@ -12,8 +12,8 @@
     "darwin"
   ],
   "scripts": {
-    "start": "electron .",
-    "postinstall": "electron-rebuild"
+    "start": "./node_modules/.bin/electron .",
+    "postinstall": "./node_modules/.bin/electron-rebuild"
   },
   "repository": {
     "type": "git",

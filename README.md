@@ -221,3 +221,5 @@ The project got featured at **[The Verge](https://www.theverge.com/circuitbreake
 Also take a look at the video they made at **[Facebook](https://www.facebook.com/circuitbreaker/videos/1839861396306681/)!**
 
 An article was also published in the **[blog of my degree course](http://www.medieninformatik.de/projekt-photo-booth-amerikaner-berichten/)** (in German).
+
+[partyblitzer](https://github.com/partyblitzer) published a [post on his blog](http://tobias-senff.de/partyblitzer/) and a [video on YouTube](https://www.youtube.com/watch?v=ujMKFKPHP8k) using this software for his DIY photo booth setup.

@@ -28,31 +28,11 @@ photo-booth also provides a web application by running a webserver. Every newly 
 
 Because of the use of gphoto2 it works with nearly any camera like plug and play.
 
-## Unsupported devices
-
-### Unsupported architectures
-
-As Electron, the main framework, besides ia32 (i686) and x64 (amd64) only supports the ARM v7 architecture (and ARM v8 as it is backwards compatible), several ARM devices are not supported. Further information can be found [here](https://electronjs.org/docs/tutorial/support#linux). The following ARM devices among others can not be supported:
-
-* Raspberry Pi Zero
-* Raspberry Pi Zero W / WH 
-* Raspberry Pi 1 A / A+
-* Raspberry Pi 1 B / B+
-
-### Unsupported cameras
-
-* The Raspberry Pi camera module is not supported
-* Webcams (such as those built into your laptop or Logitech USB) are not supported
-
-Also some other DSLR and Compact Cameras are not supported. Please check for your specific model [here](http://gphoto.org/proj/libgphoto2/support.php).
-
 ## Installation
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) and [gphoto2](http://gphoto.sourceforge.net/) installed. 
 
-I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems. 
-
-**Hint:** It has been reported that the Raspberry Pi Zero (W) does not work for photo booth.
+Before getting started please check [here](#Unsupported devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems. 
 
 **Raspbian STRETCH (with desktop):**
 
@@ -80,7 +60,6 @@ sudo ./scripts/install_node_v9.sh
 # Install
 npm install
 ```
-
 
 ## Run photo-booth
 
@@ -202,6 +181,26 @@ Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then c
                           |
                           |
 ```
+
+## Unsupported devices
+
+Please note that there are several devices which are not supported by photo-booth.
+
+### Unsupported architectures
+
+As Electron, the main framework, besides ia32 (i686) and x64 (amd64) only supports the ARM v7 architecture (and ARM v8 as it is backwards compatible), several ARM devices are not supported. Further information can be found [here](https://electronjs.org/docs/tutorial/support#linux). The following ARM devices among others can not be supported:
+
+* Raspberry Pi Zero
+* Raspberry Pi Zero W / WH 
+* Raspberry Pi 1 A / A+
+* Raspberry Pi 1 B / B+
+
+### Unsupported cameras
+
+* The Raspberry Pi camera module is not supported
+* Webcams (such as those built into your laptop or Logitech USB) are not supported
+
+Also some other DSLR and Compact Cameras are not supported. Please check for your specific model [here](http://gphoto.org/proj/libgphoto2/support.php).
 
 ## Common issues
 

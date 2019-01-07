@@ -26,11 +26,25 @@ Simply connect your camera via USB or even via wifi to the computer running this
 
 photo-booth also provides a web application by running a webserver. Every newly taken photo gets immediately pushed to the webapp. From there it's easy for your guests to download their photos. There's also the option to leave a e-mail address for sending the photos afterwards. You only have to provide a Wi-Fi hotspot.
 
-Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices can be found [here](http://gphoto.org/proj/libgphoto2/support.php).
+Because of the use of gphoto2 it works with nearly any camera like plug and play.
 
-#### Notable Unsupported Devices
-1. Does **not** work with Raspberry Pi camera module!
-2. Does **not** work with webcams (such as those built into your laptop or Logitech USB)
+## Unsupported devices
+
+### Unsupported architectures
+
+As Electron, the main framework, besides ia32 (i686) and x64 (amd64) only supports the ARM v7 architecture (and ARM v8 as it is backwards compatible), several ARM devices are not supported. Further information can be found [here](https://electronjs.org/docs/tutorial/support#linux). The following ARM devices among others can not be supported:
+
+* Raspberry Pi Zero
+* Raspberry Pi Zero W / WH 
+* Raspberry Pi 1 A / A+
+* Raspberry Pi 1 B / B+
+
+### Unsupported cameras
+
+* The Raspberry Pi camera module is not supported
+* Webcams (such as those built into your laptop or Logitech USB) are not supported
+
+Also some other DSLR and Compact Cameras are not supported. Please check for your specific model [here](http://gphoto.org/proj/libgphoto2/support.php).
 
 ## Installation
 

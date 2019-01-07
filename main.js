@@ -49,13 +49,6 @@ if (showDevTools) {
   enableLiveReload();
 }
 
-
-
-
-
-
-
-
 function createWindow () {
 
   var fullscreen = config.init.fullscreen !== undefined ? config.init.fullscreen:true;
@@ -108,6 +101,14 @@ function createWindow () {
     console.log('prevent screensaver: '+powerSaveBlocker.isStarted(id));
   }
 
+  // disable fullscreen mode on esc key press
+  const ret = electron.globalShortcut.register('Escape', function(){
+    //console.log('Escape is pressed');
+    mainWindow.setFullScreen(false);
+  });
+  //console.log('Escape is registered:', electron.globalShortcut.isRegistered('Escape'));
+
+
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -130,6 +131,11 @@ app.on('window-all-closed', function () {
     app.quit()
   //}
 })
+
+app.on('will-quit', function() {
+  electron.globalShortcut.unregister('Escape');
+  electron.globalShortcut.unregisterAll();
+});
 
 app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the

@@ -193,6 +193,10 @@ Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then c
 
 If you have any problems, start reading here. If you do not find anything, check under [Issues](https://github.com/philipptrenz/photo-booth/issues), if someone else already had a similar problem. If you still have no solution, open a new issue.
 
+### How to quit photo-booth in fullscreen?
+
+Hit the Escape key to exit the fullscreen mode, then you can close the app.
+
 ### Why are all images in grayscale?
 
 Go to `config.json` and change `grayscaleMode` to `false`.

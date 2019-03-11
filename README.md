@@ -26,17 +26,13 @@ Simply connect your camera via USB or even via wifi to the computer running this
 
 photo-booth also provides a web application by running a webserver. Every newly taken photo gets immediately pushed to the webapp. From there it's easy for your guests to download their photos. There's also the option to leave a e-mail address for sending the photos afterwards. You only have to provide a Wi-Fi hotspot.
 
-Because of the use of gphoto2 it works with nearly any camera like plug and play. A list of supported devices can be found [here](http://gphoto.org/proj/libgphoto2/support.php).
-
-Note: photo-booth does **not** work with Raspberry Pi camera module!
+Because of the use of gphoto2 it works with nearly any camera like plug and play.
 
 ## Installation
 
 To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) and [gphoto2](http://gphoto.sourceforge.net/) installed. 
 
-I tested it under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems. 
-
-**Hint:** It has been reported that the Raspberry Pi Zero (W) does not work for photo booth.
+Before getting started please check [here](#Unsupported-devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems. 
 
 **Raspbian STRETCH (with desktop):**
 
@@ -64,7 +60,6 @@ sudo ./scripts/install_node_v9.sh
 # Install
 npm install
 ```
-
 
 ## Run photo-booth
 
@@ -187,9 +182,33 @@ Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then c
                           |
 ```
 
+## Unsupported devices
+
+Please note that there are several devices which are not supported by photo-booth.
+
+### Unsupported architectures
+
+As Electron, the main framework, besides ia32 (i686) and x64 (amd64) only supports the ARM v7 architecture (and ARM v8 as it is backwards compatible), several ARM devices are not supported. Further information can be found [here](https://electronjs.org/docs/tutorial/support#linux). The following ARM devices among others can not be supported:
+
+* Raspberry Pi Zero
+* Raspberry Pi Zero W / WH 
+* Raspberry Pi 1 A / A+
+* Raspberry Pi 1 B / B+
+
+### Unsupported cameras
+
+* The Raspberry Pi camera module is not supported
+* Webcams (such as those built into your laptop or Logitech USB) are not supported
+
+Also some other DSLR and Compact Cameras are not supported. Please check for your specific model [here](http://gphoto.org/proj/libgphoto2/support.php).
+
 ## Common issues
 
 If you have any problems, start reading here. If you do not find anything, check under [Issues](https://github.com/philipptrenz/photo-booth/issues), if someone else already had a similar problem. If you still have no solution, open a new issue.
+
+### How to quit photo-booth in fullscreen?
+
+Hit the Escape key to exit the fullscreen mode, then you can close the app.
 
 ### Why are all images in grayscale?
 
@@ -209,9 +228,15 @@ Choice: 1 Internal RAM
 ```
 Identify the number of the memory card and change the `captureTarget` property in `config.json`. 
 
+## Contributors
+
+* [blak3r](https://github.com/blak3r)
+
 ## Mentions
 
 The project got featured at **[The Verge](https://www.theverge.com/circuitbreaker/2017/8/24/16193418/diy-photo-booth-party-wedding-dlsr-camera-how-to-build-raspberry-pi)**, incredible!
 Also take a look at the video they made at **[Facebook](https://www.facebook.com/circuitbreaker/videos/1839861396306681/)!**
 
 An article was also published in the **[blog of my degree course](http://www.medieninformatik.de/projekt-photo-booth-amerikaner-berichten/)** (in German).
+
+[partyblitzer](https://github.com/partyblitzer) published a [post on his blog](http://tobias-senff.de/partyblitzer/) and a [video on YouTube](https://www.youtube.com/watch?v=ujMKFKPHP8k) using this software for his DIY photo booth setup.

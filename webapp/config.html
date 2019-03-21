@@ -98,14 +98,105 @@
 			</div>	
 			-->
 
+
+			<div class="row">
+				<div class="cell">
+					<h3>Image</h3>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">Photo series length</div>
+				<div class="cell">
+					<div class="switch">
+						<label>
+							<input type="number" id="photoSeriesLength">
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">Photo preview duration</div>
+				<div class="cell">
+					<div class="switch">
+						<label>
+							<input type="number" id="photoPreviewDuration">
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">First photo countdown length</div>
+				<div class="cell">
+					<div class="switch">
+						<label>
+							<input type="number" id="firstPhotoCountdownLength">
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">Following photos countdown length</div>
+				<div class="cell">
+					<div class="switch">
+						<label>
+							<input type="number" id="followingPhotosCountdownLength">
+						</label>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="cell">
+					<h3>Slideshow</h3>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">Enabled</div>
+				<div class="cell">
+					<div class="switch">
+						<label>
+							<input type="checkbox" id="slideshowEnabled">
+							<span class="lever"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">Activates after seconds</div>
+				<div class="cell">
+					<div class="switch">
+						<label>
+							<input type="number" id="slideshowActivatesAfterSeconds">
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="cell">Seconds per photo</div>
+				<div class="cell">
+					<div class="switch">
+						<label>
+							<input type="number" id="slideshowSecondsPerPhoto">
+						</label>
+					</div>
+				</div>
+			</div>
+
+
 			<div class="row">
 				<div class="cell">
 					<h3>Developer</h3>
 				</div>
 			</div>
 
-
-			 
 			<div class="row">
 				<div class="cell">Show Developer Tools</div>
 				<div class="cell">
@@ -146,7 +237,7 @@
 		</div>
 		<div class="buttons">
 			<button class="btn waves-effect waves-light grey darken-3" type="submit" onclick="save(null)">Apply</button>
-			<!--<button class="btn waves-effect waves-light" type="submit" onclick="save('exit')">Close</button>-->
+			<button class="btn waves-effect waves-light" type="submit" onclick="save('exit')">Close</button>
 			<br />
 			<button class="btn waves-effect waves-light grey darken-3" type="submit" onclick="save('shutdown')">Shutdown</button>
 			<!--<button class="btn waves-effect waves-light" type="submit" onclick="save('git-pull')">Pull from Repo</button>-->
@@ -183,13 +274,21 @@
 
 	  			console.log(config)
 
+				$('#maxImageSize').val(config.maxImageSize);
 				$('#keep').prop('checked', config.gphoto2.keep);
+
+				$('#photoSeriesLength').val(config.photoSeriesLength);
+				$('#photoPreviewDuration').val(config.photoPreviewDuration);
+				$('#firstPhotoCountdownLength').val(config.firstPhotoCountdownLength);
+				$('#followingPhotosCountdownLength').val(config.followingPhotosCountdownLength);
+
+				$('#slideshowEnabled').prop('checked', config.slideshow.enabled);
+				$('#slideshowActivatesAfterSeconds').val(config.slideshow.activatesAfterSeconds);
+				$('#slideshowSecondsPerPhoto').val(config.slideshow.secondsPerPhoto);
 
 				$('#showDevTools').prop('checked', config.init.showDevTools);
 				$('#useGPIO').prop('checked', config.init.useGPIO);
 				$('#fullscreen').prop('checked', config.init.fullscreen);
-
-				$('#maxImageSize').val(config.maxImageSize);
 			} else {
 				console.log('Server returned undefined config file');
 			}
@@ -197,13 +296,21 @@
 
   		function save(option) {
   			if (!option && config) {
+				config.maxImageSize = $('#maxImageSize').val();
 				config.gphoto2.keep = $('#keep').prop('checked');
+
+				config.photoSeriesLength = $('#photoSeriesLength').val();
+				config.photoPreviewDuration = $('#photoPreviewDuration').val();
+				config.firstPhotoCountdownLength = $('#firstPhotoCountdownLength').val();
+				config.followingPhotosCountdownLength = $('#followingPhotosCountdownLength').val();
+
+				config.slideshow.enabled = $('#slideshowEnabled').prop('checked');
+				config.slideshow.activatesAfterSeconds = $('#slideshowActivatesAfterSeconds').val();
+				config.slideshow.secondsPerPhoto = $('#slideshowSecondsPerPhoto').val();
 
 				config.init.showDevTools = $('#showDevTools').prop('checked');
 				config.init.useGPIO = $('#useGPIO').prop('checked');
 				config.init.fullscreen = $('#fullscreen').prop('checked');
-
-				config.maxImageSize = $('#maxImageSize').val();
 
 				socket.emit('set_config', {password: getCookie('password'), config: config});
 			} else if (option) {

@@ -15,8 +15,8 @@
 	"photoSeriesLength": "3",
 	"slideshow": {
 		"enabled": true,
-		"activatesAfterSeconds": 30,
-		"secondsPerImages": 8
+		"activatesAfterSeconds": "30",
+		"secondsPerPhoto": "8"
 	},
 	"gphoto2": {
 		"capturetarget": 1,

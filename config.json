@@ -9,7 +9,10 @@
 		"preventScreensaver": true
 	},
 	"maxImageSize": "1500",
-	"countdownLength": 5,
+	"firstPhotoCountdownLength": "5",
+	"followingPhotosCountdownLength": "3",
+	"photoPreviewDuration": "8",
+	"photoSeriesLength": "3",
 	"slideshow": {
 		"enabled": true,
 		"activatesAfterSeconds": 30,

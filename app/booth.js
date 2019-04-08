@@ -51,14 +51,28 @@ camera.initialize(function( res, msg, err) {
   }
 });
 
-
 /*
  * Trigger photo when clicking / touching anywhere at the screen
  */
-$( "body" ).click(function() {
-  trigger();
-});
+if (!utils.getConfig().triggers ||
+    utils.getConfig().triggers.onClick ) {
+    $("body").click(function () {
+        trigger();
+    });
+}
 
+/*
+ * Custom User-definable Keyboard Triggers
+ */
+if( utils.getConfig().triggers &&
+    utils.getConfig().triggers.customKeys &&
+    utils.getConfig().triggers.customKeys.length > 0 ) {
+    $( "body" ).keydown(function(e) {
+        if( utils.getConfig().triggers.customKeys.indexOf( e.key ) !== -1 ) {
+            trigger();
+        }
+    });
+}
 
 /* Listen for pushbutton on GPIO 3 (PIN 5)
  * Activate the use of GPIOs by setting useGPIO in config.json to true.

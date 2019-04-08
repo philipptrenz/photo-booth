@@ -40,6 +40,8 @@ import slideshow from "./slideshow.js";
 
 import webApp from './webapp_server.js';
 
+const {getCurrentWindow, globalShortcut} = require('electron').remote;
+
 camera.initialize(function( res, msg, err) {
   if (!res) {
     console.error('camera:', msg, err);
@@ -132,7 +134,10 @@ function trigger() {
               if (res == -1 ) {  // camera not initialized
                 new CameraErrorPrompt(5).start(false, false, function() { executing = false; });
               } else if (res == -2) { // gphoto2 error
-                new CameraErrorPrompt(5).start(false, false, function() { executing = false; });
+                new CameraErrorPrompt(5).start(false, false, function() {
+                  executing = false;
+                  getCurrentWindow().reload();
+                });
               } else if (res == -3) { // sharp error
                  new SharpErrorPrompt(5).start(false, false, function() { executing = false; });
               }

@@ -32,8 +32,8 @@ class Slideshow {
 
       this.enabled = true;
 
-      this.delay = (typeof params.activatesAfterSeconds == 'number') ? params.activatesAfterSeconds : 30;
-      this.duration = (typeof params.secondsPerImages == 'number') ? params.secondsPerImages : 8;
+      this.delay = params.activatesAfterSeconds ? Number(params.activatesAfterSeconds) : 30;
+      this.duration = params.secondsPerPhoto ? Number(params.secondsPerPhoto) : 8;
       if (this.duration < 4) this.duration = 4;
 
 

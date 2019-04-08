@@ -40,6 +40,8 @@ import slideshow from "./slideshow.js";
 
 import webApp from './webapp_server.js';
 
+const {getCurrentWindow, globalShortcut} = require('electron').remote;
+
 camera.initialize(function( res, msg, err) {
   if (!res) {
     console.error('camera:', msg, err);
@@ -49,14 +51,28 @@ camera.initialize(function( res, msg, err) {
   }
 });
 
-
 /*
  * Trigger photo when clicking / touching anywhere at the screen
  */
-$( "body" ).click(function() {
-  trigger();
-});
+if (!utils.getConfig().triggers ||
+    utils.getConfig().triggers.onClick ) {
+    $("body").click(function () {
+        trigger();
+    });
+}
 
+/*
+ * Custom User-definable Keyboard Triggers
+ */
+if( utils.getConfig().triggers &&
+    utils.getConfig().triggers.customKeys &&
+    utils.getConfig().triggers.customKeys.length > 0 ) {
+    $( "body" ).keydown(function(e) {
+        if( utils.getConfig().triggers.customKeys.indexOf( e.key ) !== -1 ) {
+            trigger();
+        }
+    });
+}
 
 /* Listen for pushbutton on GPIO 3 (PIN 5)
  * Activate the use of GPIOs by setting useGPIO in config.json to true.
@@ -149,9 +165,12 @@ function trigger() {
 
               if (res === -1 ) {  // camera not initialized
                 new CameraErrorPrompt(5).start(false, false, function() { executing = false; });
-              } else if (res === -2) { // gphoto2 error
-                new CameraErrorPrompt(5).start(false, false, function() { executing = false; });
-              } else if (res === -3) { // sharp error
+              } else if (res == -2) { // gphoto2 error
+                new CameraErrorPrompt(5).start(false, false, function() {
+                  executing = false;
+                  getCurrentWindow().reload();
+                });
+              } else if (res == -3) { // sharp error
                  new SharpErrorPrompt(5).start(false, false, function() { executing = false; });
               }
             }

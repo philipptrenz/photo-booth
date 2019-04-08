@@ -22,6 +22,10 @@
 		"capturetarget": 1,
 		"keep": true
 	},
+	"triggers": {
+		"onClick": true,
+		"customKeys": ["PageUp","PageDown","b"]
+	},
 	"content_dir": "../content",
 	"webapp": {
 		"password": "test",

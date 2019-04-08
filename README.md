@@ -230,7 +230,10 @@ Identify the number of the memory card and change the `captureTarget` property i
 
 ## Contributors
 
+* [wikijm](https://github.com/wikijm)
 * [blak3r](https://github.com/blak3r)
+* [probststefan](https://github.com/probststefan)
+* [jgoestl](https://github.com/jgoestl)
 
 ## Mentions
 

@@ -14,7 +14,7 @@ A multi-platform photo booth software using Electron and your camera
 
 Due to personal time constraints, I can no longer answer installation and configuration questions. In keeping with the Open Source philosophy, I have set up a mailing list to serve as a platform for exchange between new and experienced users. Therefore, I ask that as many as possible participate in the mailing list in order to share experiences as well as to provide assistance.
 
-Send an empty email to [photo-booth-subscribe@philipptrenz.de](mailto:photo-booth-subscribe@philipptrenz.de) to join the list and and ask your questions to [photo-booth@philipptrenz.de](mailto:photo-booth@philipptrenz.de).
+Send an empty email to [photo-booth-subscribe@philipptrenz.de](mailto:photo-booth-subscribe@philipptrenz.de) to join the list, then ask your questions to [photo-booth@philipptrenz.de](mailto:photo-booth@philipptrenz.de).
 
 For feature requests and bug reports feel free to open an [issue](http://github.com/philipptrenz/photo-booth/issues).
 

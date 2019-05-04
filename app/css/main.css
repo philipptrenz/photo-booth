@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-html{
+ html{
     overflow: hidden;
     width: 100vw;
     height: 100vh;
@@ -208,6 +208,13 @@ button {
 
 #prompt .error p {
     font-size: 5vw;
+}
+
+.live{
+    position: absolute; top: 0; bottom: 0; right: 0; left: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: black;
 }
 
 .fa {

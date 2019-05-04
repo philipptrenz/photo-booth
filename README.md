@@ -129,6 +129,9 @@ It looks like this:
 		"maxDownloadImageSize": 800,
 		"enableRemoteRelease": true
 	},
+	"live": {
+		"framerate": 10
+	},
 	"branding": {
 		"type": "text",
 		"content": "<div style='font-size: 1.2em; padding-left: 25px;'><i class='fa fa-wifi' aria-hidden='true' style='font-size: 2.5em;'></i> <b style='font-size: 2em; padding-left: 15px;'>photo-booth</b><br /><p>Log into wifi, browse to <b style='padding: 0 5px;'>photo.app</b> and download your photos!</p></div>",
@@ -149,6 +152,9 @@ Some notes:
 * You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned off. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so. This should be your first try if a photo gets taken, but it won't show up at the screen.
 * If you want to keep images on camera, set `keep` to `true`
 * The errorMessage is pure HTML, just fill in whatever you want
+* Live Preview works only on some cameras, see this [list](http://gphoto.org/proj/libgphoto2/support.php) and check if it lists "Liveview" for your model.
+* Slideshow and liveview do not work together.
+* You have to experiment with the framerate for live preview depending on the power of your machine. On a Notebook with an Intel i7-8550U upto 15% CPU utilization are needed for 20 frames per second. Also if your camera is running on battery, it drastically decreases the battery duration.
 
 ### How to use the integrated webapp
 
@@ -236,6 +242,7 @@ Identify the number of the memory card and change the `captureTarget` property i
 * [blak3r](https://github.com/blak3r)
 * [probststefan](https://github.com/probststefan)
 * [jgoestl](https://github.com/jgoestl)
+* [lal12](https://github.com/lal12)
 
 ## Mentions
 

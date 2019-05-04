@@ -28,6 +28,7 @@ import 'bootstrap';
 
 import utils from "./utils.js";
 import camera from "./camera.js";
+import LivePreview from "./live-preview.js";
 import {
   SpinnerPrompt,
   CountdownPrompt,
@@ -42,12 +43,17 @@ import webApp from './webapp_server.js';
 
 const {getCurrentWindow, globalShortcut} = require('electron').remote;
 
+let livePreview;
+
 camera.initialize(function( res, msg, err) {
   if (!res) {
     console.error('camera:', msg, err);
-
     new CameraErrorOnStartupPrompt(-1).start(false, false);
-
+  }
+  let liveConfig = utils.getConfig().live;
+  if(liveConfig){
+    livePreview = new LivePreview(camera.camera, document.getElementById('live'), liveConfig.framerate);
+    livePreview.start()
   }
 });
 
@@ -104,6 +110,8 @@ function trigger() {
 
   executing = true;
 
+  if(livePreview)
+    livePreview.stop();
   slideshow.stop();
 
   if (camera.isInitialized()) {
@@ -156,7 +164,8 @@ function trigger() {
 
               webApp.sendNewPhoto(message2);  // send image to connected web clients
 
-
+              if(livePreview)
+                livePreview.start()
               slideshow.start();
 
             } else {

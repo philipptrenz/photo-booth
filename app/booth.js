@@ -110,8 +110,6 @@ function trigger() {
 
   executing = true;
 
-  if(livePreview)
-    livePreview.stop();
   slideshow.stop();
 
   if (camera.isInitialized()) {
@@ -135,7 +133,8 @@ function trigger() {
 
     // take picture after countdown
     setTimeout(function() {
-
+      if(livePreview)
+        livePreview.stop();
       camera.takePicture(function(res, msg1, msg2) {
 
         const message1 = msg1;

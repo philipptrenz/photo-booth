@@ -54,7 +54,6 @@ class LivePreview{
 			await this.refreshPreview();
 			let timeDiff = process.hrtime(timePrev);
 			let waitTime = this.timePerImg-(timeDiff[0]*1000+timeDiff[1]/1000000);
-			console.debug("waitTime", waitTime);
 			setTimeout(()=>{
 				this.previewInterval()
 			}, waitTime);

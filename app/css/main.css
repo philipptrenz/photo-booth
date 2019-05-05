@@ -132,7 +132,7 @@ button {
     z-index: 1000;
     display: none;
 
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.4);
     background-size: cover;
     background-repeat: no-repeat;
 

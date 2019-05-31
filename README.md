@@ -67,6 +67,12 @@ npm install
 
 To run photo-booth the following command should do it. To run the webapp on port 80 and for the usage of GPIO pins at the Raspberry Pi root privileges are required.
 
+**WORKAROUND FOR RASPBERRY PI 3 if Photo-Booth stays black**
+
+```
+export LD_PRELOAD=node_modules/sharp/vendor/lib/libz.so
+```
+
 **Important:** The command needs to be run from a terminal on the GUI, executing via SSH will most likely fail!
 
 ```

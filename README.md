@@ -234,7 +234,18 @@ Choice: 0 Memory card
 Choice: 1 Internal RAM
 
 ```
-Identify the number of the memory card and change the `captureTarget` property in `config.json`. 
+Identify the number of the memory card and change the `captureTarget` property in `config.json`.
+
+### error (-53 'could not claim the usb device')
+
+It seems to be an old known problem with gvfs-gphoto2-volume-monitor module. For reference [read here](https://github.com/raspberrypi/linux/issues/218#issuecomment-38143613).
+
+```
+sudo rm /usr/share/dbus-1/services/org.gtk.vfs.GPhoto2VolumeMonitor.service
+sudo rm /usr/share/gvfs/mounts/gphoto2.mount
+sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
+sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
+```
 
 ## Contributors
 

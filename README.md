@@ -136,6 +136,9 @@ It looks like this:
 		"type": "text",
 		"content": "<div style='font-size: 1.2em; padding-left: 25px;'><i class='fa fa-wifi' aria-hidden='true' style='font-size: 2.5em;'></i> <b style='font-size: 2em; padding-left: 15px;'>photo-booth</b><br /><p>Log into wifi, browse to <b style='padding: 0 5px;'>photo.app</b> and download your photos!</p></div>",
 		"position": "bottomleft"
+	},
+	"flash": {
+	  "enabled": true
 	}
 }
 ```
@@ -155,6 +158,7 @@ Some notes:
 * Live Preview works only on some cameras, see this [list](http://gphoto.org/proj/libgphoto2/support.php) and check if it lists "Liveview" for your model.
 * Slideshow and liveview do not work together.
 * You have to experiment with the framerate for live preview depending on the power of your machine. On a Notebook with an Intel i7-8550U upto 15% CPU utilization are needed for 20 frames per second. Also if your camera is running on battery, it drastically decreases the battery duration.
+* When ``flash`` is set to `enabled` a white  page  will be shown as a flash after completing the countdown
 
 ### How to use the integrated webapp
 
@@ -243,6 +247,7 @@ Identify the number of the memory card and change the `captureTarget` property i
 * [probststefan](https://github.com/probststefan)
 * [jgoestl](https://github.com/jgoestl)
 * [lal12](https://github.com/lal12)
+* [blaueQuelle](https://github.com/blaueQuelle)
 
 ## Mentions
 

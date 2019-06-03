@@ -135,6 +135,13 @@ function trigger() {
     setTimeout(function() {
       if(livePreview)
         livePreview.stop();
+      if (utils.getConfig().flash !== undefined && utils.getConfig().flash.enabled) {
+        const flash = $("#flash");
+        flash.addClass("flash");
+        setTimeout(function () {
+          flash.removeClass("flash");
+        }, 750);
+      }
       camera.takePicture(function(res, msg1, msg2) {
 
         const message1 = msg1;

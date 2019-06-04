@@ -67,6 +67,12 @@ npm install
 
 To run photo-booth the following command should do it. To run the webapp on port 80 and for the usage of GPIO pins at the Raspberry Pi root privileges are required.
 
+**WORKAROUND FOR RASPBERRY PI 3 if Photo-Booth stays black**
+
+```
+export LD_PRELOAD=node_modules/sharp/vendor/lib/libz.so
+```
+
 **Important:** The command needs to be run from a terminal on the GUI, executing via SSH will most likely fail!
 
 ```
@@ -238,7 +244,18 @@ Choice: 0 Memory card
 Choice: 1 Internal RAM
 
 ```
-Identify the number of the memory card and change the `captureTarget` property in `config.json`. 
+Identify the number of the memory card and change the `captureTarget` property in `config.json`.
+
+### error (-53 'could not claim the usb device')
+
+It seems to be an old known problem with gvfs-gphoto2-volume-monitor module. For reference [read here](https://github.com/raspberrypi/linux/issues/218#issuecomment-38143613).
+
+```
+sudo rm /usr/share/dbus-1/services/org.gtk.vfs.GPhoto2VolumeMonitor.service
+sudo rm /usr/share/gvfs/mounts/gphoto2.mount
+sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
+sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
+```
 
 ## Contributors
 

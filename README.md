@@ -10,9 +10,12 @@ A multi-platform photo booth software using Electron and your camera
 
 ## Community
 
-**Please note:**
+**IMPORTANT NOTE:**
 
-Due to personal time constraints, I can no longer answer installation and configuration questions. In keeping with the Open Source philosophy, I have set up a mailing list to serve as a platform for exchange between new and experienced users. Therefore, I ask that as many as possible participate in the mailing list in order to share experiences as well as to provide assistance.
+**I'm glad that so many are interested in photo-booth! Nevertheless, this is a software development project and not end user software! Using photo-booth requires (at least basic) knowledge in software development, such as dealing with Git, JavaScript, Node and Linux. My goal here is to jointly improve this project according to the open source philosophy. Please understand that I can not provide support if this basic knowledge is missing.**
+
+
+I have set up a mailing list to serve as a platform for exchange between new and experienced users. Therefore, I ask that as many as possible participate in the mailing list in order to share experiences as well as to provide assistance.
 
 Send an empty email to [photo-booth-subscribe@philipptrenz.de](mailto:photo-booth-subscribe@philipptrenz.de) to join the list, then ask your questions to [photo-booth@philipptrenz.de](mailto:photo-booth@philipptrenz.de).
 

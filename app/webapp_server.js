@@ -24,8 +24,6 @@ import path from 'path';
 import booth from './booth.js';
 import utils from "./utils.js";
 
-
-
 var port = 80;
 
 process.on('uncaughtException', function(err) {
@@ -38,8 +36,6 @@ process.on('uncaughtException', function(err) {
     } else
 		console.error(err);
 });
-
-
 
 // server stuff
 var express = require('express');
@@ -55,7 +51,19 @@ server.listen(port, function () {
 
 // Routing
 const currentDirectory = path.join(__dirname, '../', 'webapp');
-app.use(express.static(currentDirectory));
+app
+	.use(express.static(currentDirectory))
+	.get('/photos/:path', handlePhotoRequest('/photos/'))
+	.get('/photos/tmp/:path', handlePhotoRequest('/photos/tmp/'));
+
+function handlePhotoRequest(path) {
+	return function(req, res) {
+		var contentDir = utils.getContentDirectory();
+		var filePath = contentDir + path + req.params.path;
+
+		res.sendFile(filePath);
+	}
+}
 
 // Connect event
 io.on('connection', function(socket){
@@ -68,16 +76,13 @@ io.on('connection', function(socket){
 		io.to(socket.id).emit('enable remote release');
 	}
 
-	socket.on('disconnect', function(){
-
+	socket.on('disconnect', function() {
 	});
 
 	// save mail address
 	socket.on('mail address', function(msg){
-
-		var mycontentdir = utils.getContentDirectory();
-
-		fs.appendFile(mycontentdir+'/email-addresses.txt', msg+",\n", function (err) {
+		var contentDir = utils.getContentDirectory();
+		fs.appendFile(contentDir+'/email-addresses.txt', msg+",\n", function (err) {
 			if (err) {
 				console.log('webapp: writing mail address to file failed: '+err);
 			} else {
@@ -89,16 +94,14 @@ io.on('connection', function(socket){
 	// send validation result back to this client
 	socket.on('authenticate', function(password){
 		io.to(socket.id).emit('authenticated', passwordIsValid(password));
-
 	});
-
 
 	// send photo urls to requesting client
 	socket.on('get latest photos', function(){
-
 		console.log("webapp: requested latest photos by webapp");
 
-		fs.readdir(currentDirectory+'/photos', function(err, files){
+		var contentDir = utils.getContentDirectory();
+		fs.readdir(contentDir+'/photos', function(err, files){
 
 			if (files) {
 				files.sort();
@@ -122,7 +125,6 @@ io.on('connection', function(socket){
 
 	// send validation result back to this client
 	socket.on('get_config', function(password){
-
 		if (passwordIsValid(password)) {
 			io.to(socket.id).emit('get_config', utils.getConfig() );
 		} else {
@@ -132,7 +134,6 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('set_config', function(json){
-
 		if (passwordIsValid(json['password'])) {
 
 			utils.saveConfig(json['config'], function (res) {
@@ -181,13 +182,10 @@ io.on('connection', function(socket){
 					});
 				}
 			}
-
 		} else {
 			console.log('webapp: password wrong');
 		}
-
 	});
-
 
 	socket.on('get_download_image', function(path, grayscale){
 		console.log('get_download_image');

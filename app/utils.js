@@ -24,7 +24,6 @@ import $ from 'jquery';
 import path from 'path';
 import sharp from 'sharp';
 
-
 class Utils {
 
   constructor() {
@@ -34,7 +33,6 @@ class Utils {
     this.config_path = fs.existsSync(ownConfig) ? ownConfig : defaultConfig;
 
     this.defaultContentDirectory = path.join(__dirname, '../', '/content');
-    this.webappSymlink = path.join(__dirname, "../", "./webapp/photos");
 
     this.maxImages = 20;
 
@@ -104,7 +102,6 @@ class Utils {
 
     // initalized the depending directories
     this.getPhotosDirectory();
-    this.getWebAppPhotosDirectory();
 
     return this.contentDir;
   }
@@ -117,22 +114,6 @@ class Utils {
       return this.photosDir;
     }
     return this.photosDir;
-  }
-
-  getWebAppPhotosDirectory() {
-    // TODO: Add a workaround for windows systems
-    // if (this.webappSymlinkInitialized === undefined || !this.webappSymlinkInitialized) {
-    //   if (fs.existsSync(this.webappSymlink)) {
-    //     try {
-    //       fs.unlinkSync(this.webappSymlink);
-    //     } catch (err) {
-    //       console.error('utils: could not remove old symlink, probably a problem with access rights', err);
-    //     }
-    //   }
-    //   fs.symlinkSync(this.photosDir, this.webappSymlink);
-    //   this.webappSymlinkInitialized = true;
-    // }
-    return 'photos/';
   }
 
   // ---------------------------------------------------- //
@@ -254,7 +235,7 @@ class Utils {
     var newFilename = 'photo-booth_'+filename.replace('img_', '');
     var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
     var convertedFilepath = path.join(this.getPhotosDirectory(), './tmp', newFilename);
-    var webappFilepath = path.join(this.getWebAppPhotosDirectory(), 'tmp', newFilename);
+    var webappFilepath = path.join('photos', 'tmp', newFilename);
 
     if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
 
@@ -281,7 +262,6 @@ class Utils {
         .toFile(convertedFilepath, cb);
     }
   }
-
 }
 
 /*

@@ -21,7 +21,7 @@
 	"gphoto2": {
 		"capturetarget": 1,
 		"keep": true,
-		"simulate": true
+		"simulate": false
 	},
 	"triggers": {
 		"onClick": true,

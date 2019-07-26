@@ -1,20 +1,20 @@
-/* 
- * This file is part of "photo-booth" 
+/*
+ * This file is part of "photo-booth"
  * Copyright (c) 2018 Philipp Trenz
  *
  * For more information on the project go to
  * <https://github.com/philipptrenz/photo-booth>
- * 
- * This program is free software: you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -84,7 +84,7 @@ function getCookie(name) {
 
 
 function showSettings() {
-	
+
 	if (getCookie('password')) {
 
 		window.location.href = "config.html";
@@ -113,7 +113,7 @@ $('#auth-form').submit(function(){
 	setCookie('password',$('#passwd').val(), 3);
 	$('#passwd').val('');
 	});
-	
+
 	socket.on('authenticated', function(bool){
 
 		console.log('authentification is '+(bool? 'correct':'wrong'));
@@ -165,11 +165,10 @@ socket.io.on("connect_error", function(err) {
 
 // ------------------------------------------------- //
 
-$(document).on("click", 'a.img-download', function(event) { 
-    event.preventDefault(); 
+$(document).on("click", 'a.img-download', function(event) {
+    event.preventDefault();
 
 	var img = $(this).parents().eq(2).find('img')[0];
-	var src = img.src;
 	var path = $(img).attr('src');
 
 	// request edited image from server
@@ -177,8 +176,6 @@ $(document).on("click", 'a.img-download', function(event) {
 });
 
 socket.on('get_download_image', function(path) {
-	//window.location.href = path;
-
 	// hack to force downloading image instead of opening in browser
 	var a = document.createElement('A');
 	a.href = path;
@@ -187,5 +184,3 @@ socket.on('get_download_image', function(path) {
 	a.click();
 	document.body.removeChild(a);
 });
-
-

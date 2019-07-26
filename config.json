@@ -20,7 +20,8 @@
 	},
 	"gphoto2": {
 		"capturetarget": 1,
-		"keep": true
+		"keep": true,
+		"simulate": true
 	},
 	"triggers": {
 		"onClick": true,

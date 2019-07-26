@@ -1,20 +1,20 @@
-/* 
- * This file is part of "photo-booth" 
+/*
+ * This file is part of "photo-booth"
  * Copyright (c) 2018 Philipp Trenz
  *
  * For more information on the project go to
  * <https://github.com/philipptrenz/photo-booth>
- * 
- * This program is free software: you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -37,7 +37,7 @@ process.on('uncaughtException', function(err) {
 		server.listen(port);
     } else
 		console.error(err);
-}); 
+});
 
 
 
@@ -47,7 +47,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
-var remote = require('electron').remote; 
+var remote = require('electron').remote;
 
 server.listen(port, function () {
 	console.log('webapp: listening at port %d', port);
@@ -76,7 +76,7 @@ io.on('connection', function(socket){
 	socket.on('mail address', function(msg){
 
 		var mycontentdir = utils.getContentDirectory();
-		
+
 		fs.appendFile(mycontentdir+'/email-addresses.txt', msg+",\n", function (err) {
 			if (err) {
 				console.log('webapp: writing mail address to file failed: '+err);
@@ -116,7 +116,7 @@ io.on('connection', function(socket){
 				io.to(socket.id).emit('new photos', images);
 			} else {
 				console.log("webapp: no files to send");
-			}			
+			}
 		});
 	});
 
@@ -148,7 +148,7 @@ io.on('connection', function(socket){
 						}
 
 					}
-				} 
+				}
 			});
 
 			if (json['option']) {
@@ -190,6 +190,7 @@ io.on('connection', function(socket){
 
 
 	socket.on('get_download_image', function(path, grayscale){
+		console.log('get_download_image');
 
 		var filename = path.substr(path.indexOf("/")+1);
 		utils.convertImageForDownload(filename, grayscale, function(res, path, err) {
@@ -200,6 +201,8 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('trigger_photo', function(password){
+		console.log('trigger_photo');
+
 		if (utils.getConfig().webapp.enableRemoteRelease || passwordIsValid(password)) {
 			booth.triggerPhoto();
 		}

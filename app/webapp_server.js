@@ -198,6 +198,10 @@ io.on('connection', function(socket){
 		});
 	});
 
+	socket.on('get_download_gif', function(paths, grayscale){
+		console.log('get_download_gif', paths, grayscale);
+	});
+
 	socket.on('trigger_photo', function(password){
 		console.log('trigger_photo');
 

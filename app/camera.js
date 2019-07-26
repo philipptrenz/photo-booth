@@ -122,6 +122,12 @@ class Camera {
 
 		console.log('sample picture');
 
+		const timestamp = utils.getTimestamp();
+		const watermark = new Buffer(`<svg>
+				<rect x="0" y="0" width="500" height="100" stroke="transparent" stroke-width="0" fill="none" fill-opacity="0.5" />
+				<text x="10" y="76" font-size="74" fill="#000">${timestamp}</text>
+			</svg>`);
+
 		sharp({
 			create: {
 				width: 6000,
@@ -130,6 +136,9 @@ class Camera {
 				background: { r: 255, g: 0, b: 0, alpha: 0.5 }
 			}
 		})
+		.composite([
+			{ input: watermark, density: 600 }
+		])
 		.jpeg()
 		.toBuffer()
 		.then(data => {
@@ -141,7 +150,7 @@ class Camera {
 
 	_resizeAndSave(data, callback) {
 		const filepath = utils.getPhotosDirectory() + "img_" + utils.getTimestamp() + ".jpg";
-		const webFilepath = utils.getWebAppPhotosDirectory() + "img_" + utils.getTimestamp() + ".jpg";
+		const webFilepath = 'photos/' + "img_" + utils.getTimestamp() + ".jpg";
 		const maxImageSize = utils.getConfig().maxImageSize ? utils.getConfig().maxImageSize : 1500;
 
 		sharp(data) // resize image to given maxSize

@@ -200,6 +200,11 @@ io.on('connection', function(socket){
 
 	socket.on('get_download_gif', function(paths, grayscale){
 		console.log('get_download_gif', paths, grayscale);
+
+		paths = paths.map(path => path.substr(path.indexOf("/")+1));
+		utils.createGifForDownload(paths, grayscale, function(res, path, err) {
+			console.log('finished_get_download_gif', res, path, err);
+		});
 	});
 
 	socket.on('trigger_photo', function(password){

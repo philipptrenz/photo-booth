@@ -23,6 +23,8 @@ import fs from 'fs';
 import $ from 'jquery';
 import path from 'path';
 import sharp from 'sharp';
+import GIFEncoder from 'gif-encoder';
+import getPixels from 'get-pixels';
 
 class Utils {
 
@@ -229,9 +231,6 @@ class Utils {
   }
 
   convertImageForDownload(filename, grayscale, callback) {
-
-    var self = this;
-    var _path = path.join(this.photosDir, filename);
     var newFilename = 'photo-booth_'+filename.replace('img_', '');
     var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
     var convertedFilepath = path.join(this.getPhotosDirectory(), './tmp', newFilename);
@@ -245,22 +244,111 @@ class Utils {
       } else {
         callback(true, webappFilepath);
       }
+
       // delete file after 10s
       setInterval(function(){
-        if (fs.existsSync(convertedFilepath)) fs.unlinkSync(convertedFilepath);
-      },10000);
+        if (fs.existsSync(convertedFilepath)) {
+          fs.unlinkSync(convertedFilepath)
+        }
+      }, 10000);
     }
 
-    if (grayscale) {
-      sharp(_path) // resize image to given maxSize
-        .grayscale()
-        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
-        .toFile(convertedFilepath, cb);
-    } else {
-      sharp(_path) // resize image to given maxSize
-        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
-        .toFile(convertedFilepath, cb);
+    function convert(converter) {
+      converter.toFile(convertedFilepath, cb);
     }
+
+    this._processImageInternal(filename, grayscale, convert);
+  }
+
+  createGifForDownload(filenames, grayscale, callback) {
+    var newFilename = this.getTimestamp() + '.gif';
+    var convertedFilepath = path.join(this.getPhotosDirectory(), 'tmp', newFilename);
+    var webappFilepath = path.join('photos', 'tmp', newFilename);
+
+    // this._getImageSizeAfterProcessing(filenames[0], function(res, info) {
+
+    // });
+
+    // return;
+
+    try {
+      // TODO: Set gif size based on images
+      var gif = new GIFEncoder(1500, 1000);
+      gif.pipe(fs.createWriteStream(convertedFilepath));
+
+      gif.setQuality(20);
+      gif.setDelay(1000);
+      gif.setRepeat(0);
+
+      gif.writeHeader();
+
+      this._processAndAddToGif(gif, filenames, grayscale, function(res, message, err) {
+        gif.finish();
+
+        if (res) {
+          callback(true, webappFilepath)
+        } else {
+          callback(false, message, err);
+        }
+      });
+    }
+    catch (err) {
+      try {
+        gif.finish();
+      }
+      catch(x) {}
+
+      callback(false, 'gif creation failed', err);
+    }
+  }
+
+  _processImageInternal(filename, grayscale, callback) {
+    var _path = path.join(this.photosDir, filename);
+
+    var converter = sharp(_path)
+      .resize(this.config.webapp.maxDownloadImageSize);
+
+    if (grayscale) {
+       converter = converter.grayscale();
+    }
+
+    callback(converter);
+  }
+
+  // _getImageSizeAfterProcessing(filename, callback) {
+  //   var _path = path.join(this.photosDir, filename);
+
+  //   sharp(_path)
+  //     .resize(this.config.webapp.maxDownloadImageSize)
+  //     .on('info', function(info) {
+  //       console.log('info', info);
+  //     })
+  //     .toBuffer(function() { /* we don't care */
+  //       console.log('info finished', arguments);
+  //     });
+  // }
+
+  _processAndAddToGif(gif, filenames, grayscale, callback, counter = 0) {
+    var self = this;
+
+    var filename = filenames[counter];
+    var _path = path.join(this.photosDir, filename);
+
+    // TODO: Get pixels of converted file eg. _processImageInternal
+    getPixels(_path, function(err, pixels) {
+      if (err) {
+        callback(false, 'failed loading pixels', err);
+        return;
+      }
+
+      gif.addFrame(pixels.data);
+
+      if (filenames.length > counter + 1) {
+        self._processAndAddToGif(gif, filenames, grayscale, callback, counter + 1);
+      } else {
+        callback(true);
+      }
+    });
   }
 }
 

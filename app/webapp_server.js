@@ -203,7 +203,9 @@ io.on('connection', function(socket){
 
 		paths = paths.map(path => path.substr(path.indexOf("/")+1));
 		utils.createGifForDownload(paths, grayscale, function(res, path, err) {
-			console.log('finished_get_download_gif', res, path, err);
+			if (res) {
+				io.to(socket.id).emit('get_download_gif', path);
+			}
 		});
 	});
 

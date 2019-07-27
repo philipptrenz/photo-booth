@@ -270,14 +270,39 @@ class Utils {
     }
 
     if (grayscale) {
-      sharp(_path) // resize image to given maxSize
+      if(this.config.overlay){
+        sharp(_path) // resize image to given maxSize
+        .composite([
+          {
+            input: path.join(__dirname, "../", this.config.overlay.image),
+            gravity: this.config.overlay.gravity || "center"
+          }
+        ])
         .grayscale()
-        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
+        .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
         .toFile(convertedFilepath, cb);
+      }else{
+        sharp(_path) // resize image to given maxSize
+          .grayscale()
+          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
+          .toFile(convertedFilepath, cb);
+      }
     } else {
-      sharp(_path) // resize image to given maxSize
-        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
-        .toFile(convertedFilepath, cb);
+      if(this.config.overlay){
+        sharp(_path) // resize image to given maxSize
+          .composite([
+            {
+              input: path.join(__dirname, "../", this.config.overlay.image),
+              gravity: this.config.overlay.gravity || "center"
+            }
+          ])
+          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
+          .toFile(convertedFilepath, cb);
+      }else{
+        sharp(_path) // resize image to given maxSize
+          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
+          .toFile(convertedFilepath, cb);
+      }
     }
   }
 

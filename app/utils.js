@@ -23,6 +23,8 @@ import fs from 'fs';
 import $ from 'jquery';
 import path from 'path';
 import sharp from 'sharp';
+import GIFEncoder from 'gif-encoder';
+import getPixels from 'get-pixels';
 
 class Utils {
 
@@ -54,7 +56,6 @@ class Utils {
   }
 
   saveConfig(new_config, callback) {
-
     // TODO: Add json-schema validation for config.json
 
     if (!new_config) {
@@ -119,16 +120,13 @@ class Utils {
   // ---------------------------------------------------- //
 
   loadRecentImagesAfterStart() {
-
     var photos_dir = this.getPhotosDirectory();
     var self = this;
     fs.readdir(photos_dir, function(err, files){
-
       if (files) {
         files.sort();
         var numberImages = (files.length < self.maxImages) ? files.length : self.maxImages;
         for (var i = 0; i < numberImages; i++) {
-          //console.log(photos_dir+"/"+files[i]);
           // just take jpegs
           if ( files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG") ){
             self.prependImage(self.getPhotosDirectory()+"/"+files[i]);
@@ -149,7 +147,6 @@ class Utils {
 
   initializeBranding() {
     if (this.config.branding) {
-
       var type = this.config.branding.type
       if (type) {
         if (type == 'text') {
@@ -158,7 +155,6 @@ class Utils {
           $('#front').html("Not yet implemented");
         }
       }
-
 
       var position = this.config.branding.position
       if (position) {
@@ -229,38 +225,135 @@ class Utils {
   }
 
   convertImageForDownload(filename, grayscale, callback) {
-
     var self = this;
-    var _path = path.join(this.photosDir, filename);
-    var newFilename = 'photo-booth_'+filename.replace('img_', '');
-    var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
-    var convertedFilepath = path.join(this.getPhotosDirectory(), './tmp', newFilename);
-    var webappFilepath = path.join('photos', 'tmp', newFilename);
 
-    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+    var newFilename = 'photo-booth_'+filename.replace('img_', '');
+    var convertedFilepath = path.join(this._getTempDir(), newFilename);
+    var webappFilepath = path.join('photos', 'tmp', newFilename);
 
     function cb(err) {
       if (err) {
-        callback(false, 'resizing image failed', err)
+        callback(false, 'preparing image failed', err)
       } else {
         callback(true, webappFilepath);
       }
-      // delete file after 10s
-      setInterval(function(){
-        if (fs.existsSync(convertedFilepath)) fs.unlinkSync(convertedFilepath);
-      },10000);
+
+      self._queueFileDeletion(convertedFilepath);
     }
 
-    if (grayscale) {
-      sharp(_path) // resize image to given maxSize
-        .grayscale()
-        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
-        .toFile(convertedFilepath, cb);
-    } else {
-      sharp(_path) // resize image to given maxSize
-        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
-        .toFile(convertedFilepath, cb);
+    function convert(converter) {
+      converter.toFile(convertedFilepath, cb);
     }
+
+    this._processImageInternal(filename, grayscale, convert);
+  }
+
+  createGifForDownload(filenames, grayscale, callback) {
+    var self = this;
+
+    var newFilename = this.getTimestamp() + '.gif';
+    var convertedFilepath = path.join(this._getTempDir(), newFilename);
+    var webappFilepath = path.join('photos', 'tmp', newFilename);
+
+    var gif = null;
+    function gifCallback(info) {
+      if (gif === null) {
+        gif = new GIFEncoder(info.width, info.height);
+        gif.pipe(fs.createWriteStream(convertedFilepath));
+
+        gif.setQuality(20);
+        gif.setDelay(self.config.webapp.gifDelay);
+        gif.setRepeat(0);
+
+        gif.writeHeader();
+      }
+
+      return gif;
+    }
+
+    try {
+      this._processAndAddToGif(gifCallback, filenames, grayscale, function(res, message, err) {
+        gif.finish();
+
+        if (res) {
+          callback(true, webappFilepath)
+        } else {
+          callback(false, message, err);
+        }
+
+        self._queueFileDeletion(convertedFilepath);
+      });
+    }
+    catch (err) {
+      try {
+        gif.finish();
+      }
+      catch(x) {}
+
+      callback(false, 'gif creation failed', err);
+      this._queueFileDeletion(convertedFilepath);
+    }
+  }
+
+  _getTempDir() {
+    var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
+
+    if (!fs.existsSync(tmpDir)) {
+      fs.mkdirSync(tmpDir);
+    }
+
+    return tmpDir;
+  }
+
+  _queueFileDeletion(filepath) {
+    // delete file after 10s
+    setInterval(function(){
+      if (fs.existsSync(filepath)) {
+        fs.unlinkSync(filepath)
+      }
+    }, 10000);
+  }
+
+  _processImageInternal(filename, grayscale, callback) {
+    var _path = path.join(this.photosDir, filename);
+
+    var converter = sharp(_path)
+      .resize(this.config.webapp.maxDownloadImageSize);
+
+    if (grayscale) {
+       converter = converter.grayscale();
+    }
+
+    callback(converter);
+  }
+
+  _processAndAddToGif(gifCallback, filenames, grayscale, callback, counter = 0) {
+    var self = this;
+
+    var filename = filenames[counter];
+    this._processImageInternal(filename, grayscale, function convert(converter) {
+      converter.toBuffer(function(err, buffer, info) {
+        if (err) {
+          callback(false, 'preparing image failed', err)
+          return;
+        }
+
+        getPixels(new Buffer(buffer), 'image/jpeg', function(err, pixels) {
+          if (err) {
+            callback(false, 'failed loading pixels', err);
+            return;
+          }
+
+          gifCallback(info).addFrame(pixels.data);
+
+          if (filenames.length > counter + 1) {
+            self._processAndAddToGif(gifCallback, filenames, grayscale, callback, counter + 1);
+          } else {
+            callback(true);
+          }
+        });
+      });
+    });
   }
 }
 

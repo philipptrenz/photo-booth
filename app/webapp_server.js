@@ -198,6 +198,17 @@ io.on('connection', function(socket){
 		});
 	});
 
+	socket.on('get_download_gif', function(paths, grayscale){
+		console.log('get_download_gif', paths, grayscale);
+
+		paths = paths.map(path => path.substr(path.indexOf("/")+1));
+		utils.createGifForDownload(paths, grayscale, function(res, path, err) {
+			if (res) {
+				io.to(socket.id).emit('get_download_gif', path);
+			}
+		});
+	});
+
 	socket.on('trigger_photo', function(password){
 		console.log('trigger_photo');
 

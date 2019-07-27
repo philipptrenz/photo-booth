@@ -147,7 +147,8 @@ socket.on('new photos', function(imgUrlArray){
 		var url = imgUrlArray[i];
 		var html = '<li class="col-xs-12 col-sm-6 col-sm-6 col-lg-4">'+
 	    		'<div class="image">'+
-	    			'<img src="'+url+'">'+
+					'<img src="'+url+'">'+
+					'<div class="triangle"></div>' +
 	    			'<div class="overlay">'+
 	    				'<a href="#" class="img-download" download><i class="fa fa-download" aria-hidden="true"></i></a>'+
 	    				//'<a href=""><i class="fa fa-share" aria-hidden="true"></i></a>'+
@@ -175,7 +176,36 @@ $(document).on("click", 'a.img-download', function(event) {
 	socket.emit('get_download_image', path, useGrayscale);
 });
 
-socket.on('get_download_image', function(path) {
+(function() {
+	var selectedImages = [];
+
+	$(document).on('click', '#photos img', function(event) {
+		var img = $(event.target);
+		var source = img.attr('src');
+
+		var imageContainer = img.parent('.image');
+
+		var selectedIndex = selectedImages.indexOf(source);
+		if (selectedIndex === -1) {
+			selectedImages.push(source);
+			imageContainer.addClass('selected');
+		} else {
+			selectedImages.splice(selectedIndex, 1);
+			imageContainer.removeClass('selected');
+		}
+
+		$('.my-gif-button i').toggleClass('hide', selectedImages.length < 2);
+	});
+
+	$('.my-gif-button').click(function() {
+		socket.emit('get_download_gif', selectedImages, useGrayscale);
+	});
+})();
+
+socket.on('get_download_image', downloadImage);
+socket.on('get_download_gif', downloadImage);
+
+function downloadImage(path) {
 	// hack to force downloading image instead of opening in browser
 	var a = document.createElement('A');
 	a.href = path;
@@ -183,4 +213,4 @@ socket.on('get_download_image', function(path) {
 	document.body.appendChild(a);
 	a.click();
 	document.body.removeChild(a);
-});
+}

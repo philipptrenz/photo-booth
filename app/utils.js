@@ -262,7 +262,7 @@ class Utils {
         gif.pipe(fs.createWriteStream(convertedFilepath));
 
         gif.setQuality(20);
-        gif.setDelay(1000);
+        gif.setDelay(self.config.webapp.gifDelay);
         gif.setRepeat(0);
 
         gif.writeHeader();

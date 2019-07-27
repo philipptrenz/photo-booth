@@ -23,6 +23,7 @@ import fs from 'fs';
 import $ from 'jquery';
 import path from 'path';
 import sharp from 'sharp';
+var ipp = require("ipp");
 
 
 class Utils {
@@ -41,6 +42,7 @@ class Utils {
     this.getConfig();
     this.checkGrayscaleMode();
     this.getContentDirectory();
+    this.printer = this.config.printer?ipp.Printer(this.config.printer.address) :undefined;
 
     this.initializeBranding();
     this.loadRecentImagesAfterStart();
@@ -304,6 +306,73 @@ class Utils {
           .toFile(convertedFilepath, cb);
       }
     }
+  }
+
+  print(filename, grayscale) {
+    var _path = path.join(this.photosDir, filename);
+    const printer = this.printer;
+    function printAction(err, imageBuffer){
+      if(err){
+        console.log(err)
+      }else{
+        var file = {
+          "operation-attributes-tag": {
+            "requesting-user-name": "Kiosk",
+            "job-name": filename.split(".")[0],
+            "document-format": "image/jpeg"
+          },
+          data: imageBuffer
+        };
+
+        console.log(printer);
+        printer.execute("Print-Job", file, function(err, res) {
+          if (err) {
+            console.error(err);
+          }
+          if (res) {
+            console.log(filename + " – printing: " + res.statusCode);
+          }
+        });
+
+      }
+    }
+
+    if (grayscale) {
+      if(this.config.overlay){
+        sharp(_path) // resize image to given maxSize
+        .composite([
+          {
+            input: path.join(__dirname, "../", this.config.overlay.image),
+            gravity: this.config.overlay.gravity || "center"
+          }
+        ])
+        .grayscale()
+        .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
+        .toBuffer(printAction)
+      }else{
+        sharp(_path) // resize image to given maxSize
+          .grayscale()
+          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
+          .toBuffer(printAction)
+      }
+    } else {
+      if(this.config.overlay){
+        sharp(_path) // resize image to given maxSize
+          .composite([
+            {
+              input: path.join(__dirname, "../", this.config.overlay.image),
+              gravity: this.config.overlay.gravity || "center"
+            }
+          ])
+          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
+          .toBuffer(printAction)
+      }else{
+        sharp(_path) // resize image to given maxSize
+        .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
+        .toBuffer(printAction)
+      }
+    }
+
   }
 
 }

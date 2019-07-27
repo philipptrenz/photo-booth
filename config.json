@@ -43,5 +43,8 @@
 	"overlay": {
 		"image": "./path_to_your_file.png",
 		"gravity": "southeast" 
+	},
+	"printer": {
+		"address": "printer_address"
 	}
 }

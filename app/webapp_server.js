@@ -64,6 +64,10 @@ io.on('connection', function(socket){
 		io.to(socket.id).emit('use grayscale');
 	}
 
+	if (utils.getConfig().printer) {
+		io.to(socket.id).emit("use_printer");
+	}
+
 	if (utils.getConfig().webapp.enableRemoteRelease) {
 		io.to(socket.id).emit('enable remote release');
 	}
@@ -197,6 +201,11 @@ io.on('connection', function(socket){
 				io.to(socket.id).emit('get_download_image', path);
 			}
 		});
+	});
+
+	socket.on("get_print_image", function(path, grayscale) {
+		var filename = path.substr(path.indexOf("/") + 1);
+		utils.print(filename , grayscale);
 	});
 
 	socket.on('trigger_photo', function(password){

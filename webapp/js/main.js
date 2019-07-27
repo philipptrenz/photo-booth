@@ -21,6 +21,7 @@
 var socket = io();
 
 var useGrayscale = false;
+var usePrinter = false;
 
 $(document).ready(function() {
 
@@ -136,6 +137,10 @@ socket.on('use grayscale', function() {
 	useGrayscale = true;
 });
 
+socket.on("use_printer", function() {
+	usePrinter = true;
+});
+
 socket.on('enable remote release', function() {
 	$('#trigger-button').removeClass('hide');
 	$('.my-trigger-button').removeClass('hidden-xs')
@@ -145,10 +150,12 @@ socket.on('enable remote release', function() {
 socket.on('new photos', function(imgUrlArray){
 	for (i = 0; i < imgUrlArray.length; i++) {
 		var url = imgUrlArray[i];
+		var printerIcon= usePrinter?'<a href="#" class="img-print"><i class="fa fa-print" aria-hidden="true"></i></a>':'';
 		var html = '<li class="col-xs-12 col-sm-6 col-sm-6 col-lg-4">'+
 	    		'<div class="image">'+
 	    			'<img src="'+url+'">'+
-	    			'<div class="overlay">'+
+					'<div class="overlay">'+
+						printerIcon +
 	    				'<a href="#" class="img-download" download><i class="fa fa-download" aria-hidden="true"></i></a>'+
 	    				//'<a href=""><i class="fa fa-share" aria-hidden="true"></i></a>'+
 	    			'</div>'+
@@ -174,6 +181,19 @@ $(document).on("click", 'a.img-download', function(event) {
 
 	// request edited image from server
 	socket.emit('get_download_image', path, useGrayscale);
+});
+
+$(document).on("click", "a.img-print", function(event) {
+	event.preventDefault();
+	event.preventDefault();
+	event.preventDefault();
+
+	var img = $(this).parents().eq(2).find("img")[0];
+	var src = img.src;
+	var path = $(img).attr("src");
+
+	// request edited image from server
+	socket.emit("get_print_image", path, useGrayscale);
 });
 
 socket.on('get_download_image', function(path) {

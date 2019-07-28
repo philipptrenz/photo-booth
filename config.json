@@ -3,7 +3,7 @@
 		"fullscreen": true,
 		"width": 1440,
 		"height": 900,
-		"showDevTools": false,
+		"showDevTools": true,
 		"useGPIO": false,
 		"grayscaleMode": true,
 		"preventScreensaver": true

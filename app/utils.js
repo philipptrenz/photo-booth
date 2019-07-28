@@ -248,9 +248,25 @@ class Utils {
     }
   }
 
+  editImage(imagePath , grayscale) {
+    let image = sharp(imagePath);
+    if(this.config.overlay){
+      image = image.composite([
+        {
+          input: path.join(__dirname, "../", this.config.overlay.image),
+          gravity: this.config.overlay.gravity || "center"
+        }
+      ]);
+    }
+    if(grayscale){
+      image = image.grayscale();
+    }
+    image = image.resize(this.config.webapp.maxDownloadImageSize);
+    return image;
+  }
+
   convertImageForDownload(filename, grayscale, callback) {
 
-    var self = this;
     var _path = path.join(this.photosDir, filename);
     var newFilename = 'photo-booth_'+filename.replace('img_', '');
     var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
@@ -261,6 +277,7 @@ class Utils {
 
     function cb(err) {
       if (err) {
+        console.log(err);
         callback(false, 'resizing image failed', err)
       } else {
         callback(true, webappFilepath);
@@ -271,41 +288,8 @@ class Utils {
       },10000);
     }
 
-    if (grayscale) {
-      if(this.config.overlay){
-        sharp(_path) // resize image to given maxSize
-        .composite([
-          {
-            input: path.join(__dirname, "../", this.config.overlay.image),
-            gravity: this.config.overlay.gravity || "center"
-          }
-        ])
-        .grayscale()
-        .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
-        .toFile(convertedFilepath, cb);
-      }else{
-        sharp(_path) // resize image to given maxSize
-          .grayscale()
-          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
-          .toFile(convertedFilepath, cb);
-      }
-    } else {
-      if(this.config.overlay){
-        sharp(_path) // resize image to given maxSize
-          .composite([
-            {
-              input: path.join(__dirname, "../", this.config.overlay.image),
-              gravity: this.config.overlay.gravity || "center"
-            }
-          ])
-          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
-          .toFile(convertedFilepath, cb);
-      }else{
-        sharp(_path) // resize image to given maxSize
-          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
-          .toFile(convertedFilepath, cb);
-      }
-    }
+    this.editImage(_path,grayscale).toFile(convertedFilepath, cb);
+
   }
 
   print(filename, grayscale) {
@@ -337,41 +321,7 @@ class Utils {
       }
     }
 
-    if (grayscale) {
-      if(this.config.overlay){
-        sharp(_path) // resize image to given maxSize
-        .composite([
-          {
-            input: path.join(__dirname, "../", this.config.overlay.image),
-            gravity: this.config.overlay.gravity || "center"
-          }
-        ])
-        .grayscale()
-        .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
-        .toBuffer(printAction)
-      }else{
-        sharp(_path) // resize image to given maxSize
-          .grayscale()
-          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
-          .toBuffer(printAction)
-      }
-    } else {
-      if(this.config.overlay){
-        sharp(_path) // resize image to given maxSize
-          .composite([
-            {
-              input: path.join(__dirname, "../", this.config.overlay.image),
-              gravity: this.config.overlay.gravity || "center"
-            }
-          ])
-          .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
-          .toBuffer(printAction)
-      }else{
-        sharp(_path) // resize image to given maxSize
-        .resize(self.config.webapp.maxDownloadImageSize) // Scale down images on webapp
-        .toBuffer(printAction)
-      }
-    }
+    this.editImage(_path,grayscale).toBuffer(printAction)
 
   }
 

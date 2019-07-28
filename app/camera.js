@@ -140,11 +140,12 @@ class Camera {
 			{ input: watermark, density: 600 }
 		])
 		.jpeg()
-		.toBuffer()
-		.then(data => {
-			self._resizeAndSave(data, callback);
-		}, err => {
-			callback(-2, 'failed to create sample picture', err);
+		.toBuffer(function (err, data) {
+			if (err) {
+				callback(-2, 'failed to create sample picture', err);
+			} else {
+				self._resizeAndSave(data, callback);
+			}
 		});
 	}
 
@@ -156,13 +157,12 @@ class Camera {
 		sharp(data) // resize image to given maxSize
 			.resize(Number(maxImageSize)) // scale width to 1500
 			.toFile(filepath, function(err) {
-
-			if (err) {
-				callback(-3, 'resizing image failed', err)
-			} else {
-				callback(0, filepath, webFilepath);
-			}
-		});
+				if (err) {
+					callback(-3, 'resizing image failed', err)
+				} else {
+					callback(0, filepath, webFilepath);
+				}
+			});
 	}
 }
 

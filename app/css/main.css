@@ -1,24 +1,24 @@
-/* 
- * This file is part of "photo-booth" 
+/*
+ * This file is part of "photo-booth"
  * Copyright (c) 2018 Philipp Trenz
  *
  * For more information on the project go to
  * <https://github.com/philipptrenz/photo-booth>
- * 
- * This program is free software: you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-html{
+ html{
     overflow: hidden;
     width: 100vw;
     height: 100vh;
@@ -116,7 +116,7 @@ button {
     -webkit-filter: brightness(80%);
 }
 
-#prompt {	
+#prompt {
 	text-align: center;
 
 	position:fixed;
@@ -132,7 +132,7 @@ button {
     z-index: 1000;
     display: none;
 
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.4);
     background-size: cover;
     background-repeat: no-repeat;
 
@@ -150,10 +150,10 @@ button {
     z-index: 0;
 
     background-repeat: no-repeat;
-    background-position: center; 
+    background-position: center;
 
     overflow: hidden;
-    
+
     /*
     transition: background-image 2s linear;
     transform: rotateZ(360deg);
@@ -210,8 +210,33 @@ button {
     font-size: 5vw;
 }
 
+.live{
+    position: absolute; top: 0; bottom: 0; right: 0; left: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: black;
+}
+
 .fa {
 	font-size: 10vw;
+}
+
+#flash {
+    position: fixed;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    opacity: 0;
+    transition: opacity .75s ease-out;
+}
+
+#flash.flash {
+    z-index: 20000;
+    opacity: 1;
+    transition: opacity 0s;
 }
 
 @keyframes fadein {

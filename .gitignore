@@ -19,3 +19,4 @@ tmpfile*
 my.config.json
 config.schema.json
 .idea/
+INSTALL.md

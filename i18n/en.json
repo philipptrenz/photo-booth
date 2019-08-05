@@ -1,0 +1,13 @@
+{
+    "online-gallery": {
+        "title": "online gallery",
+        "text": "if you leave us your e-mail, we will send you the access data to the online gallery as soon as it is online. then you can easily browse through the photos from home and download your favorite ones.",
+        "placeholder": "your e-mail",
+        "button": "okay"
+    },
+    "settings-password": {
+        "title": "settings",
+        "placeholder": "please enter your password",
+        "button": "send"
+    }
+}

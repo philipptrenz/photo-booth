@@ -23,6 +23,8 @@ import path from 'path';
 
 import booth from './booth.js';
 import utils from "./utils.js";
+import templateService from './template-service.js';
+import translationService from './translation-service.js';
 
 var port = 80;
 
@@ -52,9 +54,30 @@ server.listen(port, function () {
 // Routing
 const currentDirectory = path.join(__dirname, '../', 'webapp');
 app
+	.get('/', applyTemplate('index.html'))
+	.get('/index.html', applyTemplate('index.html'))
 	.use(express.static(currentDirectory))
 	.get('/photos/:path', handlePhotoRequest('/photos/'))
 	.get('/photos/tmp/:path', handlePhotoRequest('/photos/tmp/'));
+
+function applyTemplate(templatePath) {
+	return function(req, res, next) {
+		const filePath = path.join(currentDirectory, templatePath);
+		const template = fs.readFileSync(filePath).toString();
+
+		translationService.init(utils.getConfig(), function(error) {
+			if (error) {
+				next(error);
+				return;
+			}
+
+			const appliedTemplate = templateService.applyTemplate(template);
+
+			res.write(appliedTemplate);
+			res.end();
+		})
+	}
+}
 
 function handlePhotoRequest(path) {
 	return function(req, res) {

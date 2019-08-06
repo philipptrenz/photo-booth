@@ -1,8 +1,15 @@
 {
     "online-gallery": {
         "title": "Online-Galerie",
-        "text": "Wenn du uns deine E-Mail hinterlässt, senden wir dir die Zugangsdaten zur Online-Galerie, sobald sie online ist. Dann kannst du die Fotos von zu Hause aus durchsuchen und deine Lieblingsfotos herunterladen.",
-        "placeholder": "Deine E-Mail-Adresse",
+        "text": {
+            "email": "Wenn du uns deine E-Mail hinterlässt, $t(online-gallery.text._)",
+            "text": "Wenn du uns mitteilst, wie wir dich kontaktieren können, $t(online-gallery.text._)",
+            "_": "senden wir dir die Zugangsdaten zur Online-Galerie, sobald sie online ist. Dann kannst du die Fotos von zu Hause aus durchsuchen und deine Lieblingsfotos herunterladen."
+        },
+        "placeholder": {
+            "email": "Deine E-Mail-Adresse",
+            "text": "Deine E-Mail-Adresse / Telefonnummer / Name"
+        },
         "button": "Senden"
     },
     "settings-password": {

@@ -71,7 +71,9 @@ function applyTemplate(templatePath) {
 				return;
 			}
 
-			const appliedTemplate = templateService.applyTemplate(template);
+			const appliedTemplate = templateService.applyTemplate(template, {
+				config: utils.getConfig()
+			});
 
 			res.write(appliedTemplate);
 			res.end();
@@ -103,13 +105,13 @@ io.on('connection', function(socket){
 	});
 
 	// save mail address
-	socket.on('mail address', function(msg){
+	socket.on('contact address', function(msg){
 		var contentDir = utils.getContentDirectory();
-		fs.appendFile(contentDir+'/email-addresses.txt', msg+",\n", function (err) {
+		fs.appendFile(contentDir+'/contact-addresses.txt', msg+",\n", function (err) {
 			if (err) {
-				console.log('webapp: writing mail address to file failed: '+err);
+				console.log('webapp: writing contact address to file failed: '+err);
 			} else {
-				console.log('webapp:', '\''+msg+'\'', 'added to email-addresses.txt');
+				console.log('webapp:', '\''+msg+'\'', 'added to contact-addresses.txt');
 			}
 		});
 	});

@@ -1,6 +1,7 @@
-import { create } from "handlebars";
+import { create } from 'handlebars';
+import handlebarsHelpers from 'handlebars-helpers';
 
-import { handlebarsHelper } from './translation-service.js';
+import { handlebarsHelper as translateHelper } from './translation-service.js';
 
 class TemplateService {
     constructor() {
@@ -21,7 +22,18 @@ class TemplateService {
         }
 
         this.handlebars = create();
-        this.handlebars.registerHelper(handlebarsHelper.name, handlebarsHelper.onExecute.bind(handlebarsHelper));
+
+        // Register general helpers
+        handlebarsHelpers(['comparison', 'string'], {
+            handlebars: this.handlebars
+        });
+
+        // Register custom helpers
+        this._registerHelper(translateHelper);
+    }
+
+    _registerHelper(helper) {
+        this.handlebars.registerHelper(helper.name, helper.onExecute.bind(helper));
     }
 }
 

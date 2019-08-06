@@ -26,11 +26,10 @@ $(document).ready(function() {
 
 	$('body').fadeIn(800);
 
-	if (!document.cookie.includes('showMailWindow')) {
-		//$('#mail-window').show();
+	if (!document.cookie.includes('showContactWindow')) {
 		setTimeout(function() {
-			$('#mail-window').slideDown('slow');
-			$('#mail').focus();
+			$('#contact-window').slideDown('slow');
+			$('#contact').focus();
 		}, 1500);
 	}
 });
@@ -41,29 +40,28 @@ socket.emit('get latest photos');
 
 
 
-// send mailaddress
-$('#mail-form').submit(function(){
+// send contact address
+$('#contact-form').submit(function(){
 
 	// send to server
-	socket.emit('mail address', $('#mail').val());
+	socket.emit('contact address', $('#contact-address').val());
 
-	$('#mail-window').slideUp('slow');
-	$('#mail').val('');
-	setCookie('showMailWindow','false', 3);
+	$('#contact-window').slideUp('slow');
+	$('#contact-address').val('');
+	setCookie('showContactWindow','false', 3);
 	return false;
-	});
+});
 
-	// ------------------------------------------------- //
+// ------------------------------------------------- //
 
-
-	function closeWindow(string) {
-		$(string).slideUp('slow');
-		if (string == '#mail-window') {
-			setCookie('showMailWindow','false', 3);
-		}
+function closeWindow(string) {
+	$(string).slideUp('slow');
+	if (string == '#contact-window') {
+		setCookie('showContactWindow','false', 3);
 	}
+}
 
-	function setCookie(cname, cvalue, exdays) {
+function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
     var expires = "expires="+d.toUTCString();

@@ -50,27 +50,27 @@
 
 	<div class="wrapper">
 		<div class="container">
+			{{#unlessEq config.webapp.contactAddressType 'none'}}
+				<div class="row windows" id="contact-window" style="display: none;">
+					<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">
+						<h3>{{ i18n 'online-gallery.title' }}</h3>
+						<p>{{ i18n (append 'online-gallery.text.' config.webapp.contactAddressType) }}</p>
 
-			<div class="row windows" id="mail-window" style="display: none;">
-				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3  grey darken-3">
+						<form action="" class="form-group" id="contact-form">
+							<div class="input-group">
+								<input id="contact-address" type="{{config.webapp.contactAddressType}}" class="form-control" placeholder="{{ i18n (append 'online-gallery.placeholder.' config.webapp.contactAddressType) }}" required/>
+								<span class="input-group-btn grey darken-3">
+									<button class="btn btn-default" style="background-color: #2b3e50;">{{ i18n 'online-gallery.button' }}</button>
+								</span>
+							</div>
+						</form>
 
-					<h3>{{ i18n 'online-gallery.title' }}</h3>
-					<p>{{ i18n 'online-gallery.text' }}</p>
-
-					<form action="" class="form-group" id="mail-form">
-						<div class="input-group">
-							<input id="mail" type="email" class="form-control" placeholder="{{ i18n 'online-gallery.placeholder' }}" required/>
-							<span class="input-group-btn grey darken-3">
-								<button class="btn btn-default" style="background-color: #2b3e50;">{{ i18n 'online-gallery.button' }}</button>
-							</span>
+						<div class="close-button">
+							<a href="#" onclick="closeWindow('#contact-window')" ><i class="fa fa-times" aria-hidden="true"></i></a>
 						</div>
-				    </form>
-
-				    <div class="close-button">
-				    	<a href="#" onclick="closeWindow('#mail-window')" ><i class="fa fa-times" aria-hidden="true"></i></a>
-				    </div>
+					</div>
 				</div>
-			</div>
+			{{/unlessEq}}
 
 			<div class="row windows" id="settings-auth" style="display: none;">
 				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">

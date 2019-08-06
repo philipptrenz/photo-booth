@@ -33,7 +33,8 @@
 		"password": "test",
 		"maxDownloadImageSize": 800,
 		"gifDelay": 1000,
-		"enableRemoteRelease": true
+		"enableRemoteRelease": true,
+		"contactAddressType": "email"
 	},
 	"branding": {
 		"type": "text",

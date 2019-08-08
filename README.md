@@ -267,6 +267,7 @@ sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
 * [lal12](https://github.com/lal12)
 * [blaueQuelle](https://github.com/blaueQuelle)
 * [andi34](https://github.com/andi34)
+* [vangod90](https://github.com/vangod90)
 
 ## Mentions
 

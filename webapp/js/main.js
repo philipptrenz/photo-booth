@@ -141,8 +141,6 @@ socket.on('enable remote release', function() {
 });
 
 socket.on('new photos', function(imgUrlArray) {
-	hidePendingActionModal();
-
 	for (i = 0; i < imgUrlArray.length; i++) {
 		var url = imgUrlArray[i];
 		var html = '<li class="col-xs-12 col-sm-6 col-sm-6 col-lg-4">'+
@@ -219,6 +217,7 @@ function downloadImage(path) {
 	document.body.removeChild(a);
 }
 
+socket.on('trigger_photo_success', hidePendingActionModal);
 socket.on('trigger_photo_error', showPendingActionModalError);
 socket.on('get_download_image_error', showPendingActionModalError);
 socket.on('get_download_gif_error', showPendingActionModalError);

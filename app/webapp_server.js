@@ -242,8 +242,12 @@ io.on('connection', function(socket){
 		console.log('trigger_photo');
 
 		if (utils.getConfig().webapp.enableRemoteRelease || passwordIsValid(password)) {
-			booth.triggerPhoto(function() {
-				io.to(socket.id).emit('trigger_photo_error');
+			booth.triggerPhoto(function(success) {
+				if (success) {
+					io.to(socket.id).emit('trigger_photo_success');
+				} else {
+					io.to(socket.id).emit('trigger_photo_error');
+				}
 			});
 		}
 	});

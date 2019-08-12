@@ -105,6 +105,10 @@ let executing = false;
 let seriesCounter = 0;
 
 function trigger(callback) {
+  if (callback === undefined) {
+    callback = function() { };
+  }
+
   if (executing) {
     callback(true);
     return;

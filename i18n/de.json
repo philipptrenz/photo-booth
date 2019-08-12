@@ -16,5 +16,11 @@
         "title": "Einstellungen",
         "placeholder": "Bitte gib das Passwort ein",
         "button": "Senden"
+    },
+    "pending-action-dialog": {
+        "title": "Bitte warten",
+        "text": "Die Anfrage wird derzeit bearbeitet. Dies kann eine Weile dauern.",
+        "error": "Es ist ein Fehler aufgetreten.",
+        "close": "Schliessen"
     }
 }

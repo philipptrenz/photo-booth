@@ -102,6 +102,27 @@
 
 	<canvas id="hidden-canvas" ></canvas>
 
+	<div class="modal fade" id="pending-action-modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">{{ i18n 'pending-action-dialog.title' }}</h4>
+				</div>
+				<div class="modal-body">
+					<p>{{ i18n 'pending-action-dialog.text' }}</p>
+
+					<div class="alert alert-danger" role="alert">
+						<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+						{{ i18n 'pending-action-dialog.error' }}
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">{{ i18n 'pending-action-dialog.close' }}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

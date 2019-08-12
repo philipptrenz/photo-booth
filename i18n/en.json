@@ -16,5 +16,11 @@
         "title": "settings",
         "placeholder": "please enter your password",
         "button": "send"
+    },
+    "pending-action-dialog": {
+        "title": "Please wait",
+        "text": "The request is currently being processed. This may take a while.",
+        "error": "An error has occurred.",
+        "close": "Close"
     }
 }

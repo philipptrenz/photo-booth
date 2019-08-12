@@ -219,6 +219,8 @@ io.on('connection', function(socket){
 		utils.convertImageForDownload(filename, grayscale, function(res, path, err) {
 			if (res) {
 				io.to(socket.id).emit('get_download_image', path);
+			} else {
+				io.to(socket.id).emit('get_download_image_error');
 			}
 		});
 	});
@@ -230,6 +232,8 @@ io.on('connection', function(socket){
 		utils.createGifForDownload(paths, grayscale, function(res, path, err) {
 			if (res) {
 				io.to(socket.id).emit('get_download_gif', path);
+			} else {
+				io.to(socket.id).emit('get_download_gif_error');
 			}
 		});
 	});
@@ -238,7 +242,9 @@ io.on('connection', function(socket){
 		console.log('trigger_photo');
 
 		if (utils.getConfig().webapp.enableRemoteRelease || passwordIsValid(password)) {
-			booth.triggerPhoto();
+			booth.triggerPhoto(function() {
+				io.to(socket.id).emit('trigger_photo_error');
+			});
 		}
 	});
 

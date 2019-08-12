@@ -104,7 +104,7 @@ const photoSeriesLength = utils.getConfig().photoSeriesLength ? Number(utils.get
 let executing = false;
 let seriesCounter = 0;
 
-function trigger() {
+function trigger(errorCallback) {
 
   if (executing) return;
 
@@ -177,6 +177,7 @@ function trigger() {
             } else {
 
               console.error(message1, '\n', message2);
+              errorCallback();
 
               if (res === -1 ) {  // camera not initialized
                 new CameraErrorPrompt(5).start(false, false, function() { executing = false; });
@@ -207,6 +208,7 @@ function trigger() {
         trigger();
 
       } else {
+        errorCallback();
 
         // TODO: handle error
         new CameraErrorPrompt(5).start(false, false, function() {

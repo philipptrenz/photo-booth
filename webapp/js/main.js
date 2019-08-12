@@ -100,7 +100,7 @@ function showSettings() {
 }
 
 function triggerPhoto() {
-	// request edited image from server
+	showPendingActionModal();
 	socket.emit('trigger_photo');
 }
 
@@ -140,7 +140,9 @@ socket.on('enable remote release', function() {
 	$('.my-brand').addClass('hidden-xs');
 });
 
-socket.on('new photos', function(imgUrlArray){
+socket.on('new photos', function(imgUrlArray) {
+	hidePendingActionModal();
+
 	for (i = 0; i < imgUrlArray.length; i++) {
 		var url = imgUrlArray[i];
 		var html = '<li class="col-xs-12 col-sm-6 col-sm-6 col-lg-4">'+
@@ -165,12 +167,13 @@ socket.io.on("connect_error", function(err) {
 // ------------------------------------------------- //
 
 $(document).on("click", 'a.img-download', function(event) {
-    event.preventDefault();
+	event.preventDefault();
 
 	var img = $(this).parents().eq(2).find('img')[0];
 	var path = $(img).attr('src');
 
 	// request edited image from server
+	showPendingActionModal();
 	socket.emit('get_download_image', path, useGrayscale);
 });
 
@@ -196,6 +199,7 @@ $(document).on("click", 'a.img-download', function(event) {
 	});
 
 	$('.my-gif-button').click(function() {
+		showPendingActionModal();
 		socket.emit('get_download_gif', selectedImages, useGrayscale);
 	});
 })();
@@ -204,6 +208,8 @@ socket.on('get_download_image', downloadImage);
 socket.on('get_download_gif', downloadImage);
 
 function downloadImage(path) {
+	hidePendingActionModal();
+
 	// hack to force downloading image instead of opening in browser
 	var a = document.createElement('A');
 	a.href = path;
@@ -211,4 +217,23 @@ function downloadImage(path) {
 	document.body.appendChild(a);
 	a.click();
 	document.body.removeChild(a);
+}
+
+socket.on('trigger_photo_error', showPendingActionModalError);
+socket.on('get_download_image_error', showPendingActionModalError);
+socket.on('get_download_gif_error', showPendingActionModalError);
+
+function showPendingActionModal() {
+	$('#pending-action-modal').find('p').show();
+	$('#pending-action-modal').find('.alert, .modal-footer').hide();
+	$('#pending-action-modal').modal('show');
+}
+
+function hidePendingActionModal() {
+	$('#pending-action-modal').modal('hide');
+}
+
+function showPendingActionModalError() {
+	$('#pending-action-modal').find('p').hide();
+	$('#pending-action-modal').find('.alert, .modal-footer').show();
 }

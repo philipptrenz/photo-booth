@@ -117,6 +117,16 @@ class Utils {
     return this.photosDir;
   }
 
+  getFullSizePhotosDirectory() {
+    if (this.fullSizePhotosDir === undefined) {
+      const fullSizePhotosDir = path.join(this.getPhotosDirectory(), "hq/");
+      if (!fs.existsSync(fullSizePhotosDir)) fs.mkdirSync(fullSizePhotosDir);
+      this.fullSizePhotosDir = fullSizePhotosDir;
+      return this.fullSizePhotosDir;
+    }
+    return this.fullSizePhotosDir;
+  }
+
   // ---------------------------------------------------- //
 
   loadRecentImagesAfterStart() {

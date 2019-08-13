@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import fs from 'fs';
 import sharp from 'sharp';
 
 import utils from "./utils.js";
@@ -150,19 +151,36 @@ class Camera {
 	}
 
 	_resizeAndSave(data, callback) {
-		const filepath = utils.getPhotosDirectory() + "img_" + utils.getTimestamp() + ".jpg";
-		const webFilepath = 'photos/' + "img_" + utils.getTimestamp() + ".jpg";
-		const maxImageSize = utils.getConfig().maxImageSize ? utils.getConfig().maxImageSize : 1500;
+		const filename = "img_" + utils.getTimestamp() + ".jpg";
 
-		sharp(data) // resize image to given maxSize
-			.resize(Number(maxImageSize)) // scale width to 1500
-			.toFile(filepath, function(err) {
+		function resizeInternal() {
+			const resizedFilePath = utils.getPhotosDirectory() + filename;
+			const webFilepath = 'photos/' + "img_" + utils.getTimestamp() + ".jpg";
+			const maxImageSize = utils.getConfig().maxImageSize ? utils.getConfig().maxImageSize : 1500;
+
+			sharp(data) // resize image to given maxSize
+				.resize(Number(maxImageSize)) // scale width to 1500
+				.toFile(resizedFilePath, function(err) {
+					if (err) {
+						callback(-3, 'resizing image failed', err);
+					} else {
+						callback(0, resizedFilePath, webFilepath);
+					}
+				});
+		}
+
+		if (utils.getConfig().printing.enabled) {
+			const filePath = utils.getFullSizePhotosDirectory() + filename;
+			fs.writeFile(filePath, data, function(err) {
 				if (err) {
-					callback(-3, 'resizing image failed', err)
+					callback(-3, 'saving hq image failed', err);
 				} else {
-					callback(0, filepath, webFilepath);
+					resizeInternal();
 				}
 			});
+		} else {
+			resizeInternal();
+		}
 	}
 }
 

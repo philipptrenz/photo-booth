@@ -311,6 +311,7 @@ function goToPrintPreview() {
 
 function goBackToPrintPhotoSelection() {
 	printModal.find('.btn-default').hide();
+	printModal.find('.modal-footer .btn-primary').hide();
 
 	showPrintStep('step-photo-selection');
 }

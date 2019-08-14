@@ -138,15 +138,9 @@
 				<div class="modal-body step-layout-selection">
 					<div>{{ i18n 'print-dialog.layout-selection' }}</div>
 					{{#each config.printing.layouts}}
-						{{#eq this.type 'image'}}
-							<div class="layout-preview" onclick="selectPrintLayout('{{this.key}}')">
-								<div class="image"></div>
-							</div>
-						{{else}}
-							<div class="layout-preview" onclick="selectPrintLayout('{{this.key}}', {{this.options.width}}, {{this.options.height}})">
-								<img class="image" src="layouts/{{this.key}}" />
-							</div>
-						{{/eq}}
+						<div class="layout-preview" onclick="selectPrintLayout('{{this.key}}', {{this.options.width}}, {{this.options.height}})">
+							<img class="layout-image" src="layouts/{{this.key}}" />
+						</div>
 					{{/each}}
 				</div>
 				<div class="modal-body step-photo-selection">

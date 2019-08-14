@@ -31,7 +31,20 @@ for (let i = 0; i < images.length && i < maxImages; i++) {
 
     const x = options.spacing.left + ((i % options.width) * (options.imageWidth + options.spacing.betweenImages));
     const y = options.spacing.top + (Math.floor(i / options.width) * (options.imageHeight + options.spacing.betweenImages));
-    ctx.drawImage(img, x, y, options.imageWidth, options.imageHeight);
+
+    // Shrink image to the available space
+    const hRatio = options.imageWidth / img.width;
+    const vRatio = options.imageHeight / img.height;
+    const ratio  = Math.min(hRatio, vRatio);
+
+    const targetWidth = img.width * ratio;
+    const targetHeight = img.height * ratio;
+
+    // Position in the middle/middle of the available space
+    const xMiddle = x + ((options.imageWidth - targetWidth) / 2);
+    const yMiddle = y + ((options.imageHeight - targetHeight) / 2);
+    ctx.drawImage(img, 0, 0, img.width, img.height,
+                       xMiddle, yMiddle, targetWidth, targetHeight);
 }
 
 // Write output

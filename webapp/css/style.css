@@ -252,25 +252,22 @@ span.thumb {
 	margin-right: 5px;
 	margin-bottom: 5px;
 
-	background-color: white;
+	background-color: lightgray;
+	text-align: center;
 
 	cursor: pointer;
 }
 
 #print-modal .layout-preview:hover {
 	border: 5px solid darkgray;
+	background-color: darkgray;
 }
 
-#print-modal .layout-preview div.image {
-	width: 100%;
-	height: 100%;
-
-	background-color: rgba(0, 0, 0, .5);
-}
-
-#print-modal .layout-preview img.image {
+#print-modal .layout-preview .layout-image {
 	max-width: 100%;
-	max-width: 100%;
+	max-height: 100%;
+
+	box-sizing: border-box;
 }
 
 #print-modal .photo-selection {

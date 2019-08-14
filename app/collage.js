@@ -120,7 +120,7 @@ class Collage {
     }
 
     _getOptionsByLayout(layoutName) {
-        const layout = this.layouts.find(e => e.key === layoutName && e.type === 'collage');
+        const layout = this.layouts.find(e => e.key === layoutName);
         if (layout === undefined) {
             throw new Error('Layout ' + layoutName + ' is not defined!');
         }

@@ -39,6 +39,7 @@
 	"printing": {
 		"enabled": false,
 		"printer": "printer-name",
+		"limitPerUser": 0,
 		"layouts": []
 	},
 	"branding": {

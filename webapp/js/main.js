@@ -222,19 +222,24 @@ socket.on('trigger_photo_error', showPendingActionModalError);
 socket.on('get_download_image_error', showPendingActionModalError);
 socket.on('get_download_gif_error', showPendingActionModalError);
 
+var pendingActionModal = $('#pending-action-modal');
 function showPendingActionModal() {
-	$('#pending-action-modal').find('p').show();
-	$('#pending-action-modal').find('.alert, .modal-footer').hide();
-	$('#pending-action-modal').modal('show');
+	pendingActionModal.find('.modal-title').hide();
+	pendingActionModal.find('.modal-title.pending').show();
+	pendingActionModal.find('p').show();
+	pendingActionModal.find('.alert, .modal-footer').hide();
+	pendingActionModal.modal('show');
 }
 
 function hidePendingActionModal() {
-	$('#pending-action-modal').modal('hide');
+	pendingActionModal.modal('hide');
 }
 
-function showPendingActionModalError() {
-	$('#pending-action-modal').find('p').hide();
-	$('#pending-action-modal').find('.alert, .modal-footer').show();
+function showPendingActionModalError(type = 'default') {
+	pendingActionModal.find('.modal-title').hide();
+	pendingActionModal.find('.modal-title.error').show();
+	pendingActionModal.find('p').hide();
+	pendingActionModal.find('.alert.type-' + type + ', .modal-footer').show();
 }
 
 // ------------------------------------------------- //
@@ -243,7 +248,15 @@ var layout = '';
 var selectedPhotos = [];
 
 var printModal = $('#print-modal');
-function openPrintDialog() {
+function openPrintDialog(limitPerUser) {
+	var printCount = getCookie('printCount');
+	printCount = printCount == null ? 0 : parseInt(printCount);
+	if (limitPerUser > 0 && printCount >= limitPerUser && getCookie('password') == null) {
+		showPendingActionModal();
+		showPendingActionModalError('print_limit_exceeded');
+		return;
+	}
+
 	layout = '';
 	selectedPhotos = [];
 
@@ -319,7 +332,10 @@ function goBackToPrintPhotoSelection() {
 function printPhoto() {
 	printModal.modal('hide');
 	showPendingActionModal();
-	socket.emit('print', layout, selectedPhotos);
+
+	var printCount = getCookie('printCount');
+	var password = getCookie('password');
+	socket.emit('print', layout, selectedPhotos, printCount, password);
 }
 
 function showPrintStep(step) {
@@ -343,5 +359,22 @@ socket.on('print_preview_error', function() {
 	showPendingActionModalError();
 });
 
-socket.on('print_success', hidePendingActionModal);
-socket.on('print_error', showPendingActionModalError);
+socket.on('print_success', function() {
+	hidePendingActionModal();
+
+	var printCount = getCookie('printCount');
+	if (printCount == null) {
+		printCount = 1;
+	} else {
+		printCount = parseInt(printCount) + 1;
+	}
+	setCookie('printCount', printCount, 3);
+});
+
+socket.on('print_error', function(errorType) {
+	if (errorType === 'print_limit_exceeded') {
+		showPendingActionModalError(errorType);
+	} else {
+		showPendingActionModalError();
+	}
+});

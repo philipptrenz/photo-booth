@@ -20,7 +20,11 @@
     "pending-action-dialog": {
         "title": "Please wait",
         "text": "The request is currently being processed. This may take a while.",
-        "error": "An error has occurred.",
+        "error": {
+            "title": "Error",
+            "default": "An error has occurred.",
+            "print-limit-exceeded": "You have exceeded the maximum number of printouts."
+        },
         "close": "Close"
     },
     "print-dialog": {

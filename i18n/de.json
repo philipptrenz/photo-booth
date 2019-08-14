@@ -20,7 +20,11 @@
     "pending-action-dialog": {
         "title": "Bitte warten",
         "text": "Die Anfrage wird derzeit bearbeitet. Dies kann eine Weile dauern.",
-        "error": "Es ist ein Fehler aufgetreten.",
+        "error": {
+            "title": "Fehler",
+            "default": "Es ist ein Fehler aufgetreten.",
+            "print-limit-exceeded": "Sie haben die maximale Anzahl der Ausdrucke überschritten."
+        },
         "close": "Schliessen"
     },
     "print-dialog": {

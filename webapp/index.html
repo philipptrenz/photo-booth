@@ -41,7 +41,7 @@
 					<i class="fa fa-download hide" aria-hidden="true" id="gif-button"></i>
 				</a>
 				{{#if config.printing.enabled}}
-					<a class="my-print-button" href="#" onclick="openPrintDialog()">
+					<a class="my-print-button" href="#" onclick="openPrintDialog({{ config.printing.limitPerUser}})">
 						<i class="fa fa-print" aria-hidden="true" id="print-button"></i>
 					</a>
 				{{/if}}
@@ -111,14 +111,20 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">{{ i18n 'pending-action-dialog.title' }}</h4>
+					<h4 class="modal-title pending">{{ i18n 'pending-action-dialog.title' }}</h4>
+					<h4 class="modal-title error">{{ i18n 'pending-action-dialog.error.title' }}</h4>
 				</div>
 				<div class="modal-body">
 					<p>{{ i18n 'pending-action-dialog.text' }}</p>
 
-					<div class="alert alert-danger" role="alert">
+					<div class="alert alert-danger type-default" role="alert">
 						<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-						{{ i18n 'pending-action-dialog.error' }}
+						{{ i18n 'pending-action-dialog.error.default' }}
+					</div>
+
+					<div class="alert alert-warning type-print_limit_exceeded" role="alert">
+						<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+						{{ i18n 'pending-action-dialog.error.print-limit-exceeded' }}
 					</div>
 				</div>
 				<div class="modal-footer">

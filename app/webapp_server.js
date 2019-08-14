@@ -267,8 +267,6 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('print_preview', function(layout, images) {
-		console.log('print_preview', layout, images);
-
 		const paths = images.map(file => file.substr(file.indexOf("/")+1))
 			.map(file => path.join(utils.getPhotosDirectory(), file));
 		collage.createPreviewCollage(layout, paths, function(err, imagePath) {
@@ -280,8 +278,12 @@ io.on('connection', function(socket){
 		});
 	});
 
-	socket.on('print', function(layout, images) {
-		console.log('print', layout, images);
+	socket.on('print', function(layout, images, printCount, password) {
+		printCount = printCount == null ? 0 : parseInt(printCount);
+		if (printCount >= utils.getConfig().printing.limitPerUser && utils.getConfig().printing.limitPerUser > 0 && !passwordIsValid(password)) {
+			io.to(socket.id).emit('print_error', 'print_limit_exceeded');
+			return;
+		}
 
 		const paths = images.map(file => file.substr(file.indexOf("/")+1))
 			.map(file => path.join(utils.getPhotosDirectory(), file));

@@ -60,9 +60,38 @@ class Collage {
         });
     }
 
-    createCollage(layout, images, filePath) {
+    createPreviewCollage(layout, images, callback) {
+        const newFilename = 'print_' + utils.getTimestamp() + '.jpeg';
+        const convertedFilepath = path.join(utils.getTempDir(), newFilename);
+        const webappFilepath = path.join('photos', 'tmp', newFilename);
+
         const options = this._getOptionsByLayout(layout);
-        this._createCollage(options, images, filePath);
+        const clonedOptions = JSON.parse(JSON.stringify(options));
+        clonedOptions.dpi = 96;
+
+        this._createCollage(convertedFilepath, clonedOptions, images, function(err) {
+            utils.queueFileDeletion(convertedFilepath);
+
+            if (err) {
+                callback(err);
+            } else {
+                callback(false, webappFilepath);
+            }
+        });
+    }
+
+    createCollage(layout, images, callback) {
+        const newFilename = 'print_' + utils.getTimestamp() + '.jpeg';
+        const convertedFilepath = path.join(utils.getFullSizePhotosDirectory(), newFilename);
+
+        const options = this._getOptionsByLayout(layout);
+        this._createCollage(convertedFilepath, options, images, function(err) {
+            if (err) {
+                callback(err);
+            } else {
+                callback(false, convertedFilepath);
+            }
+        });
     }
 
     _createCollage(filePath, options, images, callback) {

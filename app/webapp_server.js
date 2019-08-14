@@ -266,6 +266,39 @@ io.on('connection', function(socket){
 		}
 	});
 
+	socket.on('print_preview', function(layout, images) {
+		console.log('print_preview', layout, images);
+
+		const paths = images.map(file => file.substr(file.indexOf("/")+1))
+			.map(file => path.join(utils.getPhotosDirectory(), file));
+		collage.createPreviewCollage(layout, paths, function(err, imagePath) {
+			if (err) {
+				io.to(socket.id).emit('print_preview_error');
+			} else {
+				io.to(socket.id).emit('print_preview_success', imagePath);
+			}
+		});
+	});
+
+	socket.on('print', function(layout, images) {
+		console.log('print', layout, images);
+
+		const paths = images.map(file => file.substr(file.indexOf("/")+1))
+			.map(file => path.join(utils.getPhotosDirectory(), file));
+		collage.createCollage(layout, paths, function(err, imagePath) {
+			if (err) {
+				io.to(socket.id).emit('print_error');
+			} else {
+				console.log('Printing image ', imagePath);
+
+				// TODO: Print
+				const contentDir = utils.getContentDirectory();
+				fs.appendFile(contentDir + '/printed-images.txt', imagePath + "\n", function() { });
+
+				io.to(socket.id).emit('print_success');
+			}
+		});
+	});
 });
 
 function passwordIsValid(password) {

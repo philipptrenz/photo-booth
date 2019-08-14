@@ -236,3 +236,115 @@ function showPendingActionModalError() {
 	$('#pending-action-modal').find('p').hide();
 	$('#pending-action-modal').find('.alert, .modal-footer').show();
 }
+
+// ------------------------------------------------- //
+
+var layout = '';
+var selectedPhotos = [];
+
+var printModal = $('#print-modal');
+function openPrintDialog() {
+	layout = '';
+	selectedPhotos = [];
+
+	showPrintStep('step-layout-selection');
+	printModal.find('.btn-default, .btn-primary').hide();
+	printModal.modal('show');
+}
+
+function selectPrintLayout(layoutName, width = 1, height = 1) {
+	layout = layoutName;
+
+	printModal.find('.count-selected').text(0);
+	printModal.find('.count-total').text(width * height);
+
+	var photoContainer = printModal.find('.photo-selection');
+	photoContainer.empty();
+
+	var images = $('#photos img').get();
+
+	for (var i = 0; i < images.length; i++) {
+		var img = images[i];
+
+		var item = $('<li class="col-xs-12 col-sm-6 col-sm-6 col-lg-4"><img /></div>');
+		item.click(selectPrintPhoto);
+		var newImg = item.find('img');
+		newImg.attr('src', $(img).attr('src'));
+
+		photoContainer.append(item);
+	}
+
+	showPrintStep('step-photo-selection');
+}
+
+function selectPrintPhoto() {
+	var item = $(this);
+	var src = item.find('img').attr('src');
+
+	var index = selectedPhotos.indexOf(src);
+	if (index === -1) {
+		selectedPhotos.push(src);
+		item.addClass('selected');
+	} else {
+		selectedPhotos.splice(index, 1);
+		item.removeClass('selected');
+	}
+
+	printModal.find('.count-selected').text(selectedPhotos.length);
+	var continueButton = printModal.find('.step-photo-selection .btn-primary');
+
+	if (selectedPhotos.length > 0) {
+		continueButton.show();
+	} else {
+		continueButton.hide();
+	}
+}
+
+function goToPrintPreview() {
+	printModal.find('.btn-default').show();
+	printModal.find('.preview-container').empty();
+
+	showPrintStep('step-preview');
+
+	socket.emit('print_preview', layout, selectedPhotos);
+}
+
+function goBackToPrintPhotoSelection() {
+	printModal.find('.btn-default').hide();
+
+	showPrintStep('step-photo-selection');
+}
+
+function printPhoto() {
+	$('#print-modal').hide();
+	showPendingActionModal();
+	socket.emit('print', layout, selectedPhotos);
+}
+
+function showPrintStep(step) {
+	printModal.find('.modal-body').hide();
+	printModal.find('.modal-body.' + step).show();
+}
+
+socket.on('print_preview_success', function(image) {
+	console.log(image);
+
+	var previewImage = $('<img />');
+	previewImage.attr('src', image);
+
+	var previewContainer = printModal.find('.preview-container');
+	previewContainer.append(previewImage);
+
+	printModal.find('.modal-footer .btn-primary').show();
+});
+
+socket.on('print_preview_error', function() {
+	$('#print-modal').hide();
+	showPendingActionModal();
+	showPendingActionModalError();
+});
+
+socket.on('print_success', hidePendingActionModal);
+socket.on('print_error', showPendingActionModalError);
+
+openPrintDialog();

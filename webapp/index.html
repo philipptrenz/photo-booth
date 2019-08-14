@@ -38,8 +38,13 @@
 					<i class="fa fa-camera hide" aria-hidden="true" id="trigger-button"></i>
 				</a>
 				<a class="my-gif-button" href="#">
-					<i class="fa fa-download hide" aria-hidden="true" id="trigger-button"></i>
+					<i class="fa fa-download hide" aria-hidden="true" id="gif-button"></i>
 				</a>
+				{{#if config.printing.enabled}}
+					<a class="my-print-button" href="#" onclick="openPrintDialog()">
+						<i class="fa fa-print" aria-hidden="true" id="print-button"></i>
+					</a>
+				{{/if}}
 			</div>
 			<a class="my-back-button col-sm-4 col-xs-6" href="#" onclick="showSettings()">
 				<i class="fa fa-cog" aria-hidden="true" id="settings-button"></i>
@@ -123,18 +128,44 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="print-modal" data-backdrop="static" tabindex="-1" role="dialog">
+	<div class="modal fade" id="print-modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title">{{ i18n 'print-dialog.title' }}</h4>
 				</div>
-				<div class="modal-body">
-					<p>{{ i18n 'print-dialog.layout-selection' }}</p>
+				<div class="modal-body step-layout-selection">
+					<div>{{ i18n 'print-dialog.layout-selection' }}</div>
+					{{#each config.printing.layouts}}
+						{{#eq this.type 'image'}}
+							<div class="layout-preview" onclick="selectPrintLayout('{{this.key}}')">
+								<div class="image"></div>
+							</div>
+						{{else}}
+							<div class="layout-preview" onclick="selectPrintLayout('{{this.key}}', {{this.options.width}}, {{this.options.height}})">
+								<img class="image" src="layouts/{{this.key}}" />
+							</div>
+						{{/eq}}
+					{{/each}}
+				</div>
+				<div class="modal-body step-photo-selection">
+					<div>
+						{{ i18n 'print-dialog.photo-selection' }}<br />
+						{{ i18n 'print-dialog.photo-selection-count' }}: <span class="count-selected">0</span> / <span class="count-total">-</span>
+					</div>
+					<div>
+						<button type="button" class="btn btn-primary" onclick="goToPrintPreview()">{{ i18n 'print-dialog.continue' }}</button>
+					</div>
+					<ul class="photo-selection"></ul>
+				</div>
+				<div class="modal-body step-preview">
+					<div>{{ i18n 'print-dialog.preview' }}</div>
+					<div class="preview-container col-xs-12"></div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">{{ i18n 'print-dialog.cancel' }}</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">{{ i18n 'print-dialog.print' }}</button>
+					<button type="button" class="btn btn-default" onclick="goBackToPrintPhotoSelection()">{{ i18n 'print-dialog.back' }}</button>
+					<button type="button" class="btn btn-primary" onclick="printPhoto()">{{ i18n 'print-dialog.print' }}</button>
 				</div>
 			</div>
 		</div>

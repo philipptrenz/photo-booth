@@ -316,7 +316,7 @@ function goBackToPrintPhotoSelection() {
 }
 
 function printPhoto() {
-	$('#print-modal').hide();
+	printModal.modal('hide');
 	showPendingActionModal();
 	socket.emit('print', layout, selectedPhotos);
 }
@@ -327,8 +327,6 @@ function showPrintStep(step) {
 }
 
 socket.on('print_preview_success', function(image) {
-	console.log(image);
-
 	var previewImage = $('<img />');
 	previewImage.attr('src', image);
 
@@ -339,12 +337,10 @@ socket.on('print_preview_success', function(image) {
 });
 
 socket.on('print_preview_error', function() {
-	$('#print-modal').hide();
+	printModal.modal('hide');
 	showPendingActionModal();
 	showPendingActionModalError();
 });
 
 socket.on('print_success', hidePendingActionModal);
 socket.on('print_error', showPendingActionModalError);
-
-openPrintDialog();

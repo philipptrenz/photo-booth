@@ -25,6 +25,7 @@ import booth from './booth.js';
 import utils from "./utils.js";
 import templateService from './template-service.js';
 import translationService from './translation-service.js';
+import collage from './collage.js';
 
 var port = 80;
 
@@ -58,7 +59,20 @@ app
 	.get('/index.html', applyTemplate('index.html'))
 	.use(express.static(currentDirectory))
 	.get('/photos/:path', handlePhotoRequest('/photos/'))
-	.get('/photos/tmp/:path', handlePhotoRequest('/photos/tmp/'));
+	.get('/photos/tmp/:path', handlePhotoRequest('/photos/tmp/'))
+	.get('/layouts/:name', function(req, res, next) {
+		try {
+			collage.getPlaceholderImage(req.params.name, function(err, layoutPath) {
+				if (err) {
+					next(err);
+				} else {
+					res.sendFile(layoutPath);
+				}
+			});
+		} catch (ex) {
+			next(ex);
+		}
+	});
 
 function applyTemplate(templatePath) {
 	return function(req, res, next) {

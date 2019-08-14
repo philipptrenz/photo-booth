@@ -38,7 +38,13 @@
 	},
 	"printing": {
 		"enabled": false,
-		"printer": "printer-name"
+		"printer": "printer-name",
+		"layouts": [
+			{
+				"key": "single",
+				"type": "image"
+			}
+		]
 	},
 	"branding": {
 		"type": "text",

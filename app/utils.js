@@ -127,6 +127,16 @@ class Utils {
     return this.fullSizePhotosDir;
   }
 
+  getTempDir() {
+    var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
+
+    if (!fs.existsSync(tmpDir)) {
+      fs.mkdirSync(tmpDir);
+    }
+
+    return tmpDir;
+  }
+
   // ---------------------------------------------------- //
 
   loadRecentImagesAfterStart() {
@@ -238,7 +248,7 @@ class Utils {
     var self = this;
 
     var newFilename = 'photo-booth_'+filename.replace('img_', '');
-    var convertedFilepath = path.join(this._getTempDir(), newFilename);
+    var convertedFilepath = path.join(this.getTempDir(), newFilename);
     var webappFilepath = path.join('photos', 'tmp', newFilename);
 
     function cb(err) {
@@ -262,7 +272,7 @@ class Utils {
     var self = this;
 
     var newFilename = this.getTimestamp() + '.gif';
-    var convertedFilepath = path.join(this._getTempDir(), newFilename);
+    var convertedFilepath = path.join(this.getTempDir(), newFilename);
     var webappFilepath = path.join('photos', 'tmp', newFilename);
 
     var gif = null;
@@ -305,17 +315,7 @@ class Utils {
     }
   }
 
-  _getTempDir() {
-    var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
-
-    if (!fs.existsSync(tmpDir)) {
-      fs.mkdirSync(tmpDir);
-    }
-
-    return tmpDir;
-  }
-
-  _queueFileDeletion(filepath) {
+  queueFileDeletion(filepath) {
     // delete file after 10s
     setInterval(function(){
       if (fs.existsSync(filepath)) {

@@ -145,8 +145,10 @@
 				</div>
 				<div class="modal-body step-photo-selection">
 					<div>
-						{{ i18n 'print-dialog.photo-selection' }}<br />
-						{{ i18n 'print-dialog.photo-selection-count' }}: <span class="count-selected">0</span> / <span class="count-total">-</span>
+						<p>{{ i18n 'print-dialog.photo-selection' }}</p>
+						<p>
+							{{ i18n 'print-dialog.photo-selection-count' }}: <span class="count-selected">0</span> / <span class="count-total">-</span>
+						</p>
 					</div>
 					<div>
 						<button type="button" class="btn btn-primary" onclick="goToPrintPreview()">{{ i18n 'print-dialog.continue' }}</button>

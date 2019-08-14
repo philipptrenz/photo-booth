@@ -22,5 +22,15 @@
         "text": "The request is currently being processed. This may take a while.",
         "error": "An error has occurred.",
         "close": "Close"
+    },
+    "print-dialog": {
+        "title": "Print",
+        "layout-selection": "Please select the template.",
+        "photo-selection": "Please select the images you want to print. At least one image must be selected. Fewer or more images can be selected than the template supports. If there are fewer images, the corresponding placeholders will not be replaced and if there are too many images, only the first ones will be printed.",
+        "photo-selection-count": "Number of selected images",
+        "preview": "The following image will be printed.",
+        "continue": "Show preview",
+        "back": "Back to picture selection",
+        "print": "Print"
     }
 }

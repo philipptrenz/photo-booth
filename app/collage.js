@@ -27,7 +27,7 @@ class Collage {
             return;
         }
 
-        const tempFile = path.join(utils.getTempDir(), utils.getTimestamp() + '.jpeg');
+        const tempFile = path.join(utils.getTempDir(), layout + '_' + utils.getTimestamp() + '.jpeg');
         const that = this;
         sharp({
             create: {

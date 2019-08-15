@@ -107,10 +107,6 @@ class Collage {
         const childProcess = exec(params.join(' '), {
             cwd: './helpers/collage'
         }, function(error, stdout, stderr) {
-            console.log('error:', error);
-            console.log('stdout:', stdout);
-            console.log('stderr:', stderr);
-
             if (error) {
                 callback(error);
             } else {

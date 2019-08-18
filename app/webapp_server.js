@@ -26,6 +26,7 @@ import utils from "./utils.js";
 import templateService from './template-service.js';
 import translationService from './translation-service.js';
 import collage from './collage.js';
+import printer from './printer.js';
 
 var port = 80;
 
@@ -293,11 +294,22 @@ io.on('connection', function(socket){
 			} else {
 				console.log('Printing image ', imagePath);
 
-				// TODO: Print
 				const contentDir = utils.getContentDirectory();
-				fs.appendFile(contentDir + '/printed-images.txt', imagePath + "\n", function() { });
+				fs.appendFile(contentDir + '/print-log.txt', 'Print ' + imagePath + '\n', function() { });
 
-				io.to(socket.id).emit('print_success');
+				printer.print(imagePath, function(err, jobInfo) {
+					let logMessage = 'Print result of ' + imagePath + '\n';
+
+					if (err) {
+						logMessage += 'FAILED ' +  err.toString();
+						io.to(socket.id).emit('print_error');
+					} else {
+						logMessage += 'SUCCESSFULL ' + JSON.stringify(jobInfo);
+						io.to(socket.id).emit('print_success');
+					}
+
+					fs.appendFile(contentDir + '/print-log.txt', logMessage, function() { });
+				});
 			}
 		});
 	});

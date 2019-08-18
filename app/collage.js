@@ -9,7 +9,8 @@ import utils from "./utils.js";
 
 class Collage {
     constructor() {
-        this.layouts = utils.getConfig().printing.layouts || [];
+        const printing = utils.getConfig().printing || { };
+        this.layouts = printing.layouts || [];
     }
 
     getPlaceholderImage(layout, callback) {

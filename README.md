@@ -60,7 +60,7 @@ sudo chmod +x ./scripts/install_node_v9.sh
 # Install node
 sudo ./scripts/install_node_v9.sh
 
-# Install
+# Install (you can do this later if you want to add a printer to use the printing feature)
 npm install
 ```
 
@@ -228,9 +228,6 @@ For this feature to work you need a supported printer, install additional softwa
 	sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
 	sudo apt-get install libpango1.0-dev
 
-	cd photo-booth/helpers/collage
-	npm install
-
 	# Install cups
 	sudo apt-get install cups
 
@@ -239,6 +236,13 @@ For this feature to work you need a supported printer, install additional softwa
 
 	# Change user (adjust pi, if you have changed this)
 	sudo usermod -a -G lpadmin pi
+
+	# Install optional node modules
+	cd photo-booth
+	npm install
+
+	cd helpers/collage
+	npm install
 	```
 3. Navigate to http://localhost:631 and add the new printer
 	- **Important**: Remember the name, you need it for the configuration file later

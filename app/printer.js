@@ -1,7 +1,9 @@
 import fs from 'fs';
-import nodePrinter from 'printer';
 
 import utils from "./utils.js";
+
+const printerConfig = utils.getConfig().printing || { };
+const nodePrinter = printerConfig.enabled ? require('printer') : null;
 
 class Printer {
     constructor() {
@@ -9,8 +11,7 @@ class Printer {
     }
 
     print(fileName, callback) {
-        const printerConfig = utils.getConfig().printing || { };
-        if (!printerConfig.enabled) {
+        if (nodePrinter == null) {
             callback(new Error('Printing not enabled'));
             return;
         }

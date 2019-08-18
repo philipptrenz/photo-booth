@@ -15,9 +15,9 @@ class Printer {
             return;
         }
 
-        const printer = nodePrinter.getPrinter(printerConfig.printer);
-        if (printer == null) {
-            callback(new Error('Printer ' + printerConfig.printer + ' not found'));
+        const printerError = this._checkPrinter(printerConfig.printer);
+        if (printerError != null) {
+            callback(printerError);
             return;
         }
 
@@ -36,6 +36,19 @@ class Printer {
                 callback(err);
             }
         });
+    }
+
+    _checkPrinter(printerName) {
+        try {
+            const printer = nodePrinter.getPrinter(printerName);
+            if (printer == null) {
+                return new Error('Printer ' + printerName + ' not found');
+            }
+
+            return null;
+        } catch (ex) {
+            return ex;
+        }
     }
 
     _checkJob(printerName, jobId, callback) {

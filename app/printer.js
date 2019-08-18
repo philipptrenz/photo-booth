@@ -53,7 +53,15 @@ class Printer {
     }
 
     _checkJob(printerName, jobId, callback) {
-        const jobInfo = nodePrinter.getJob(printerName, jobId);
+        let jobInfo = null;
+        try {
+            jobInfo = nodePrinter.getJob(printerName, jobId);
+        } catch (ex) {
+            console.log('Could not get job ' + jobId + ' info');
+            callback(ex);
+            return;
+        }
+
         if (jobInfo == null) {
             console.log('Could not get job ' + jobId + ' info');
             callback(new Error('Could not get job info'));

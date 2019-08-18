@@ -34,7 +34,9 @@
         "photo-selection-count": "Anzahl gewählte Bilder",
         "preview": "Das nachfolgende Bild wird gedruckt.",
         "continue": "Vorschau anzeigen",
-        "back": "Zurück zur Bilderauswahl",
-        "print": "Drucken"
+        "back-to-layout-selection": "Zurück zur Vorlagenauswahl",
+        "back-to-photo-selection": "Zurück zur Bilderauswahl",
+        "print": "Drucken",
+        "close": "Abbrechen"
     }
 }

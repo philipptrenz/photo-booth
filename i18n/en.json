@@ -34,7 +34,9 @@
         "photo-selection-count": "Number of selected images",
         "preview": "The following image will be printed.",
         "continue": "Show preview",
-        "back": "Back to picture selection",
-        "print": "Print"
+        "back-to-layout-selection": "Back to template selection",
+        "back-to-photo-selection": "Back to picture selection",
+        "print": "Print",
+        "close": "Cancel"
     }
 }

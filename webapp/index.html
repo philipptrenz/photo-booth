@@ -41,7 +41,7 @@
 					<i class="fa fa-download hide" aria-hidden="true" id="gif-button"></i>
 				</a>
 				{{#if config.printing.enabled}}
-					<a class="my-print-button" href="#" onclick="openPrintDialog({{ config.printing.limitPerUser}})">
+					<a class="my-print-button" href="#" onclick="openPrintPage({{ config.printing.limitPerUser}})">
 						<i class="fa fa-print" aria-hidden="true" id="print-button"></i>
 					</a>
 				{{/if}}
@@ -54,7 +54,7 @@
 
 
 	<div class="wrapper">
-		<div class="container">
+		<div id="default-page" class="container">
 			{{#unlessEq config.webapp.contactAddressType 'none'}}
 				<div class="row windows" id="contact-window" style="display: none;">
 					<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">
@@ -101,20 +101,14 @@
 			<div class="row">
 			    <ul id="photos"></ul>
 			 </div>
-
 		</div>
-	</div>
 
-	<canvas id="hidden-canvas" ></canvas>
+		<div id="pending-action-page" class="container" style="display: none;">
+			<div class="row windows">
+				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">
+					<h3 class="pending">{{ i18n 'pending-action-dialog.title' }}</h3>
+					<h3 class="error">{{ i18n 'pending-action-dialog.error.title' }}</h3>
 
-	<div class="modal fade" id="pending-action-modal" data-backdrop="static" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title pending">{{ i18n 'pending-action-dialog.title' }}</h4>
-					<h4 class="modal-title error">{{ i18n 'pending-action-dialog.error.title' }}</h4>
-				</div>
-				<div class="modal-body">
 					<p>{{ i18n 'pending-action-dialog.text' }}</p>
 
 					<div class="alert alert-danger type-default" role="alert">
@@ -126,57 +120,69 @@
 						<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
 						{{ i18n 'pending-action-dialog.error.print-limit-exceeded' }}
 					</div>
+
+					<span class="input-group-btn grey darken-3">
+						<button class="btn btn-default" style="background-color: #2b3e50;" onclick="hidePendingActionPage()">{{ i18n 'pending-action-dialog.close' }}</button>
+					</span>
+
+					<div class="close-button">
+						<a href="#" onclick="hidePendingActionPage()" ><i class="fa fa-times" aria-hidden="true"></i></a>
+					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">{{ i18n 'pending-action-dialog.close' }}</button>
+			</div>
+		</div>
+
+		<div id="print-page" class="container" style="display: none;">
+			<div class="row windows">
+				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">
+					<h3>{{ i18n 'print-dialog.title' }}</h3>
+
+					<p class="step layout-selection">{{ i18n 'print-dialog.layout-selection' }}</p>
+					<p class="step photo-selection">{{ i18n 'print-dialog.photo-selection' }}</p>
+					<p class="step photo-selection">
+						{{ i18n 'print-dialog.photo-selection-count' }}: <span class="count-selected">0</span> / <span class="count-total">-</span>
+					</p>
+					<p class="step preview">{{ i18n 'print-dialog.preview' }}</p>
+
+					<span class="input-group-btn grey darken-3">
+						<button class="btn btn-default step photo-selection" style="background-color: #2b3e50;" onclick="goBackToPrintLayoutSelection()">{{ i18n 'print-dialog.back-to-layout-selection' }}</button>
+						<button class="btn btn-primary step photo-selection" style="background-color: #2b3e50;" onclick="goToPrintPreview()">{{ i18n 'print-dialog.continue' }}</button>
+						<button class="btn btn-default step preview" style="background-color: #2b3e50;" onclick="goBackToPrintPhotoSelection()">{{ i18n 'print-dialog.back-to-photo-selection' }}</button>
+						<button class="btn btn-primary step preview" style="background-color: #2b3e50;" onclick="printPhoto()">{{ i18n 'print-dialog.print' }}</button>
+						<button class="btn btn-default" style="background-color: #2b3e50;" onclick="hidePrintPage()">{{ i18n 'print-dialog.close' }}</button>
+					</span>
+
+					<div class="close-button">
+						<a href="#" onclick="hidePrintPage()" ><i class="fa fa-times" aria-hidden="true"></i></a>
+					</div>
 				</div>
+			</div>
+
+			<div class="row step layout-selection">
+				<ul>
+					{{#each config.printing.layouts}}
+						<li class="col-xs-12 col-sm-6 col-sm-6 col-lg-4" onclick="selectPrintLayout('{{this.key}}', {{this.options.width}}, {{this.options.height}})">
+							<img class="layout-image" src="layouts/{{this.key}}" />
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+
+			<div class="row step photo-selection">
+				<ul class="photo-selection"></ul>
+			</div>
+
+			<div class="row step preview">
+				<div class="preview-container col-xs-12"></div>
 			</div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="print-modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">{{ i18n 'print-dialog.title' }}</h4>
-				</div>
-				<div class="modal-body step-layout-selection">
-					<div>{{ i18n 'print-dialog.layout-selection' }}</div>
-					{{#each config.printing.layouts}}
-						<div class="layout-preview" onclick="selectPrintLayout('{{this.key}}', {{this.options.width}}, {{this.options.height}})">
-							<img class="layout-image" src="layouts/{{this.key}}" />
-						</div>
-					{{/each}}
-				</div>
-				<div class="modal-body step-photo-selection">
-					<div>
-						<p>{{ i18n 'print-dialog.photo-selection' }}</p>
-						<p>
-							{{ i18n 'print-dialog.photo-selection-count' }}: <span class="count-selected">0</span> / <span class="count-total">-</span>
-						</p>
-					</div>
-					<div>
-						<button type="button" class="btn btn-primary" onclick="goToPrintPreview()">{{ i18n 'print-dialog.continue' }}</button>
-					</div>
-					<ul class="photo-selection"></ul>
-				</div>
-				<div class="modal-body step-preview">
-					<div>{{ i18n 'print-dialog.preview' }}</div>
-					<div class="preview-container col-xs-12"></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick="goBackToPrintPhotoSelection()">{{ i18n 'print-dialog.back' }}</button>
-					<button type="button" class="btn btn-primary" onclick="printPhoto()">{{ i18n 'print-dialog.print' }}</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	<canvas id="hidden-canvas" ></canvas>
 
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
-
 </body>
 </html>

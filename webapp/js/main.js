@@ -100,7 +100,7 @@ function showSettings() {
 }
 
 function triggerPhoto() {
-	showPendingActionModal();
+	showPendingActionPage();
 	socket.emit('trigger_photo');
 }
 
@@ -171,7 +171,7 @@ $(document).on("click", 'a.img-download', function(event) {
 	var path = $(img).attr('src');
 
 	// request edited image from server
-	showPendingActionModal();
+	showPendingActionPage();
 	socket.emit('get_download_image', path, useGrayscale);
 });
 
@@ -197,7 +197,7 @@ $(document).on("click", 'a.img-download', function(event) {
 	});
 
 	$('.my-gif-button').click(function() {
-		showPendingActionModal();
+		showPendingActionPage();
 		socket.emit('get_download_gif', selectedImages, useGrayscale);
 	});
 })();
@@ -206,7 +206,7 @@ socket.on('get_download_image', downloadImage);
 socket.on('get_download_gif', downloadImage);
 
 function downloadImage(path) {
-	hidePendingActionModal();
+	hidePendingActionPage();
 
 	// hack to force downloading image instead of opening in browser
 	var a = document.createElement('A');
@@ -217,29 +217,36 @@ function downloadImage(path) {
 	document.body.removeChild(a);
 }
 
-socket.on('trigger_photo_success', hidePendingActionModal);
-socket.on('trigger_photo_error', showPendingActionModalError);
-socket.on('get_download_image_error', showPendingActionModalError);
-socket.on('get_download_gif_error', showPendingActionModalError);
+socket.on('trigger_photo_success', hidePendingActionPage);
+socket.on('trigger_photo_error', showPendingActionPageError);
+socket.on('get_download_image_error', showPendingActionPageError);
+socket.on('get_download_gif_error', showPendingActionPageError);
 
-var pendingActionModal = $('#pending-action-modal');
-function showPendingActionModal() {
-	pendingActionModal.find('.modal-title').hide();
-	pendingActionModal.find('.modal-title.pending').show();
-	pendingActionModal.find('p').show();
-	pendingActionModal.find('.alert, .modal-footer').hide();
-	pendingActionModal.modal('show');
+function showPage(name = 'default-page') {
+	var allContainers = $('.wrapper .container');
+	allContainers.not('#' + name).slideUp('slow');
+	allContainers.filter('#' + name).slideDown('slow');
 }
 
-function hidePendingActionModal() {
-	pendingActionModal.modal('hide');
+var pendingActionPage = $('#pending-action-page');
+function showPendingActionPage() {
+	pendingActionPage.find('h3').hide().filter('.pending').show();
+	pendingActionPage.find('p').show();
+	pendingActionPage.find('.alert').hide();
+	pendingActionPage.find('.input-group-btn, .close-button').hide();
+
+	showPage('pending-action-page');
 }
 
-function showPendingActionModalError(type = 'default') {
-	pendingActionModal.find('.modal-title').hide();
-	pendingActionModal.find('.modal-title.error').show();
-	pendingActionModal.find('p').hide();
-	pendingActionModal.find('.alert.type-' + type + ', .modal-footer').show();
+function hidePendingActionPage() {
+	showPage();
+}
+
+function showPendingActionPageError(type = 'default') {
+	pendingActionPage.find('h3').hide().filter('.error').show();
+	pendingActionPage.find('p').hide();
+	pendingActionPage.find('.alert.type-' + type).show();
+	pendingActionPage.find('.input-group-btn, .close-button').show();
 }
 
 // ------------------------------------------------- //
@@ -247,31 +254,34 @@ function showPendingActionModalError(type = 'default') {
 var layout = '';
 var selectedPhotos = [];
 
-var printModal = $('#print-modal');
-function openPrintDialog(limitPerUser) {
+var printPage = $('#print-page');
+function openPrintPage(limitPerUser) {
 	var printCount = getCookie('printCount');
 	printCount = printCount == null ? 0 : parseInt(printCount);
 	if (limitPerUser > 0 && printCount >= limitPerUser && getCookie('password') == null) {
-		showPendingActionModal();
-		showPendingActionModalError('print_limit_exceeded');
+		showPendingActionPage();
+		showPendingActionPageError('print_limit_exceeded');
 		return;
 	}
 
 	layout = '';
 	selectedPhotos = [];
 
-	showPrintStep('step-layout-selection');
-	printModal.find('.btn-default, .btn-primary').hide();
-	printModal.modal('show');
+	showPrintStep('layout-selection');
+	showPage('print-page');
+}
+
+function hidePrintPage() {
+	showPage();
 }
 
 function selectPrintLayout(layoutName, width = 1, height = 1) {
 	layout = layoutName;
 
-	printModal.find('.count-selected').text(0);
-	printModal.find('.count-total').text(width * height);
+	printPage.find('.count-selected').text(0);
+	printPage.find('.count-total').text(width * height);
 
-	var photoContainer = printModal.find('.photo-selection');
+	var photoContainer = printPage.find('ul.photo-selection');
 	photoContainer.empty();
 
 	var images = $('#photos img').get();
@@ -287,7 +297,7 @@ function selectPrintLayout(layoutName, width = 1, height = 1) {
 		photoContainer.append(item);
 	}
 
-	showPrintStep('step-photo-selection');
+	showPrintStep('photo-selection');
 }
 
 function selectPrintPhoto() {
@@ -303,8 +313,8 @@ function selectPrintPhoto() {
 		item.removeClass('selected');
 	}
 
-	printModal.find('.count-selected').text(selectedPhotos.length);
-	var continueButton = printModal.find('.step-photo-selection .btn-primary');
+	printPage.find('.count-selected').text(selectedPhotos.length);
+	var continueButton = printPage.find('.step.photo-selection.btn-primary');
 
 	if (selectedPhotos.length > 0) {
 		continueButton.show();
@@ -314,24 +324,24 @@ function selectPrintPhoto() {
 }
 
 function goToPrintPreview() {
-	printModal.find('.btn-default').show();
-	printModal.find('.preview-container').empty();
+	printPage.find('.preview-container').empty();
 
-	showPrintStep('step-preview');
+	showPrintStep('preview');
 
 	socket.emit('print_preview', layout, selectedPhotos);
 }
 
-function goBackToPrintPhotoSelection() {
-	printModal.find('.btn-default').hide();
-	printModal.find('.modal-footer .btn-primary').hide();
+function goBackToPrintLayoutSelection() {
+	showPrintStep('layout-selection');
+}
 
-	showPrintStep('step-photo-selection');
+function goBackToPrintPhotoSelection() {
+	showPrintStep('photo-selection');
+	printPage.find('.step.photo-selection.btn-primary').show();
 }
 
 function printPhoto() {
-	printModal.modal('hide');
-	showPendingActionModal();
+	showPendingActionPage();
 
 	var printCount = getCookie('printCount');
 	var password = getCookie('password');
@@ -339,28 +349,30 @@ function printPhoto() {
 }
 
 function showPrintStep(step) {
-	printModal.find('.modal-body').hide();
-	printModal.find('.modal-body.' + step).show();
+	var stepContent = printPage.find('.step').hide();
+
+	stepContent
+		.filter('.step.' + step)
+		.not('.btn-primary').show();
 }
 
 socket.on('print_preview_success', function(image) {
 	var previewImage = $('<img />');
 	previewImage.attr('src', image);
 
-	var previewContainer = printModal.find('.preview-container');
+	var previewContainer = printPage.find('.preview-container');
 	previewContainer.append(previewImage);
 
-	printModal.find('.modal-footer .btn-primary').show();
+	printPage.find('.step.preview.btn-primary').show();
 });
 
 socket.on('print_preview_error', function() {
-	printModal.modal('hide');
-	showPendingActionModal();
-	showPendingActionModalError();
+	showPendingActionPage();
+	showPendingActionPageError();
 });
 
 socket.on('print_success', function() {
-	hidePendingActionModal();
+	hidePendingActionPage();
 
 	var printCount = getCookie('printCount');
 	if (printCount == null) {
@@ -373,8 +385,8 @@ socket.on('print_success', function() {
 
 socket.on('print_error', function(errorType) {
 	if (errorType === 'print_limit_exceeded') {
-		showPendingActionModalError(errorType);
+		showPendingActionPageError(errorType);
 	} else {
-		showPendingActionModalError();
+		showPendingActionPageError();
 	}
 });

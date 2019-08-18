@@ -96,11 +96,12 @@ class Collage {
     }
 
     _createCollage(filePath, options, images, callback) {
+        const optionsAsBase64 = new Buffer(JSON.stringify(options)).toString('base64');
         const params = [
             'node',
             './collage-process.js',
             filePath,
-            JSON.stringify(options).replace(/"/g, '\'')
+            optionsAsBase64
         ];
 
         params.push(...images);

@@ -5,7 +5,8 @@ const { createCanvas, Image } = require('canvas');
 
 // Extract parameters
 const filePath = argv[2];
-const options = JSON.parse(argv[3].replace(/'/g, '"'));
+const optionsAsString = new Buffer(argv[3], 'base64').toString('ascii');
+const options = JSON.parse(optionsAsString);
 const images = argv.slice(4);
 
 // Create canvas (use dpi factor to make image larger - it will always be at 96 dpi)

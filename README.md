@@ -62,9 +62,6 @@ sudo ./scripts/install_node_v9.sh
 
 # Install
 npm install
-
-pushd helpers/collage
-npm install
 ```
 
 ## Run photo-booth
@@ -225,6 +222,16 @@ For this feature to work you need a supported printer, install additional softwa
 2. Run the following scripts:
 	```bash
 	sudo apt-get update
+
+	# Install additional libraries for collage creation
+	sudo apt-get install libpixman-1-dev
+	sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
+	sudo apt-get install libpango1.0-dev
+
+	cd photo-booth/helpers/collage
+	npm install
+
+	# Install cups
 	sudo apt-get install cups
 
 	# Install cups-config (needed for node-printer)

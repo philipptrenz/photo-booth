@@ -27,13 +27,13 @@ If you like my project and you want to keep me motivated:
 
 Simply connect your camera via USB or even via wifi to the computer running this application, for example a **Raspberry Pi**. The app shows a countdown by clicking at the screen (or tapping at a touchscreen), triggers your camera to take a photo, downloads it from your camera, shrinks it to a smaller size and displays it on the screen. First in fullscreen, then added to a gallery of previous taken photos.
 
-photo-booth also provides a web application by running a webserver. Every newly taken photo gets immediately pushed to the webapp. From there it's easy for your guests to download their photos. There's also the option to leave a e-mail address for sending the photos afterwards. You only have to provide a Wi-Fi hotspot.
+photo-booth also provides a web application by running a webserver. Every newly taken photo gets immediately pushed to the webapp. From there it's easy for your guests to download their photos. There's also the option to leave a contact address for sending the photos afterwards. Creating GIF animations and printing out selected photos are also possible through the web application. You only have to provide a Wi-Fi hotspot and a printer (optional for printing feature).
 
-Because of the use of gphoto2 it works with nearly any camera like plug and play.
+Because of the use of `gphoto2` and `cups` it works with nearly any camera or printer like plug and play.
 
 ## Installation
 
-To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) and [gphoto2](http://gphoto.sourceforge.net/) installed.
+To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/), [gphoto2](http://gphoto.sourceforge.net/) and [CUPS](https://www.cups.org/) installed.
 
 Before getting started please check [here](#Unsupported-devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems.
 

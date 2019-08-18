@@ -226,6 +226,13 @@ function showPage(name = 'default-page') {
 	var allContainers = $('.wrapper .container');
 	allContainers.not('#' + name).slideUp('slow');
 	allContainers.filter('#' + name).slideDown('slow');
+
+	var actionButtons = $('.action-buttons a, .my-back-button');
+	if (name == 'default-page') {
+		actionButtons.show();
+	} else {
+		actionButtons.hide();
+	}
 }
 
 var pendingActionPage = $('#pending-action-page');

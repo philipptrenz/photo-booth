@@ -3,7 +3,7 @@ import fs from 'fs';
 import utils from "./utils.js";
 
 const printerConfig = utils.getConfig().printing || { };
-const nodePrinter = printerConfig.enabled ? require('printer') : null;
+const nodePrinter = printerConfig.enabled && !printerConfig.simulate ? require('printer') : null;
 
 class Printer {
     constructor() {
@@ -11,6 +11,12 @@ class Printer {
     }
 
     print(fileName, callback) {
+        if (printerConfig.simulate) {
+            console.log('Printing is in simulation mode');
+            callback(false);
+            return;
+        }
+
         if (nodePrinter == null) {
             callback(new Error('Printing not enabled'));
             return;

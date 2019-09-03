@@ -47,25 +47,46 @@ class Camera {
 		this.GPhoto.setLogLevel(-1);
 
 		var self = this;
-		this.GPhoto.list(function (list) {
-			if (list.length === 0) {
-				callback(false, 'No camera found', null);
-				return;
+		if (utils.getConfig().init.cameraMode === "dummy") {
+			self.camera = {
+				takePicture() {
+					var arr = $('#collage img').map(function() { return this.src; }).get();
+					var idx = Math.floor(Math.random() * arr.length);
+					const filepath = arr[idx];
+					const webFilepath = '';
+					console.log('dummy camera: taking picture');
+					callback(0, filepath, webFilepath);
+				},
+				isInitialized(){
+					return true;
+				},
+				isConnected(callback) {
+					callback(true);
+				}
+				
 			}
-			self.camera = list[0];
+			callback(true);
+		} else {
+			this.GPhoto.list(function (list) {
+				if (list.length === 0) {
+					callback(false, 'No camera found', null);
+					return;
+				}
+				self.camera = list[0];
 
-			console.log('gphoto2: Found', self.camera.model);
+				console.log('gphoto2: Found', self.camera.model);
 
-			if (utils.getConfig().gphoto2.capturetarget) {
-				self.camera.setConfigValue('capturetarget', utils.getConfig().gphoto2.capturetarget, function (err) {
-					if (err){
-						callback(false, 'setting config failed', err);
-					} else {
-						callback(true);
-					}
-				});
-			}
-		});
+				if (utils.getConfig().gphoto2.capturetarget) {
+					self.camera.setConfigValue('capturetarget', utils.getConfig().gphoto2.capturetarget, function (err) {
+						if (err){
+							callback(false, 'setting config failed', err);
+						} else {
+							callback(true);
+						}
+					});
+				}
+			});
+		}
 	}
 
 	isInitialized(){

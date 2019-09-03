@@ -7,7 +7,8 @@
 		"showDevTools": false,
 		"useGPIO": false,
 		"grayscaleMode": true,
-		"preventScreensaver": true
+		"preventScreensaver": true,
+		"cameraMode": "dummy"
 	},
 	"maxImageSize": "1500",
 	"firstPhotoCountdownLength": "5",

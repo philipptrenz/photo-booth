@@ -20,6 +20,7 @@
 
 
 import $ from 'jquery';
+import Velocity from 'velocity-animate';
 import slideshow from "./slideshow.js";
 
 class Prompt {
@@ -41,7 +42,7 @@ class Prompt {
 		if (self.activated && !self.active) {
 			self.active = true;
 			$(self.container).html(self.html);
-			$(self.container).fadeIn(250);
+			Velocity($(self.container), "fadeIn", { duration: 250 })
 			
 			if (self.duration >= 0 ) {
 				self.timeout = setTimeout(function(){ 
@@ -67,11 +68,17 @@ class Prompt {
 				if (callback !== undefined) callback();
 			} else {
 				var fadeOutTime = instant ? 0 : 250;
-				$(self.container).fadeOut(fadeOutTime, function() {
-					$(self.container).html('');
-					self.active = false;
-					if (callback !== undefined) callback();
-				});
+				Velocity($(self.container), "fadeOut", { 
+					duration: fadeOutTime,	
+					complete : function() {
+							$(self.container).html('');
+							self.active = false;
+							if (callback !== undefined) callback();
+						}
+				}
+			)
+			
+				
 			}
 
 		} else {
@@ -126,7 +133,7 @@ class CountdownPrompt {
 		this.duration = duration;
 		this.container = $("#prompt");
 
-		this.htmlPre = '<span id="countdown">';
+		this.htmlPre = '<span id="countdown"><div style="font-size: 0.2em; margin-top: 150px">Bitte lächeln in... </div>';
 		this.htmlPost = '</span>';
 	}
 
@@ -135,19 +142,20 @@ class CountdownPrompt {
 		var self = this;
 		if (self.activated && !self.active) {
 			self.active = true;
-			$(self.container).fadeIn(250);
+			
 
 			// first time run immediatly	
 			self.html = self.htmlPre + self.duration + self.htmlPost;
 			$(self.container).html(self.html);
-			$(self.container).children().fadeOut(900);
+			Velocity($(self.container), "fadeIn", { duration: 50 })
+			Velocity($(self.container).children(), "fadeOut", { duration: 900 })
 			self.duration--;
 
 			self.interval = setInterval(function() {
 				if (self.duration > 0) {
 					self.html = self.htmlPre + self.duration + self.htmlPost;
 					$(self.container).html(self.html);
-					$(self.container).children().fadeOut(900);
+					Velocity($(self.container).children(), "fadeOut", { duration: 900 })
 					self.duration--;
 				} else {
 					clearInterval(self.interval);
@@ -172,10 +180,14 @@ class CountdownPrompt {
 				if (callback !== undefined) callback();
 			} else {
 				var fadeOutTime = instant ? 0 : 250;
-				$(self.container).fadeOut(fadeOutTime, function() {
-					$(self.container).html('');
-					self.active = false;
-					if (callback !== undefined) callback();
+
+				Velocity($(self.container), "fadeOut", { 
+					duration: fadeOutTime,	
+					complete : function() {
+						$(self.container).html('');
+						self.active = false;
+						if (callback !== undefined) callback();
+						}
 				});
 			}
 

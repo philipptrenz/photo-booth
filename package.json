@@ -60,7 +60,8 @@
     "jquery": "^3.3.1",
     "popper.js": "^1.14.1",
     "sharp": "^0.22.1",
-    "socket.io": "^1.7.0"
+    "socket.io": "^1.7.0",
+    "v8-compile-cache": "^2.1.0"
   },
   "optionalDependencies": {
     "gphoto2": "^0.3.0",

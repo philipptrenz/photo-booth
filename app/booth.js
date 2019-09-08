@@ -19,6 +19,7 @@
  */
 
 //'use strict';
+import 'v8-compile-cache'
 import 'util';
 
 import $ from 'jquery';

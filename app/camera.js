@@ -22,6 +22,7 @@ import fs from 'fs';
 import sharp from 'sharp';
 
 import utils from "./utils.js";
+import $ from 'jquery';
 
 const gphoto2 = utils.getConfig().gphoto2.simulate
 	? null
@@ -49,13 +50,9 @@ class Camera {
 		var self = this;
 		if (utils.getConfig().init.cameraMode === "dummy") {
 			self.camera = {
-				takePicture() {
-					var arr = $('#collage img').map(function() { return this.src; }).get();
-					var idx = Math.floor(Math.random() * arr.length);
-					const filepath = arr[idx];
-					const webFilepath = '';
-					console.log('dummy camera: taking picture');
-					callback(0, filepath, webFilepath);
+				takePicture(settings, callback) {
+					console.log('dummy camera taking picture. Settings: ' + settings);
+					callback();
 				},
 				isInitialized(){
 					return true;
@@ -120,7 +117,15 @@ class Camera {
 	_takePictureWithCamera(callback) {
 		var self = this;
 
-		if (self.camera === undefined) {
+		if(utils.getConfig().init.cameraMode === "dummy") {
+			var arr = $('#collage img').map(function() { return this.src; }).get();
+			var idx = Math.floor(Math.random() * arr.length);
+			const filepath = arr[idx];
+			const webFilepath = filepath.replace(utils.getPhotosDirectory(), utils.getWebAppPhotosDirectory());
+			console.log('dummy camera: loading picture ' + filepath);
+			callback(0, filepath, webFilepath);
+			return;
+		} else if (self.camera === undefined) {
 			callback(-1, 'camera not initialized', null);
 			return;
 		}

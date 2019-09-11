@@ -1,33 +1,18 @@
-import FS from "fs";
+import FS, { WriteStream } from "fs";
+import { Writable } from "stream";
 
 class LivePreview{
 	constructor(cam, root, framerate = 20){
 		this.cam = cam;
 		this.root = root;
-		/*this.root1 = document.createElement("div");
-		this.root1.className = "live";
-		this.root2 = document.createElement("div");
-		this.root2.className = "live";
-		root.appendChild(this.root1);
-		root.appendChild(this.root2);
-		*/
 		this.run = false;
-		this.canvas = null;
-		this.lastImgPath = null;
 		this.timePerImg = 1000/framerate;
-		this.count = 0;
-	}
-	setNewPic(data){
-		// Use two divs to display image, this prevents flickering.
-		let el = document.createElement("div");
-		//el.src = "file://"+data;
-		el.className = "live";
-		el.style.backgroundImage = "url(file://"+data+")";
-		this.root.prepend(el);
-		this.count++;
-		if(this.count > 2){
-			this.root.removeChild(this.root.lastChild);
-		}
+
+		let canvasElem = document.createElement('canvas');
+		this.root.innerHTML = "";
+		this.root.appendChild(canvasElem);
+		this.ctx = canvasElem.getContext("2d");
+		this.tmpImage = document.createElement('img');
 	}
 	takePreview(){
 		return new Promise((res,rej)=>this.cam.takePicture ({ keep: true, preview: true, targetPath: "/tmp/liveimg.XXXXXX" }, function (error, data) {
@@ -37,30 +22,36 @@ class LivePreview{
 				res(data);
 		}));
 	}
-	async refreshPreview(){
-		try{
-			let path = await this.takePreview();
-			if(this.lastImgPath)
-				FS.unlink(this.lastImgPath, ()=>{});
-			this.lastImgPath = path;
-			this.setNewPic(path);
-		}catch(e){
-			console.error(e)
-		}
-	}
 	async previewInterval(){
 		if(this.run){
 			let timePrev = process.hrtime();
-			await this.refreshPreview();
-			let timeDiff = process.hrtime(timePrev);
-			let waitTime = this.timePerImg-(timeDiff[0]*1000+timeDiff[1]/1000000);
-			setTimeout(()=>{
-				this.previewInterval()
-			}, waitTime);
+			
+			let fpath = await this.takePreview();
+			FS.readFile(fpath, (err,d)=>{
+				if(err)
+					return console.log(err);
+				FS.unlink(fpath, ()=>{});
+				let blob = new Blob([d], {type: "image/jpeg"});
+				let url = URL.createObjectURL(blob);
+				this.tmpImage.src = url
+				this.tmpImage.onload = ()=>{
+					this.ctx.drawImage(this.tmpImage,0,0)
+					let timeDiff = process.hrtime(timePrev);
+					let waitTime = this.timePerImg-(timeDiff[0]*1000+timeDiff[1]/1000000);
+					if(waitTime <= 0)
+						this.previewInterval()
+					else
+						setTimeout(()=>this.previewInterval(), waitTime);
+				};
+			});
+
 		}
 	}
+	
 	start(){
 		this.run = true;
+		this.ctx.canvas.width  = window.innerWidth;
+  		this.ctx.canvas.height = window.innerHeight;
 		this.previewInterval();
 	}
 	stop(){

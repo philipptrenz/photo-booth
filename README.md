@@ -164,7 +164,7 @@ Some notes:
 * The errorMessage is pure HTML, just fill in whatever you want
 * Live Preview works only on some cameras, see this [list](http://gphoto.org/proj/libgphoto2/support.php) and check if it lists "Liveview" for your model.
 * Slideshow and liveview do not work together.
-* You have to experiment with the framerate for live preview depending on the power of your machine. On a Notebook with an Intel i7-8550U upto 15% CPU utilization are needed for 20 frames per second. Also if your camera is running on battery, it drastically decreases the battery duration.
+* You have to experiment with the framerate for live preview depending on the power of your machine. On a Notebook with an Intel i7-8550U 7% CPU utilization are needed for 30 frames per second. On the RPI 3B+ 15 frames will run smoothly, with minor freezes sometimes, but it will result in a >90% CPU utilization of one core. Also if your camera is running on battery, it drastically decreases the battery duration.
 * When ``flash`` is set to `enabled` a white  page  will be shown as a flash after completing the countdown
 
 ### How to use the integrated webapp

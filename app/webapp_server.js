@@ -207,7 +207,10 @@ io.on('connection', function(socket){
 					exec("reboot", function (error, stdout, stderr) {
 						console.log('webapp: ', stdout);
 					});
-
+				} else if (json['option'] == 'restart-app'){
+					const { remote, BrowserWindow } = require('electron');
+					const currentWindow = remote.getCurrentWindow();
+					currentWindow.reload();
 				} else if (json['option'] == 'exit'){
 					// close electron
 					var electron = require('electron');

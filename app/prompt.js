@@ -102,7 +102,7 @@ class PreviewPrompt extends Prompt {
 		super(`<div id='preview' style='background-image: url("${filepath}");'>
 		<div class='progress-container'>
 			<div style='z-index: 11000;' class="progress progress-striped active">
-				<div class="progress-bar" role="progressbar" aria-valuenow="100%" aria-valuemin="0" aria-valuemax="100">
+				<div class="progress-bar bg-info" style="width: 100%" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
 				</div>
 			</div>
 		</div>
@@ -131,6 +131,8 @@ class PreviewPrompt extends Prompt {
 		var self = this;
 		if (self.active) {
 			clearInterval(self.interval);
+			$('.progress-bar').css('width', '100%').attr('aria-valuenow', '100');    
+		
 		}
 		super.stop(stay, instant, callback);
 	}
@@ -167,8 +169,8 @@ class CountdownPrompt {
 		this.duration = duration;
 		this.container = $("#prompt");
 
-		this.htmlPre = '<span id="countdown"><div style="font-size: 0.2em; margin-top: 150px">Bitte lächeln in... </div>';
-		this.htmlPost = '</span>';
+		this.htmlPre = '<div class=\'countdown-container\'><div class=\'countdown-row\'><span id="countdown"><div style="font-size: 0.2em; margin-top: 120px">Bitte lächeln in... </div>';
+		this.htmlPost = '</span></div></div>';
 	}
 
 	start(stay=false, instant=false, callback) {

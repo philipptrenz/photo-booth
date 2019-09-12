@@ -260,3 +260,22 @@ button {
     from { opacity: 1; }
     to   { opacity: 0; }
 }
+
+.countdown-container {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.countdown-row {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    margin-top: 20%;
+}
+
+#countdown {
+    align-self: center;
+}

@@ -169,7 +169,7 @@ class CountdownPrompt {
 		this.duration = duration;
 		this.container = $("#prompt");
 
-		this.htmlPre = '<div class=\'countdown-container\'><div class=\'countdown-row\'><span id="countdown"><div style="font-size: 0.2em; margin-top: 120px">Bitte lächeln in... </div>';
+		this.htmlPre = '<div class=\'countdown-container\'><div class=\'countdown-row\'><span id="countdown"><div style="font-size: 15vh; margin-top: 120px">Bitte lächeln in... </div>';
 		this.htmlPost = '</span></div></div>';
 	}
 

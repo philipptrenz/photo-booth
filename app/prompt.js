@@ -99,8 +99,42 @@ class SpinnerPrompt extends Prompt {
 class PreviewPrompt extends Prompt {
 
 	constructor(filepath, duration) {
-		super('<div id=\'preview\' style=\'background-image: url(\"'+filepath+'\");\'></div>', duration);
+		super(`<div id='preview' style='background-image: url("${filepath}");'>
+		<div class='progress-container'>
+			<div style='z-index: 11000;' class="progress progress-striped active">
+				<div class="progress-bar" role="progressbar" aria-valuenow="100%" aria-valuemin="0" aria-valuemax="100">
+				</div>
+			</div>
+		</div>
+		</div>
+		`, duration);
+		this.initialDuration = duration;
 	}
+
+	start(stay=false, instant=false, callback) {
+		const self = this;
+		self.interval = setInterval(function() {
+			if (self.duration > 0) {
+				self.duration--;
+				const progress = 100 * self.duration / self.initialDuration;
+				$('.progress-bar').css('width', progress +'%').attr('aria-valuenow', progress);    
+				
+			} else {
+				clearInterval(self.interval);
+				self.stop(stay, instant, callback);
+			}
+		}, 1000);
+		super.start(stay, instant, callback);
+	}
+
+	stop(stay=false, instant=false, callback) {
+		var self = this;
+		if (self.active) {
+			clearInterval(self.interval);
+		}
+		super.stop(stay, instant, callback);
+	}
+
 }
 
 class CameraErrorPrompt extends Prompt {

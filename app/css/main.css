@@ -177,8 +177,6 @@ button {
     background-size: cover;
     background-repeat: no-repeat;
 
-	animation: fadein 0.5s;
-	animation-timing-function: ease-in;
 }
 
 #prompt.fadeout {
@@ -208,6 +206,20 @@ button {
 
 #prompt .error p {
     font-size: 5vw;
+}
+
+#prompt .progress-container {
+    z-index: 15000;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+#prompt .progress {
+    align-self: flex-end;
+    flex-grow: 1;
+    flex-basis: auto;
 }
 
 .live{

@@ -143,10 +143,14 @@ function trigger(callback) {
         livePreview.stop();
       if (utils.getConfig().flash !== undefined && utils.getConfig().flash.enabled) {
         const flash = $("#flash");
-        flash.addClass("flash");
+        
+        setTimeout(function () {
+          flash.addClass("flash");
+        }, triggerPhotoOffsetBeforeZero*1000);
+      
         setTimeout(function () {
           flash.removeClass("flash");
-        }, 750);
+        }, (triggerPhotoOffsetBeforeZero*1000)+750);
       }
       camera.takePicture(function(res, msg1, msg2) {
 

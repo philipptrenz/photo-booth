@@ -9,8 +9,8 @@ import utils from "./utils.js";
 
 class Collage {
     constructor() {
-        const printing = utils.getConfig().printing || { };
-        this.layouts = printing.layouts || [];
+        this.printing = utils.getConfig().printing || { };
+        this.layouts = this.printing.layouts || [];
     }
 
     getPlaceholderImage(layout, callback) {
@@ -96,11 +96,16 @@ class Collage {
     }
 
     _createCollage(filePath, options, images, callback) {
-        const optionsAsBase64 = new Buffer(JSON.stringify(options)).toString('base64');
+        const layoutAsBase64 = new Buffer(JSON.stringify(options)).toString('base64');
+        const optionsAsBase64 = new Buffer(JSON.stringify({
+            grayscale: this.printing.grayscale,
+            overlay: this.printing.overlay
+        })).toString('base64');
         const params = [
             'node',
             './collage-process.js',
             filePath,
+            layoutAsBase64,
             optionsAsBase64
         ];
 

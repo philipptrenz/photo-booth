@@ -41,6 +41,7 @@
 		"simulate": false,
 		"printer": "printer-name",
 		"limitPerUser": 0,
+		"grayscale": false,
 		"layouts": []
 	},
 	"branding": {

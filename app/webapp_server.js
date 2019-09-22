@@ -272,6 +272,7 @@ io.on('connection', function(socket){
 			.map(file => path.join(utils.getPhotosDirectory(), file));
 		collage.createPreviewCollage(layout, paths, function(err, imagePath) {
 			if (err) {
+				console.log('print_preview error', err);
 				io.to(socket.id).emit('print_preview_error');
 			} else {
 				io.to(socket.id).emit('print_preview_success', imagePath);
@@ -290,6 +291,7 @@ io.on('connection', function(socket){
 			.map(file => path.join(utils.getPhotosDirectory(), file));
 		collage.createCollage(layout, paths, function(err, imagePath) {
 			if (err) {
+				console.log('print error', err);
 				io.to(socket.id).emit('print_error');
 			} else {
 				console.log('Printing image ', imagePath);

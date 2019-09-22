@@ -145,6 +145,12 @@ It looks like this:
 		"simulate": false,
 		"printer": "printer-name",
 		"limitPerUser": 0,
+		"overlay": {
+			"image": "overlay.png",
+			"x": "right",
+			"y": "bottom"
+		},
+		"grayscale": true,
 		"layouts": []
 	},
 	"live": {
@@ -261,6 +267,8 @@ For this feature to work you need a supported printer, install additional softwa
 - Set `simulate` to `true` if you only want to test the image generation
 - Set `printer` to the printer name you configured during the installation process
 - Set `limitPerUser` if you want to limit the printouts per person. 0 means no limit and with the webapp password you always have unlimited printouts.
+- Use `grayscale` if you want to print only grayscale images (seperate config only for printing feature)
+- Use `overlay` to add a image to each printout. Be sure that it matches all your layouts (eg. 2x2 layout with spacing won't match with an overlay in the same color as the background color) and also consider that not all placehoders must be occupied (eg. do not use the background color in the overlay image)
 - Configure the layouts under `layouts`. You can add multiple layouts (the user can select the desired layout from within the web application). A sample layout looks like this:
 	```json
 	{

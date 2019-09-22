@@ -238,9 +238,9 @@ function showPage(name = 'default-page') {
 var pendingActionPage = $('#pending-action-page');
 function showPendingActionPage() {
 	pendingActionPage.find('h3').hide().filter('.pending').show();
-	pendingActionPage.find('p').show();
+	pendingActionPage.find('p.text').show();
 	pendingActionPage.find('.alert').hide();
-	pendingActionPage.find('.input-group-btn, .close-button').hide();
+	pendingActionPage.find('.btn, .close-button').hide();
 
 	showPage('pending-action-page');
 }
@@ -251,9 +251,9 @@ function hidePendingActionPage() {
 
 function showPendingActionPageError(type = 'default') {
 	pendingActionPage.find('h3').hide().filter('.error').show();
-	pendingActionPage.find('p').hide();
+	pendingActionPage.find('p.text').hide();
 	pendingActionPage.find('.alert.type-' + type).show();
-	pendingActionPage.find('.input-group-btn, .close-button').show();
+	pendingActionPage.find('.btn, .close-button').show();
 }
 
 // ------------------------------------------------- //

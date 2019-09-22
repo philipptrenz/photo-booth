@@ -242,6 +242,10 @@ span.thumb {
     overflow: hidden;
 }
 
+.container .btn {
+	margin-bottom: 3px;
+}
+
 #print-page .step.layout-selection ul,
 #print-page .step.photo-selection ul {
 	list-style-type: none;

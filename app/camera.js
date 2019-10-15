@@ -124,22 +124,12 @@ class Camera {
 		console.log('sample picture');
 
 		const timestamp = utils.getTimestamp();
-		const watermark = new Buffer(`<svg>
-				<rect x="0" y="0" width="500" height="100" stroke="transparent" stroke-width="0" fill="none" fill-opacity="0.5" />
-				<text x="10" y="76" font-size="74" fill="#000">${timestamp}</text>
+		const watermark = new Buffer(`<svg width="3000" height="2000">
+				<rect x="0" y="0" width="3000" height="2000" stroke="transparent" stroke-width="0" fill="#f00" fill-opacity="0.5" />
+				<text font-size="300" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#000">${timestamp}</text>
 			</svg>`);
 
-		sharp({
-			create: {
-				width: 6000,
-				height: 4000,
-				channels: 4,
-				background: { r: 255, g: 0, b: 0, alpha: 0.5 }
-			}
-		})
-		.composite([
-			{ input: watermark, density: 600 }
-		])
+		sharp(watermark)
 		.jpeg()
 		.toBuffer(function (err, data) {
 			if (err) {

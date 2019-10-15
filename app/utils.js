@@ -258,7 +258,7 @@ class Utils {
         callback(true, webappFilepath);
       }
 
-      self._queueFileDeletion(convertedFilepath);
+      self.queueFileDeletion(convertedFilepath);
     }
 
     function convert(converter) {
@@ -301,7 +301,7 @@ class Utils {
           callback(false, message, err);
         }
 
-        self._queueFileDeletion(convertedFilepath);
+        self.queueFileDeletion(convertedFilepath);
       });
     }
     catch (err) {
@@ -311,7 +311,7 @@ class Utils {
       catch(x) {}
 
       callback(false, 'gif creation failed', err);
-      this._queueFileDeletion(convertedFilepath);
+      this.queueFileDeletion(convertedFilepath);
     }
   }
 

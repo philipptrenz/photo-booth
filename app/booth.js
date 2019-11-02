@@ -104,7 +104,7 @@ const photoSeriesLength = utils.getConfig().photoSeriesLength ? Number(utils.get
 let executing = false;
 let seriesCounter = 0;
 
-function trigger(callback) {
+function trigger(callback, seriesLength) {
   if (callback === undefined) {
     callback = function() { };
   }
@@ -115,6 +115,10 @@ function trigger(callback) {
   }
 
   executing = true;
+
+  if (seriesLength === undefined) {
+    seriesLength = photoSeriesLength;
+  }
 
   slideshow.stop();
 
@@ -143,11 +147,11 @@ function trigger(callback) {
         livePreview.stop();
       if (utils.getConfig().flash !== undefined && utils.getConfig().flash.enabled) {
         const flash = $("#flash");
-        
+
         setTimeout(function () {
           flash.addClass("flash");
         }, triggerPhotoOffsetBeforeZero*1000);
-      
+
         setTimeout(function () {
           flash.removeClass("flash");
         }, (triggerPhotoOffsetBeforeZero*1000)+750);
@@ -164,7 +168,7 @@ function trigger(callback) {
               prompt = new PreviewPrompt(message1, photoPreviewDuration).start(false, false, function() {
                 // end photo task after preview ended
                 executing = false;
-                if (++seriesCounter < photoSeriesLength) {
+                if (++seriesCounter < seriesLength) {
                   trigger(callback);
                 } else {
                   seriesCounter = 0;
@@ -173,7 +177,7 @@ function trigger(callback) {
               });
 
               // Only add last image from series to collage
-              if(seriesCounter === photoSeriesLength-1) {
+              if(seriesCounter === seriesLength-1) {
                 setTimeout(function () {
                   utils.prependImage(message1);     // add image to collage
                 }, 1500);

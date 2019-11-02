@@ -37,7 +37,7 @@ To clone and run this repository you'll need [Git](https://git-scm.com), [Node.j
 
 Before getting started please check [here](#Unsupported-devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems. 
 
-Also check [here](http://www.gphoto.org/proj/libgphoto2/support.php) if your camera is supported (at least *Image Capture* should be available. Please also note, that only the JPEG-mode of your camera is currently supported ( so no RAW or RAW+JPEG).
+Also check [here](http://www.gphoto.org/proj/libgphoto2/support.php) if your camera is supported (at least *Image Capture* should be available). Please also note, that only the JPEG-mode of your camera is currently supported (no RAW or RAW+JPEG).
 
 **Raspbian STRETCH (with desktop):**
 

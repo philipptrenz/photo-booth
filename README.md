@@ -37,6 +37,8 @@ To clone and run this repository you'll need [Git](https://git-scm.com), [Node.j
 
 Before getting started please check [here](#Unsupported-devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems. 
 
+Also check [here](http://www.gphoto.org/proj/libgphoto2/support.php) if your camera is supported (at least *Image Capture* should be available. Please also note, that only the JPEG-mode of your camera is currently supported ( so no RAW or RAW+JPEG).
+
 **Raspbian STRETCH (with desktop):**
 
 ```bash
@@ -162,7 +164,6 @@ Some notes:
 * You have to figure out the captureTarget of your camera. Even if you choose to keep images at the camera, if gphoto2 chooses to store by default to the RAM of your camera, images get deleted when camera get turned off. Figure out the right captureTarget by running `gphoto2 --get-config=capturetarget`, then choose something should named sd card or so. This should be your first try if a photo gets taken, but it won't show up at the screen.
 * If you want to keep images on camera, set `keep` to `true`
 * The errorMessage is pure HTML, just fill in whatever you want
-* Live Preview works only on some cameras, see this [list](http://gphoto.org/proj/libgphoto2/support.php) and check if it lists "Liveview" for your model.
 * Slideshow and liveview do not work together.
 * You have to experiment with the framerate for live preview depending on the power of your machine. On a Notebook with an Intel i7-8550U upto 15% CPU utilization are needed for 20 frames per second. Also if your camera is running on battery, it drastically decreases the battery duration.
 * When ``flash`` is set to `enabled` a white  page  will be shown as a flash after completing the countdown

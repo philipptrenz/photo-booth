@@ -39,6 +39,7 @@ import {
 } from "./prompt.js";
 import slideshow from "./slideshow.js";
 
+import gpio from './gpio.js';
 import webApp from './webapp_server.js';
 
 const {getCurrentWindow, globalShortcut} = require('electron').remote;
@@ -80,21 +81,10 @@ if( utils.getConfig().triggers &&
     });
 }
 
-/* Listen for pushbutton on GPIO 3 (PIN 5)
- * Activate the use of GPIOs by setting useGPIO in config.json to true.
+/* Listen for pushbutton based on configured actions.
+ * Activate the use of GPIOs by setting GPIO.enabled in config.json to true.
  */
-if (utils.getConfig().init.useGPIO !== undefined ? utils.getConfig().init.useGPIO : true) {
-  console.log('GPIO usage activated');
-  const gpio = require('rpi-gpio');
-  gpio.setMode(gpio.MODE_BCM);
-  gpio.setup(3, gpio.DIR_IN, gpio.EDGE_BOTH);
-  gpio.on('change', function(channel, value) {
-    if (channel === 3 && !value) trigger();
-    // NOTE: takePhoto() is secure to don't run twice
-    // at the same time, make sure this is also so for
-    // your code.
-  });
-}
+gpio.initialize();
 
 const firstPhotoCountdownLength = utils.getConfig().firstPhotoCountdownLength ? Number(utils.getConfig().firstPhotoCountdownLength) : 5;
 const followingPhotosCountdownLength = utils.getConfig().followingPhotosCountdownLength ? Number(utils.getConfig().followingPhotosCountdownLength) : 3;

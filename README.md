@@ -132,6 +132,25 @@ It looks like this:
 		"keep": true,
 		"simulate": false
 	},
+	"GPIO": {
+		"enabled": false,
+		"actions": [
+			{
+				"channel": 3,
+				"action": "triggerPhoto",
+				"options": {
+					"photoSeriesLength": 4 // Optional, defaults to global photoSeriesLength
+				}
+			},
+			{
+				"channel": 5,
+				"action": "print",
+				"options": {
+					"layoutName": "selphy_1x1" // Layout key to use
+				}
+			}
+		]
+	},
 	"content_dir": null,
 	"webapp": {
 		"password": "test",
@@ -196,9 +215,47 @@ For an easy way to use it, start a open wifi hotspot on the computer photo-booth
 
 ## Use a push button to trigger photos
 
-You can connect a physical push button to the GPIO Pins of your Pi to trigger photos!
+You can connect a physical push button to the GPIO Pins of your Pi to trigger photos or print the last series of photos!
+The GPIO actions (and parameters) are configurable through `config.json` like this:
+```json
+"GPIO": {
+	"enabled": false,
+	"actions": [
+		{
+			"channel": 3,
+			"action": "triggerPhoto"
+		},
+		{
+			"channel": 5,
+			"action": "triggerPhoto",
+			"options": {
+				"photoSeriesLength": 4
+			}
+		},
+		{
+			"channel": 7,
+			"action": "print",
+			"options": {
+				"layoutName": "selphy_1x1"
+			}
+		},
+		{
+			"channel": 8,
+			"action": "print",
+			"options": {
+				"layoutName": "selphy_2x2"
+			}
+		}
+	]
+}
+```
+- When `enabled` is set to true, GPIO actions will be registered
+- Define all your actions inside `actions`. Be sure to set the `channel` to the right GPIO (eg. channel 3 for PIN 5).
+  There are 2 different actions available at the moment:
+  1. `triggerPhoto`: Will take a photo or a series of photos. Using the additional `photoSeriesLength` you can override the default count of photos being taken. This way you can have one button which takes a single picture and another which takes four pictures.
+  2. `print`: Will print the last photos taken. Define the desired layout using the `layoutName` option (see also `printing.layouts` options). The count of pictures will automaticaly be calculated using the selected layout size (image count).
 
-Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then connect the first port of the push button to the ground pin of your Pi, second to GPIO 3 (PIN 5) and to a resistor of about 10k-100kΩ, the other end of the resistor to 3.3V (e.g. PIN 1). That's all!
+Connect the buttons like you configured the `GPIO.actions`. To use the channel 3 for example, connect the first port of the push button to the ground pin of your Pi, second to GPIO 3 (PIN 5) and to a resistor of about 10k-100kΩ, the other end of the resistor to 3.3V (e.g. PIN 1). That's all!
 
 **Make sure you run the application as root (`sudo npm start`), GPIOs need root privileges.**
 

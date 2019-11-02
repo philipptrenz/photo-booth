@@ -310,7 +310,7 @@ io.on('connection', function(socket){
 						io.to(socket.id).emit('print_success');
 					}
 
-					fs.appendFile(contentDir + '/print-log.txt', logMessage, function() { });
+					fs.appendFile(contentDir + '/print-log.txt', logMessage + '\n', function() { });
 				});
 			}
 		});

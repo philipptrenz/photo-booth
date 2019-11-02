@@ -253,8 +253,8 @@ io.on('connection', function(socket){
 		});
 	});
 
-	socket.on('trigger_photo', function(password){
-		console.log('trigger_photo');
+	socket.on('trigger_photo', function(password, seriesLength) {
+		console.log('trigger_photo', seriesLength);
 
 		if (utils.getConfig().webapp.enableRemoteRelease || passwordIsValid(password)) {
 			booth.triggerPhoto(function(success) {
@@ -263,7 +263,7 @@ io.on('connection', function(socket){
 				} else {
 					io.to(socket.id).emit('trigger_photo_error');
 				}
-			});
+			}, seriesLength);
 		}
 	});
 

@@ -138,7 +138,8 @@ It looks like this:
 		"maxDownloadImageSize": 800,
 		"gifDelay": 1000,
 		"enableRemoteRelease": true,
-		"contactAddressType": "email"
+		"contactAddressType": "email",
+		"additionalShutterTriggers": [2, 3, 4]
 	},
 	"printing": {
 		"enabled": false,
@@ -185,6 +186,7 @@ Some notes:
 * When ``flash`` is set to `enabled` a white  page  will be shown as a flash after completing the countdown
 * You can use `gphoto2.simulate = true` when you want to test your setup without an active camera connection
 * The `webapp.contactAddressType` defines what kind of address types are supported inside the webapp. Supported values are `none` (feature disabled), `email` (email validation) and `text` (no input validation).
+* The `webapp.additionalShutterTriggers` adds additional remote release buttons with different series length
 
 ### How to use the integrated webapp
 

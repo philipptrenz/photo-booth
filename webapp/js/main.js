@@ -99,9 +99,9 @@ function showSettings() {
 	}
 }
 
-function triggerPhoto() {
+function triggerPhoto(seriesLength) {
 	showPendingActionPage();
-	socket.emit('trigger_photo');
+	socket.emit('trigger_photo', null, seriesLength);
 }
 
 $('#auth-form').submit(function(){
@@ -135,7 +135,7 @@ socket.on('use grayscale', function() {
 });
 
 socket.on('enable remote release', function() {
-	$('#trigger-button').removeClass('hide');
+	$('.my-trigger-button').removeClass('hide');
 	$('.my-trigger-button').removeClass('hidden-xs')
 	$('.my-brand').addClass('hidden-xs');
 });

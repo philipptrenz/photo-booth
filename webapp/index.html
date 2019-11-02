@@ -34,9 +34,15 @@
 		<div class="my-navbar row-fluid">
 			<a class="my-brand col-sm-4 col-xs-6" href="#"><b>photo-booth</b></a>
 			<div class="action-buttons col-sm-4 col-xs-6">
-				<a class="my-trigger-button" href="#" onclick="triggerPhoto()">
-					<i class="fa fa-camera hide" aria-hidden="true" id="trigger-button"></i>
+				<a class="my-trigger-button hide" href="#" onclick="triggerPhoto()">
+					<i class="fa fa-camera" aria-hidden="true"></i>
 				</a>
+				{{#each config.webapp.additionalShutterTriggers}}
+					<a class="my-trigger-button hide" href="#" onclick="triggerPhoto({{.}})">
+						<i class="fa fa-camera" aria-hidden="true"></i>
+						<span class="badge">{{.}}</span>
+					</a>
+				{{/each}}
 				<a class="my-gif-button" href="#">
 					<i class="fa fa-download hide" aria-hidden="true" id="gif-button"></i>
 				</a>

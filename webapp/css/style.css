@@ -86,6 +86,15 @@ nav .my-navbar .action-buttons a {
   display: none !important;
 }
 
+.action-buttons .badge {
+	position: relative;
+	top: -12px;
+	left: -16px;
+}
+
+.my-trigger-button:nth-child(2) .fa-camera {
+	margin-left: 25px;
+}
 
 /* -------------------- */
 

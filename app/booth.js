@@ -116,7 +116,7 @@ function trigger(callback, seriesLength) {
 
   executing = true;
 
-  if (seriesLength === undefined) {
+  if (seriesLength === undefined || seriesLength === null) {
     seriesLength = photoSeriesLength;
   }
 
@@ -169,7 +169,7 @@ function trigger(callback, seriesLength) {
                 // end photo task after preview ended
                 executing = false;
                 if (++seriesCounter < seriesLength) {
-                  trigger(callback);
+                  trigger(callback, seriesLength);
                 } else {
                   seriesCounter = 0;
                   callback(true);
@@ -220,7 +220,7 @@ function trigger(callback, seriesLength) {
       if (res) {
 
         executing = false;
-        trigger(callback);
+        trigger(callback, seriesLength);
 
       } else {
         callback(false);

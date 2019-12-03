@@ -144,9 +144,8 @@ class Utils {
     var self = this;
     fs.readdir(photos_dir, function(err, files){
       if (files) {
-        files.sort();
-        var numberImages = (files.length < self.maxImages) ? files.length : self.maxImages;
-        for (var i = 0; i < numberImages; i++) {
+        files = files.sort().slice(-self.maxImages);
+        for (var i = 0; i < files.length; i++) {
           // just take jpegs
           if ( files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG") ){
             self.prependImage(self.getPhotosDirectory()+"/"+files[i]);

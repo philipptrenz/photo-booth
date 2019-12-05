@@ -136,6 +136,7 @@ It looks like this:
 	"webapp": {
 		"password": "test",
 		"maxDownloadImageSize": 800,
+		"maxImages": -1,
 		"gifDelay": 1000,
 		"enableRemoteRelease": true,
 		"contactAddressType": "email"

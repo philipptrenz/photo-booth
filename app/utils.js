@@ -139,17 +139,38 @@ class Utils {
 
   // ---------------------------------------------------- //
 
-  loadRecentImagesAfterStart() {
-    var photos_dir = this.getPhotosDirectory();
+  isJpeg(file) {
+    return file.toLowerCase().endsWith(".jpg")
+        || file.toLowerCase().endsWith(".jpeg");
+  }
+
+  getRecentImages(maxImages, callback) {
+    maxImages = maxImages || 0;
+
+    var photosDir = this.getPhotosDirectory();
     var self = this;
-    fs.readdir(photos_dir, function(err, files){
+    fs.readdir(photosDir, function(err, files){
+      if (!files) {
+        callback(false, err);
+        return;
+      }
+
+      files = files.filter(self.isJpeg).sort();
+
+      if (maxImages > 0) {
+        files = files.slice(-maxImages);
+      }
+
+      callback(files);
+    });
+  }
+
+  loadRecentImagesAfterStart() {
+    var self = this;
+    this.getRecentImages(self.maxImages, function(files) {
       if (files) {
-        files = files.sort().slice(-self.maxImages);
         for (var i = 0; i < files.length; i++) {
-          // just take jpegs
-          if ( files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG") ){
-            self.prependImage(self.getPhotosDirectory()+"/"+files[i]);
-          }
+          self.prependImage(self.getPhotosDirectory()+"/"+files[i]);
         }
       }
     });

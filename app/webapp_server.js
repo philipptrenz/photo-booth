@@ -140,18 +140,11 @@ io.on('connection', function(socket){
 	socket.on('get latest photos', function(){
 		console.log("webapp: requested latest photos by webapp");
 
-		var contentDir = utils.getContentDirectory();
-		fs.readdir(contentDir+'/photos', function(err, files){
-
+		utils.getRecentImages(utils.getConfig().webapp.maxImages, function(files) {
 			if (files) {
-				files.sort();
-
 				var images = [];
 				for (var i = 0; i < files.length; i++) {
-					var isJpeg = files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG");
-					if (!files[i].includes('large') && isJpeg){  // filter unconverted photos
-						images.push('photos/'+files[i]);
-					}
+					images.push('photos/'+files[i]);
 				}
 
 				console.log("webapp: sending "+files.length+" latest photos to webapp");

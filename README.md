@@ -33,9 +33,9 @@ Because of the use of gphoto2 it works with nearly any camera like plug and play
 
 ## Installation
 
-To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) and [gphoto2](http://gphoto.sourceforge.net/) installed. 
+To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) and [gphoto2](http://gphoto.sourceforge.net/) installed.
 
-Before getting started please check [here](#Unsupported-devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems. 
+Before getting started please check [here](#Unsupported-devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems.
 
 **Raspbian STRETCH (with desktop):**
 
@@ -96,7 +96,7 @@ To start photo-booth on boot add the following line at the end of `/home/pi/.con
 @sudo node /home/pi/photo-booth/scripts/cli.js
 ```
 
- 
+
 ## Configure it
 
 There are a few settings and options that you should take a look at.
@@ -169,7 +169,7 @@ Some notes:
 
 ### How to use the integrated webapp
 
-As mentioned above photo-booth has a built in web page where images can be downloaded. 
+As mentioned above photo-booth has a built in web page where images can be downloaded.
 
 For an easy way to use it, start a open wifi hotspot on the computer photo-booth runs on. If you use a Raspberry Pi, there're enough tutorials out there to figure it out (i.e. [here](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md)). Then connect your device, e.g. a smartphone, with the wifi, open your browser and type in the ip address of the Pi. More elegant is it to configure a DNS redirect so the users can type in a web address like "photo.app", therefore I use `dnsmasq` which is also configured as DHCP server.
 
@@ -210,7 +210,7 @@ Please note that there are several devices which are not supported by photo-boot
 As Electron, the main framework, besides ia32 (i686) and x64 (amd64) only supports the ARM v7 architecture (and ARM v8 as it is backwards compatible), several ARM devices are not supported. Further information can be found [here](https://electronjs.org/docs/tutorial/support#linux). The following ARM devices among others can not be supported:
 
 * Raspberry Pi Zero
-* Raspberry Pi Zero W / WH 
+* Raspberry Pi Zero W / WH
 * Raspberry Pi 1 A / A+
 * Raspberry Pi 1 B / B+
 
@@ -257,6 +257,36 @@ sudo rm /usr/share/gvfs/mounts/gphoto2.mount
 sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
 sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
 ```
+
+### My images do not show in the correct order
+Normally, newly captured images should be displayed first (on the screen and inside the webapp). However, this sorting relies on the system date & time and thus can lead to wrong sorting when there is no active internet connection and the system crashes. In this case, the system will reset to the last saved time which can be before the last captured images and new images will be placed before the old ones.
+
+There are three ways to fix this behaviour:
+1. Be sure to always have an active internet connection (sometimes this won't be an option)
+2. Install and configure a RTC (real time clock)
+3. Configure `fake-hwclock` to save the current time more often (it saves only hourly and during a proper shutdown)
+
+To configure `fake-hwclock`, run the following commands:
+```bash
+# Create new folder for cron jobs executed every minute
+sudo mkdir /etc/cron.minutely
+
+# Move existing hourly cron job of fake-hwclock into the new folder
+sudo mv /etc/cron.hourly/fake-hwclock /etc/cron.minutely/fake-hwclock
+
+# Make backup of crontab (just in case)
+sudo cp /etc/crontab /etc/crontab.bak
+
+# Configure minutely executed cron jobs
+echo " * *    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.minutely )" | sudo tee -a /etc/crontab > /dev/null
+```
+
+To check if the configuration works, you can watch the output of the following command:
+```bash
+watch -n 5 -d cat /etc/fake-hwclock.data
+```
+
+This will ensure that time travel between a crash and a restart will only occur for a maximum of one minute. The system time will still be off depending on the duration being shut down.
 
 ## Contributors
 

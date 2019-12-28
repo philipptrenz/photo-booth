@@ -267,7 +267,7 @@ For this feature to work you need a supported printer, install additional softwa
 - Set `simulate` to `true` if you only want to test the image generation
 - Set `printer` to the printer name you configured during the installation process
 - Set `limitPerUser` if you want to limit the printouts per person. 0 means no limit and with the webapp password you always have unlimited printouts.
-- Use `grayscale` if you want to print only grayscale images (seperate config only for printing feature)
+- Use `grayscale` if you want to print only grayscale images (seperate config only for printing feature) - **Warning**: The grayscale feature does not work for larger DPI values.
 - Use `overlay` to add a image to each printout. Be sure that it matches all your layouts (eg. 2x2 layout with spacing won't match with an overlay in the same color as the background color) and also consider that not all placehoders must be occupied (eg. do not use the background color in the overlay image)
 - Configure the layouts under `layouts`. You can add multiple layouts (the user can select the desired layout from within the web application). A sample layout looks like this:
 	```json
@@ -295,7 +295,10 @@ For this feature to work you need a supported printer, install additional softwa
 	- *Nikon D90* camera with a picture size of `4288x2848` which results in a width to height factor of `1.5056...`
   - Description of the options:
 	- *key*: Internal identifier for the layout. Must not contain invalid file name characters
-	- *dpi*: Printer resolution
+	- *dpi*: The printer resolution
+		- *Note*: Must not match the full printer DPI (images will be scaled to the whole printing area)
+		- Defaults to `96`, which should already be quiet good for most portable low quality printers
+		- **Warning**: Higher DPI values require more resources, which can be too much for a small computer like a Raspberry PI. Also the grayscale function does not work at higher resolutions anymore.
 	- *width* and *height*: Number of images per row / column
 	- *imageWidth* and *imageHeight*: The width / height of each individual image in the layout.
 	  Try to set the values in a way that it will give the same aspect ration as the original image size from the camera.

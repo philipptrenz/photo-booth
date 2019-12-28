@@ -1,20 +1,20 @@
 <!--
-  This file is part of "photo-booth" 
+  This file is part of "photo-booth"
   Copyright (c) 2018 Philipp Trenz
 
   For more information on the project go to
   <https://github.com/philipptrenz/photo-booth>
 
-  This program is free software: you can redistribute it and/or modify  
-  it under the terms of the GNU General Public License as published by  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
   the Free Software Foundation, version 3.
 
-  This program is distributed in the hope that it will be useful, but 
-  WITHOUT ANY WARRANTY; without even the implied warranty of 
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
   General Public License for more details.
 
-  You should have received a copy of the GNU General Public License 
+  You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 
@@ -33,9 +33,19 @@
 	<nav class="container-fluid">
 		<div class="my-navbar row-fluid">
 			<a class="my-brand col-sm-4 col-xs-6" href="#"><b>photo-booth</b></a>
-			<a class="my-trigger-button col-sm-4 col-xs-6 hidden-xs" href="#" onclick="triggerPhoto()">
-				<i class="fa fa-camera hide" aria-hidden="true" id="trigger-button"></i>
-			</a>
+			<div class="action-buttons col-sm-4 col-xs-6">
+				<a class="my-trigger-button" href="#" onclick="triggerPhoto()">
+					<i class="fa fa-camera hide" aria-hidden="true" id="trigger-button"></i>
+				</a>
+				<a class="my-gif-button" href="#">
+					<i class="fa fa-download hide" aria-hidden="true" id="gif-button"></i>
+				</a>
+				{{#if config.printing.enabled}}
+					<a class="my-print-button" href="#" onclick="openPrintPage({{ config.printing.limitPerUser}})">
+						<i class="fa fa-print" aria-hidden="true" id="print-button"></i>
+					</a>
+				{{/if}}
+			</div>
 			<a class="my-back-button col-sm-4 col-xs-6" href="#" onclick="showSettings()">
 				<i class="fa fa-cog" aria-hidden="true" id="settings-button"></i>
 			</a>
@@ -44,42 +54,41 @@
 
 
 	<div class="wrapper">
-		<div class="container">
+		<div id="default-page" class="container">
+			{{#unlessEq config.webapp.contactAddressType 'none'}}
+				<div class="row windows" id="contact-window" style="display: none;">
+					<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">
+						<h3>{{ i18n 'online-gallery.title' }}</h3>
+						<p>{{ i18n (append 'online-gallery.text.' config.webapp.contactAddressType) }}</p>
 
-			<div class="row windows" id="mail-window" style="display: none;">
-				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3  grey darken-3">
+						<form action="" class="form-group" id="contact-form">
+							<div class="input-group">
+								<input id="contact-address" type="{{config.webapp.contactAddressType}}" class="form-control" placeholder="{{ i18n (append 'online-gallery.placeholder.' config.webapp.contactAddressType) }}" required/>
+								<span class="input-group-btn grey darken-3">
+									<button class="btn btn-default" style="background-color: #2b3e50;">{{ i18n 'online-gallery.button' }}</button>
+								</span>
+							</div>
+						</form>
 
-					<h3>online gallery</h3>
-					<p>if you leave us your e-mail, we will send you the access data to the online gallery as soon as it is online. then you can easily browse through the photos from home and download your favorite ones.</p>
-
-					<form action="" class="form-group" id="mail-form">
-						<div class="input-group">
-							<input id="mail" type="email" class="form-control" placeholder="your e-mail" required/>
-							<span class="input-group-btn grey darken-3">
-								<button class="btn btn-default" style="background-color: #2b3e50;">okay</button>
-							</span>
-							
+						<div class="close-button">
+							<a href="#" onclick="closeWindow('#contact-window')" ><i class="fa fa-times" aria-hidden="true"></i></a>
 						</div>
-				    </form>
-
-				    <div class="close-button">
-				    	<a href="#" onclick="closeWindow('#mail-window')" ><i class="fa fa-times" aria-hidden="true"></i></a>
-				    </div>
+					</div>
 				</div>
-			</div>
+			{{/unlessEq}}
 
 			<div class="row windows" id="settings-auth" style="display: none;">
 				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">
 
-					<h3>settings</h3>
+					<h3>{{ i18n 'settings-password.title' }}</h3>
 
 					<form action="" class="form-group" id="auth-form">
 						<div class="input-group">
-							<input id="passwd" type="password" class="form-control" placeholder="please enter your password"/>
+							<input id="passwd" type="password" class="form-control" placeholder="{{ i18n 'settings-password.placeholder' }}"/>
 							<span class="input-group-btn">
-								<button class="btn btn-default" style="background-color: #2b3e50;">send</button>
+								<button class="btn btn-default" style="background-color: #2b3e50;">{{ i18n 'settings-password.button' }}</button>
 							</span>
-							
+
 						</div>
 				    </form>
 
@@ -92,7 +101,80 @@
 			<div class="row">
 			    <ul id="photos"></ul>
 			 </div>
+		</div>
 
+		<div id="pending-action-page" class="container" style="display: none;">
+			<div class="row windows">
+				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">
+					<h3 class="pending">{{ i18n 'pending-action-dialog.title' }}</h3>
+					<h3 class="error">{{ i18n 'pending-action-dialog.error.title' }}</h3>
+
+					<p class="text">{{ i18n 'pending-action-dialog.text' }}</p>
+
+					<div class="alert alert-danger type-default" role="alert">
+						<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+						{{ i18n 'pending-action-dialog.error.default' }}
+					</div>
+
+					<div class="alert alert-warning type-print_limit_exceeded" role="alert">
+						<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+						{{ i18n 'pending-action-dialog.error.print-limit-exceeded' }}
+					</div>
+
+					<p class="grey darken-3">
+						<button class="btn btn-default" onclick="hidePendingActionPage()">{{ i18n 'pending-action-dialog.close' }}</button>
+					</p>
+
+					<div class="close-button">
+						<a href="#" onclick="hidePendingActionPage()" ><i class="fa fa-times" aria-hidden="true"></i></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="print-page" class="container" style="display: none;">
+			<div class="row windows">
+				<div class="well well-md col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 grey darken-3">
+					<h3>{{ i18n 'print-dialog.title' }}</h3>
+
+					<p class="step layout-selection">{{ i18n 'print-dialog.layout-selection' }}</p>
+					<p class="step photo-selection">{{ i18n 'print-dialog.photo-selection' }}</p>
+					<p class="step photo-selection">
+						{{ i18n 'print-dialog.photo-selection-count' }}: <span class="count-selected">0</span> / <span class="count-total">-</span>
+					</p>
+					<p class="step preview">{{ i18n 'print-dialog.preview' }}</p>
+
+					<p class="grey darken-3">
+						<button class="btn btn-default step photo-selection" onclick="goBackToPrintLayoutSelection()">{{ i18n 'print-dialog.back-to-layout-selection' }}</button>
+						<button class="btn btn-primary step photo-selection" onclick="goToPrintPreview()">{{ i18n 'print-dialog.continue' }}</button>
+						<button class="btn btn-default step preview" onclick="goBackToPrintPhotoSelection()">{{ i18n 'print-dialog.back-to-photo-selection' }}</button>
+						<button class="btn btn-primary step preview" onclick="printPhoto()">{{ i18n 'print-dialog.print' }}</button>
+						<button class="btn btn-default" onclick="hidePrintPage()">{{ i18n 'print-dialog.close' }}</button>
+					</p>
+
+					<div class="close-button">
+						<a href="#" onclick="hidePrintPage()" ><i class="fa fa-times" aria-hidden="true"></i></a>
+					</div>
+				</div>
+			</div>
+
+			<div class="row step layout-selection">
+				<ul>
+					{{#each config.printing.layouts}}
+						<li class="col-xs-12 col-sm-6 col-sm-6 col-lg-4" onclick="selectPrintLayout('{{this.key}}', {{this.options.width}}, {{this.options.height}})">
+							<img class="layout-image" src="layouts/{{this.key}}" />
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+
+			<div class="row step photo-selection">
+				<ul class="photo-selection"></ul>
+			</div>
+
+			<div class="row step preview">
+				<div class="preview-container col-xs-12"></div>
+			</div>
 		</div>
 	</div>
 
@@ -102,6 +184,5 @@
 	<script src="js/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
-
 </body>
 </html>

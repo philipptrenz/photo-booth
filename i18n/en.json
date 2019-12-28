@@ -1,0 +1,42 @@
+{
+    "online-gallery": {
+        "title": "online gallery",
+        "text": {
+            "email": "if you leave us your e-mail, $t(online-gallery.text._)",
+            "text": "if you let us know how we can contact you, $t(online-gallery.text._)",
+            "_": "we will give you access to the online gallery as soon as it is online. then you can easily browse through the photos from home and download your favorite ones."
+        },
+        "placeholder": {
+            "email": "your e-mail",
+            "text": "your e-mail / phone / name"
+        },
+        "button": "okay"
+    },
+    "settings-password": {
+        "title": "settings",
+        "placeholder": "please enter your password",
+        "button": "send"
+    },
+    "pending-action-dialog": {
+        "title": "Please wait",
+        "text": "The request is currently being processed. This may take a while.",
+        "error": {
+            "title": "Error",
+            "default": "An error has occurred.",
+            "print-limit-exceeded": "You have exceeded the maximum number of printouts."
+        },
+        "close": "Close"
+    },
+    "print-dialog": {
+        "title": "Print",
+        "layout-selection": "Please select the template.",
+        "photo-selection": "Please select the images you want to print. At least one image must be selected. Fewer or more images can be selected than the template supports. If there are fewer images, the corresponding placeholders will not be replaced and if there are too many images, only the first ones will be printed.",
+        "photo-selection-count": "Number of selected images",
+        "preview": "The following image will be printed.",
+        "continue": "Show preview",
+        "back-to-layout-selection": "Back to template selection",
+        "back-to-photo-selection": "Back to picture selection",
+        "print": "Print",
+        "close": "Cancel"
+    }
+}

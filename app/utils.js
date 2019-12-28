@@ -1,20 +1,20 @@
-/* 
- * This file is part of "photo-booth" 
+/*
+ * This file is part of "photo-booth"
  * Copyright (c) 2018 Philipp Trenz
  *
  * For more information on the project go to
  * <https://github.com/philipptrenz/photo-booth>
- * 
- * This program is free software: you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -23,7 +23,8 @@ import fs from 'fs';
 import $ from 'jquery';
 import path from 'path';
 import sharp from 'sharp';
-
+import GIFEncoder from 'gif-encoder';
+import getPixels from 'get-pixels';
 
 class Utils {
 
@@ -34,7 +35,6 @@ class Utils {
     this.config_path = fs.existsSync(ownConfig) ? ownConfig : defaultConfig;
 
     this.defaultContentDirectory = path.join(__dirname, '../', '/content');
-    this.webappSymlink = path.join(__dirname, "../", "./webapp/photos");
 
     this.maxImages = 20;
 
@@ -48,7 +48,7 @@ class Utils {
   }
 
   getConfig(force = false) {
-    if (!this.config || force) {   
+    if (!this.config || force) {
       this.config = require(this.config_path);
       return this.config;
     }
@@ -56,7 +56,6 @@ class Utils {
   }
 
   saveConfig(new_config, callback) {
-
     // TODO: Add json-schema validation for config.json
 
     if (!new_config) {
@@ -88,7 +87,7 @@ class Utils {
       if ( newContentDir !== null && typeof newContentDir === 'string' && newContentDir.length > 0) {  // if valid path in config
         try {
           if (!fs.existsSync(String(newContentDir))) fs.mkdirSync(String(newContentDir));
-          this.contentDir = (newContentDir.startsWith('/')) ? newContentDir : path.join(__dirname, '../', newContentDir ); 
+          this.contentDir = (newContentDir.startsWith('/')) ? newContentDir : path.join(__dirname, '../', newContentDir );
         } catch (err) {
           // fallback: default
           console.error('Could not open or create content_dir \''+this.config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'',this.defaultContentDirectory,'\'');
@@ -104,7 +103,6 @@ class Utils {
 
     // initalized the depending directories
     this.getPhotosDirectory();
-    this.getWebAppPhotosDirectory();
 
     return this.contentDir;
   }
@@ -119,36 +117,38 @@ class Utils {
     return this.photosDir;
   }
 
-  getWebAppPhotosDirectory() {
-    if (this.webappSymlinkInitialized === undefined || !this.webappSymlinkInitialized) {
-      if (fs.existsSync(this.webappSymlink)) {
-        try {
-          fs.unlinkSync(this.webappSymlink);
-        } catch (err) {
-          console.error('utils: could not remove old symlink, probably a problem with access rights', err);
-        }
-      }
-      fs.symlinkSync(this.photosDir, this.webappSymlink);
-      this.webappSymlinkInitialized = true;
+  getFullSizePhotosDirectory() {
+    if (this.fullSizePhotosDir === undefined) {
+      const fullSizePhotosDir = path.join(this.getPhotosDirectory(), "hq/");
+      if (!fs.existsSync(fullSizePhotosDir)) fs.mkdirSync(fullSizePhotosDir);
+      this.fullSizePhotosDir = fullSizePhotosDir;
+      return this.fullSizePhotosDir;
     }
-    return 'photos/';
+    return this.fullSizePhotosDir;
+  }
+
+  getTempDir() {
+    var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
+
+    if (!fs.existsSync(tmpDir)) {
+      fs.mkdirSync(tmpDir);
+    }
+
+    return tmpDir;
   }
 
   // ---------------------------------------------------- //
 
   loadRecentImagesAfterStart() {
-
     var photos_dir = this.getPhotosDirectory();
     var self = this;
     fs.readdir(photos_dir, function(err, files){
-
       if (files) {
         files.sort();
         var numberImages = (files.length < self.maxImages) ? files.length : self.maxImages;
         for (var i = 0; i < numberImages; i++) {
-          //console.log(photos_dir+"/"+files[i]);
           // just take jpegs
-          if ( files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG") ){  
+          if ( files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG") ){
             self.prependImage(self.getPhotosDirectory()+"/"+files[i]);
           }
         }
@@ -167,7 +167,6 @@ class Utils {
 
   initializeBranding() {
     if (this.config.branding) {
-
       var type = this.config.branding.type
       if (type) {
         if (type == 'text') {
@@ -176,7 +175,6 @@ class Utils {
           $('#front').html("Not yet implemented");
         }
       }
-      
 
       var position = this.config.branding.position
       if (position) {
@@ -247,44 +245,130 @@ class Utils {
   }
 
   convertImageForDownload(filename, grayscale, callback) {
-
     var self = this;
-    var _path = path.join(this.photosDir, filename);
-    var newFilename = 'photo-booth_'+filename.replace('img_', '');
-    var tmpDir = path.join(this.getPhotosDirectory(), './tmp');
-    var convertedFilepath = path.join(this.getPhotosDirectory(), './tmp', newFilename);
-    var webappFilepath = path.join(this.getWebAppPhotosDirectory(), 'tmp', newFilename);
 
-    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir);
+    var newFilename = 'photo-booth_'+filename.replace('img_', '');
+    var convertedFilepath = path.join(this.getTempDir(), newFilename);
+    var webappFilepath = path.join('photos', 'tmp', newFilename);
 
     function cb(err) {
       if (err) {
-        callback(false, 'resizing image failed', err)
+        callback(false, 'preparing image failed', err)
       } else {
         callback(true, webappFilepath);
       }
-      // delete file after 10s
-      setInterval(function(){
-        if (fs.existsSync(convertedFilepath)) fs.unlinkSync(convertedFilepath);
-      },10000);
+
+      self.queueFileDeletion(convertedFilepath);
     }
 
-    if (grayscale) {
-      sharp(_path) // resize image to given maxSize
-        .grayscale()
-        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
-        .toFile(convertedFilepath, cb);
-    } else {
-      sharp(_path) // resize image to given maxSize
-        .resize(self.config.webapp.maxDownloadImageSize)  // Scale down images on webapp
-        .toFile(convertedFilepath, cb);
+    function convert(converter) {
+      converter.toFile(convertedFilepath, cb);
+    }
+
+    this._processImageInternal(filename, grayscale, convert);
+  }
+
+  createGifForDownload(filenames, grayscale, callback) {
+    var self = this;
+
+    var newFilename = this.getTimestamp() + '.gif';
+    var convertedFilepath = path.join(this.getTempDir(), newFilename);
+    var webappFilepath = path.join('photos', 'tmp', newFilename);
+
+    var gif = null;
+    function gifCallback(info) {
+      if (gif === null) {
+        gif = new GIFEncoder(info.width, info.height);
+        gif.pipe(fs.createWriteStream(convertedFilepath));
+
+        gif.setQuality(20);
+        gif.setDelay(self.config.webapp.gifDelay);
+        gif.setRepeat(0);
+
+        gif.writeHeader();
+      }
+
+      return gif;
+    }
+
+    try {
+      this._processAndAddToGif(gifCallback, filenames, grayscale, function(res, message, err) {
+        gif.finish();
+
+        if (res) {
+          callback(true, webappFilepath)
+        } else {
+          callback(false, message, err);
+        }
+
+        self.queueFileDeletion(convertedFilepath);
+      });
+    }
+    catch (err) {
+      try {
+        gif.finish();
+      }
+      catch(x) {}
+
+      callback(false, 'gif creation failed', err);
+      this.queueFileDeletion(convertedFilepath);
     }
   }
 
+  queueFileDeletion(filepath) {
+    // delete file after 10s
+    setInterval(function(){
+      if (fs.existsSync(filepath)) {
+        fs.unlinkSync(filepath)
+      }
+    }, 10000);
+  }
+
+  _processImageInternal(filename, grayscale, callback) {
+    var _path = path.join(this.photosDir, filename);
+
+    var converter = sharp(_path)
+      .resize(this.config.webapp.maxDownloadImageSize);
+
+    if (grayscale) {
+       converter = converter.grayscale();
+    }
+
+    callback(converter);
+  }
+
+  _processAndAddToGif(gifCallback, filenames, grayscale, callback, counter = 0) {
+    var self = this;
+
+    var filename = filenames[counter];
+    this._processImageInternal(filename, grayscale, function convert(converter) {
+      converter.toBuffer(function(err, buffer, info) {
+        if (err) {
+          callback(false, 'preparing image failed', err)
+          return;
+        }
+
+        getPixels(new Buffer(buffer), 'image/jpeg', function(err, pixels) {
+          if (err) {
+            callback(false, 'failed loading pixels', err);
+            return;
+          }
+
+          gifCallback(info).addFrame(pixels.data);
+
+          if (filenames.length > counter + 1) {
+            self._processAndAddToGif(gifCallback, filenames, grayscale, callback, counter + 1);
+          } else {
+            callback(true);
+          }
+        });
+      });
+    });
+  }
 }
 
 /*
  * Module exports for connection
  */
- let utils = new Utils() 
+ let utils = new Utils()
 export { utils as default };

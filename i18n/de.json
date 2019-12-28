@@ -1,0 +1,42 @@
+{
+    "online-gallery": {
+        "title": "Online-Galerie",
+        "text": {
+            "email": "Wenn du uns deine E-Mail hinterlässt, $t(online-gallery.text._)",
+            "text": "Wenn du uns mitteilst, wie wir dich kontaktieren können, $t(online-gallery.text._)",
+            "_": "senden wir dir die Zugangsdaten zur Online-Galerie, sobald sie online ist. Dann kannst du die Fotos von zu Hause aus durchsuchen und deine Lieblingsfotos herunterladen."
+        },
+        "placeholder": {
+            "email": "Deine E-Mail-Adresse",
+            "text": "Deine E-Mail-Adresse / Telefonnummer / Name"
+        },
+        "button": "Senden"
+    },
+    "settings-password": {
+        "title": "Einstellungen",
+        "placeholder": "Bitte gib das Passwort ein",
+        "button": "Senden"
+    },
+    "pending-action-dialog": {
+        "title": "Bitte warten",
+        "text": "Die Anfrage wird derzeit bearbeitet. Dies kann eine Weile dauern.",
+        "error": {
+            "title": "Fehler",
+            "default": "Es ist ein Fehler aufgetreten.",
+            "print-limit-exceeded": "Sie haben die maximale Anzahl der Ausdrucke überschritten."
+        },
+        "close": "Schliessen"
+    },
+    "print-dialog": {
+        "title": "Drucken",
+        "layout-selection": "Bitte wähle die Vorlage aus.",
+        "photo-selection": "Bitte wähle die die Bilder aus, die du drucken möchtest. Es muss mindestens ein Bild ausgewählt sein. Es können weniger oder mehr Bilder ausgewählt werden, als die Vorlage unterstützt. Wenn weniger Bilder ausgewählt wurden, werden die entsprechenden Platzhalter nicht ersetzt und wenn zu viele ausgewählt wurden, werden nur die ersten gedruckt.",
+        "photo-selection-count": "Anzahl gewählte Bilder",
+        "preview": "Das nachfolgende Bild wird gedruckt.",
+        "continue": "Vorschau anzeigen",
+        "back-to-layout-selection": "Zurück zur Vorlagenauswahl",
+        "back-to-photo-selection": "Zurück zur Bilderauswahl",
+        "print": "Drucken",
+        "close": "Abbrechen"
+    }
+}

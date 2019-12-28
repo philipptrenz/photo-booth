@@ -1,4 +1,4 @@
-/* 
+/*
  * This file is part of "photo-booth"
  * Copyright (c) 2018 Philipp Trenz
  *
@@ -45,12 +45,11 @@ const showDevTools = config.init.showDevTools !== undefined ? config.init.showDe
 
 if (showDevTools) {
   // enable live reload
-  
+
   enableLiveReload();
 }
 
 function createWindow () {
-
   var fullscreen = config.init.fullscreen !== undefined ? config.init.fullscreen:true;
 
   var width;
@@ -61,7 +60,7 @@ function createWindow () {
   } catch (err) {
     width = 800;
     height = 600;
-    console.log('loading width and height from config.json failed, fallback to 1440x900 \n'+err)
+    console.log('loading width and height from config.json failed, fallback to 800x600 \n'+err)
   }
 
   var windowSettings = {

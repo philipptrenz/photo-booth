@@ -1,4 +1,5 @@
 {
+	"language": "en",
 	"init": {
 		"fullscreen": true,
 		"width": 1440,
@@ -20,7 +21,8 @@
 	},
 	"gphoto2": {
 		"capturetarget": 1,
-		"keep": true
+		"keep": true,
+		"simulate": false
 	},
 	"triggers": {
 		"onClick": true,
@@ -30,7 +32,17 @@
 	"webapp": {
 		"password": "test",
 		"maxDownloadImageSize": 800,
-		"enableRemoteRelease": true
+		"gifDelay": 1000,
+		"enableRemoteRelease": true,
+		"contactAddressType": "email"
+	},
+	"printing": {
+		"enabled": false,
+		"simulate": false,
+		"printer": "printer-name",
+		"limitPerUser": 0,
+		"grayscale": false,
+		"layouts": []
 	},
 	"branding": {
 		"type": "text",

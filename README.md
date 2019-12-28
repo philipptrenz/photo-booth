@@ -27,15 +27,15 @@ If you like my project and you want to keep me motivated:
 
 Simply connect your camera via USB or even via wifi to the computer running this application, for example a **Raspberry Pi**. The app shows a countdown by clicking at the screen (or tapping at a touchscreen), triggers your camera to take a photo, downloads it from your camera, shrinks it to a smaller size and displays it on the screen. First in fullscreen, then added to a gallery of previous taken photos.
 
-photo-booth also provides a web application by running a webserver. Every newly taken photo gets immediately pushed to the webapp. From there it's easy for your guests to download their photos. There's also the option to leave a e-mail address for sending the photos afterwards. You only have to provide a Wi-Fi hotspot.
+photo-booth also provides a web application by running a webserver. Every newly taken photo gets immediately pushed to the webapp. From there it's easy for your guests to download their photos. There's also the option to leave a contact address for sending the photos afterwards. Creating GIF animations and printing out selected photos are also possible through the web application. You only have to provide a Wi-Fi hotspot and a printer (optional for printing feature).
 
-Because of the use of gphoto2 it works with nearly any camera like plug and play.
+Because of the use of `gphoto2` and `cups` it works with nearly any camera or printer like plug and play.
 
 ## Installation
 
-To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/) and [gphoto2](http://gphoto.sourceforge.net/) installed. 
+To clone and run this repository you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/), [gphoto2](http://gphoto.sourceforge.net/) and [CUPS](https://www.cups.org/) installed.
 
-Before getting started please check [here](#Unsupported-devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems. 
+Before getting started please check [here](#Unsupported-devices) if the hardware you want to use is supported. I tested photo-booth under Ubuntu Linux (64bit), MacOS and Raspbian (Raspberry Pi 3, ARM). Anyway, the documentation here will be focused on Linux based systems.
 
 Also check [here](http://www.gphoto.org/proj/libgphoto2/support.php) if your camera is supported (at least *Image Capture* should be available). Please also note, that only the JPEG-mode of your camera is currently supported (no RAW or RAW+JPEG).
 
@@ -62,7 +62,7 @@ sudo chmod +x ./scripts/install_node_v9.sh
 # Install node
 sudo ./scripts/install_node_v9.sh
 
-# Install
+# Install (you can do this later if you want to add a printer to use the printing feature)
 npm install
 ```
 
@@ -98,7 +98,7 @@ To start photo-booth on boot add the following line at the end of `/home/pi/.con
 @sudo node /home/pi/photo-booth/scripts/cli.js
 ```
 
- 
+
 ## Configure it
 
 There are a few settings and options that you should take a look at.
@@ -112,6 +112,7 @@ It looks like this:
 
 ```json
 {
+	"language": "en",
 	"init": {
 		"fullscreen": true,
 		"width": "1440",
@@ -130,13 +131,29 @@ It looks like this:
 	},
 	"gphoto2": {
 		"capturetarget": 1,
-		"keep": true
+		"keep": true,
+		"simulate": false
 	},
 	"content_dir": null,
 	"webapp": {
 		"password": "test",
 		"maxDownloadImageSize": 800,
-		"enableRemoteRelease": true
+		"gifDelay": 1000,
+		"enableRemoteRelease": true,
+		"contactAddressType": "email"
+	},
+	"printing": {
+		"enabled": false,
+		"simulate": false,
+		"printer": "printer-name",
+		"limitPerUser": 0,
+		"overlay": {
+			"image": "overlay.png",
+			"x": "right",
+			"y": "bottom"
+		},
+		"grayscale": true,
+		"layouts": []
 	},
 	"live": {
 		"framerate": 10
@@ -167,10 +184,12 @@ Some notes:
 * Slideshow and liveview do not work together.
 * You have to experiment with the framerate for live preview depending on the power of your machine. On a Notebook with an Intel i7-8550U upto 15% CPU utilization are needed for 20 frames per second. Also if your camera is running on battery, it drastically decreases the battery duration.
 * When ``flash`` is set to `enabled` a white  page  will be shown as a flash after completing the countdown
+* You can use `gphoto2.simulate = true` when you want to test your setup without an active camera connection
+* The `webapp.contactAddressType` defines what kind of address types are supported inside the webapp. Supported values are `none` (feature disabled), `email` (email validation) and `text` (no input validation).
 
 ### How to use the integrated webapp
 
-As mentioned above photo-booth has a built in web page where images can be downloaded. 
+As mentioned above photo-booth has a built in web page where images can be downloaded, gif animations can be created and images can be printed.
 
 For an easy way to use it, start a open wifi hotspot on the computer photo-booth runs on. If you use a Raspberry Pi, there're enough tutorials out there to figure it out (i.e. [here](https://www.raspberrypi.org/documentation/configuration/wireless/access-point.md)). Then connect your device, e.g. a smartphone, with the wifi, open your browser and type in the ip address of the Pi. More elegant is it to configure a DNS redirect so the users can type in a web address like "photo.app", therefore I use `dnsmasq` which is also configured as DHCP server.
 
@@ -202,6 +221,91 @@ Therefore activate the GPIOs by setting `"useGPIO": true` in config.json. Then c
                           |
 ```
 
+## Install a printer
+*photo-booth* also supports image printing with configurable layouts.
+For this feature to work you need a supported printer, install additional software and configure the layouts individually.
+
+### Install printer software
+1. Connect and power on the printer
+2. Run the following scripts:
+	```bash
+	sudo apt-get update
+
+	# Install additional libraries for collage creation
+	sudo apt-get install libpixman-1-dev
+	sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
+	sudo apt-get install libpango1.0-dev
+
+	# Install cups
+	sudo apt-get install cups
+
+	# Install cups-config (needed for node-printer)
+	sudo apt-get install libcups2-dev
+
+	# Change user (adjust pi, if you have changed this)
+	sudo usermod -a -G lpadmin pi
+
+	# Install optional node modules
+	cd photo-booth
+	npm install
+
+	cd helpers/collage
+	npm install
+	```
+3. Navigate to http://localhost:631 and add the new printer
+	- **Important**: Remember the name, you need it for the configuration file later
+4. Check if the printer is enabled and is accepting jobs. This can be done using the UI or with the following commands:
+	```bash
+	# Check state
+	lpstat -p
+
+	# Enable if the printer is disabled
+	cupsenable printer-name
+	```
+### Configure the application
+- Configure the content in `config.json` (or `my.config.json`) under the section `printing`
+- Set `enabled` to `true`
+- Set `simulate` to `true` if you only want to test the image generation
+- Set `printer` to the printer name you configured during the installation process
+- Set `limitPerUser` if you want to limit the printouts per person. 0 means no limit and with the webapp password you always have unlimited printouts.
+- Use `grayscale` if you want to print only grayscale images (seperate config only for printing feature) - **Warning**: The grayscale feature does not work for larger DPI values.
+- Use `overlay` to add a image to each printout. Be sure that it matches all your layouts (eg. 2x2 layout with spacing won't match with an overlay in the same color as the background color) and also consider that not all placehoders must be occupied (eg. do not use the background color in the overlay image)
+- Configure the layouts under `layouts`. You can add multiple layouts (the user can select the desired layout from within the web application). A sample layout looks like this:
+	```json
+	{
+		"key": "selphy_2x2",
+		"options": {
+			"dpi": 300,
+			"width": 2,
+			"height": 2,
+			"imageWidth": 868,
+			"imageHeight": 577,
+			"backgroundColor": "#ffffff",
+			"spacing": {
+				"top": 8,
+				"left": 0,
+				"bottom": 8,
+				"right": 1,
+				"betweenImages": 11
+			}
+		}
+	}
+	```
+  - This sample layout is a 2x2 layout optimized for the following configuration:
+    - *Canon Selphy CP1300* printer with a paper size of `100 x 148 mm` and a resolution of `300 x 300dpi` (eg. `1181 x 1748 px`)
+	- *Nikon D90* camera with a picture size of `4288x2848` which results in a width to height factor of `1.5056...`
+  - Description of the options:
+	- *key*: Internal identifier for the layout. Must not contain invalid file name characters
+	- *dpi*: The printer resolution
+		- *Note*: Must not match the full printer DPI (images will be scaled to the whole printing area)
+		- Defaults to `96`, which should already be quiet good for most portable low quality printers
+		- **Warning**: Higher DPI values require more resources, which can be too much for a small computer like a Raspberry PI. Also the grayscale function does not work at higher resolutions anymore.
+	- *width* and *height*: Number of images per row / column
+	- *imageWidth* and *imageHeight*: The width / height of each individual image in the layout.
+	  Try to set the values in a way that it will give the same aspect ration as the original image size from the camera.
+	- *backgroundColor*: Layout background color which is used to fill the spacing, the unused space when the original images do not have the same aspect ratio or placeholders without an image.
+	- *spacing*: Spacing outside the images (`top`, `left`, `bottom` and `right`) and between two individual images (`betweenImages`).
+
 ## Unsupported devices
 
 Please note that there are several devices which are not supported by photo-booth.
@@ -211,7 +315,7 @@ Please note that there are several devices which are not supported by photo-boot
 As Electron, the main framework, besides ia32 (i686) and x64 (amd64) only supports the ARM v7 architecture (and ARM v8 as it is backwards compatible), several ARM devices are not supported. Further information can be found [here](https://electronjs.org/docs/tutorial/support#linux). The following ARM devices among others can not be supported:
 
 * Raspberry Pi Zero
-* Raspberry Pi Zero W / WH 
+* Raspberry Pi Zero W / WH
 * Raspberry Pi 1 A / A+
 * Raspberry Pi 1 B / B+
 

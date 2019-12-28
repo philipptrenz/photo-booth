@@ -5,7 +5,6 @@
 		"width": 1440,
 		"height": 900,
 		"showDevTools": false,
-		"useGPIO": false,
 		"grayscaleMode": true,
 		"preventScreensaver": true
 	},
@@ -23,6 +22,15 @@
 		"capturetarget": 1,
 		"keep": true,
 		"simulate": false
+	},
+	"GPIO": {
+		"enabled": false,
+		"actions": [
+			{
+				"channel": 3,
+				"action": "triggerPhoto"
+			}
+		]
 	},
 	"triggers": {
 		"onClick": true,

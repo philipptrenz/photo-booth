@@ -118,7 +118,6 @@ It looks like this:
 		"width": "1440",
 		"height": "900",
 		"showDevTools": false,
-		"useGPIO": false,
 		"grayscaleMode": true,
 		"preventScreensaver": false
 	},

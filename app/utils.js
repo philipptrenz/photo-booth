@@ -161,6 +161,9 @@ class Utils {
     img.attr('src', path);
     var div = $('<div class="img-wrapper col-6 col-md-4">').append(img);
     $("#collage").prepend(div);
+    if (this.maxImages <= $("#collage div").length) {
+		$("#collage div").last().remove();
+	}
   }
 
   // ---------------------------------------------------- //

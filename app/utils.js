@@ -25,6 +25,8 @@ import path from 'path';
 import sharp from 'sharp';
 import GIFEncoder from 'gif-encoder';
 import getPixels from 'get-pixels';
+import templateService from './template-service.js';
+import translationService from './translation-service.js';
 
 class Utils {
 
@@ -45,6 +47,8 @@ class Utils {
     this.initializeBranding();
     this.loadRecentImagesAfterStart();
     this.printIpAddresses();
+
+    translationService.init(this.getConfig(), () => {});
   }
 
   getConfig(force = false) {
@@ -325,6 +329,13 @@ class Utils {
         fs.unlinkSync(filepath)
       }
     }, 10000);
+  }
+
+  translateTemplate(template) {
+    const appliedTemplate = templateService.applyTemplate(template, {
+      config: utils.getConfig()
+    });
+    return appliedTemplate;
   }
 
   _processImageInternal(filename, grayscale, callback) {

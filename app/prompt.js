@@ -22,6 +22,7 @@
 import $ from 'jquery';
 import Velocity from 'velocity-animate';
 import slideshow from "./slideshow.js";
+import utils from "./utils.js"
 
 class Prompt {
 
@@ -169,7 +170,7 @@ class CountdownPrompt {
 		this.duration = duration;
 		this.container = $("#prompt");
 
-		this.htmlPre = '<div class=\'countdown-container\'><div class=\'countdown-row\'><span id="countdown"><div style="font-size: 15vh; margin-top: 120px">Bitte lächeln in... </div>';
+		this.htmlPre = utils.translateTemplate('<div class=\'countdown-container\'><div class=\'countdown-row\'><span id="countdown"><div style="font-size: 15vh; margin-top: 120px">{{ i18n \'electron-app.prompt.countdown-text\'}} </div>');
 		this.htmlPost = '</span></div></div>';
 	}
 

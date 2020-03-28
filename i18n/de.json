@@ -1,4 +1,9 @@
 {
+    "electron-app": {
+        "prompt": {
+            "countdown-text": "Bitte lächeln in..."
+        }
+    }, 
     "online-gallery": {
         "title": "Online-Galerie",
         "text": {

@@ -121,7 +121,7 @@ class Camera {
 			var arr = $('#collage img').map(function() { return this.src; }).get();
 			var idx = Math.floor(Math.random() * arr.length);
 			const filepath = arr[idx];
-			const webFilepath = filepath.replace(utils.getPhotosDirectory(), utils.getWebAppPhotosDirectory());
+			const webFilepath = filepath.replace(utils.getPhotosDirectory(), utils.getFullSizePhotosDirectory());
 			console.log('dummy camera: loading picture ' + filepath);
 			callback(0, filepath, webFilepath);
 			return;

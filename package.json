@@ -41,7 +41,7 @@
   ],
   "preferGlobal": true,
   "devDependencies": {
-    "electron": "1.7.9",
+    "electron": "9.4.0",
     "electron-compilers": "^5.9.0"
   },
   "dependencies": {

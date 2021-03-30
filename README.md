@@ -8,20 +8,10 @@ A multi-platform photo booth software using Electron and your camera
 ![photo booth image from The Verge](https://cdn.vox-cdn.com/thumbor/gkbHIytNYvEPwbLLVxmVuTA5cjM=/1600x0/filters:no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/9062729/akrales_170815_1889_0006.jpg)
 (Source: [The Verge](https://www.theverge.com/circuitbreaker/2017/8/24/16193418/diy-photo-booth-party-wedding-dlsr-camera-how-to-build-raspberry-pi), accessed 08 March 2018)
 
-## Community
+## Important Note
 
-**IMPORTANT NOTE: I'm glad that so many are interested in photo-booth! Nevertheless, this is a software development project and not an end user software! Setting up and using photo-booth requires (at least basic) knowledge in software development, such as dealing with Git, JavaScript, Node and Linux. My goal here is to jointly improve this project according to the open source philosophy. Please understand that I can not provide support if this basic knowledge is missing.**
+**This repository is no longer under active maintainance.**
 
-
-I have set up a mailing list to serve as a platform for exchange between new and experienced users. Therefore, I ask that as many as possible participate in the mailing list in order to share experiences as well as to provide assistance.
-
-Send an empty email to [photo-booth-subscribe@philipptrenz.de](mailto:photo-booth-subscribe@philipptrenz.de) to join the list, then ask your questions to [photo-booth@philipptrenz.de](mailto:photo-booth@philipptrenz.de).
-
-For feature requests and bug reports feel free to open an [issue](http://github.com/philipptrenz/photo-booth/issues).
-
-If you like my project and you want to keep me motivated:
-
-<a href='https://ko-fi.com/U7U6COXD' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi2.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ## How it works
 
